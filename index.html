@@ -1,1080 +1,678 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VCtv AInews — Notícias do Futuro</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<title>VCtv AInews</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #0d0d0d;
-    --paper: #f5f0e8;
-    --red: #c0392b;
-    --gold: #b8860b;
-    --muted: #5a5a5a;
-    --rule: #1a1a1a;
-    --accent: #1a3a5c;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Source Serif 4', serif;
-    min-height: 100vh;
-  }
-
-  /* ── MASTHEAD ── */
-  .masthead {
-    border-bottom: 4px double var(--ink);
-    padding: 0.5rem 2rem 0;
-    background: var(--paper);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .masthead-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--ink);
-    padding-bottom: 0.4rem;
-    margin-bottom: 0.4rem;
-  }
-
-  .masthead-meta {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-  }
-
-  .edition-badge {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.6rem;
-    background: var(--red);
-    color: #fff;
-    padding: 0.2rem 0.5rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    display: none;
-  }
-  .edition-badge.show { display: inline-block; }
-
-  .logo {
-    text-align: center;
-    line-height: 1;
-  }
-
-  .logo-main {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    font-weight: 900;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-    display: block;
-  }
-
-  .logo-sub {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.25em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  .logo-sub span {
-    color: var(--red);
-    font-weight: 500;
-  }
-
-  /* ── NAV TICKER ── */
-  .ticker-wrap {
-    background: var(--ink);
-    color: var(--paper);
-    overflow: hidden;
-    padding: 0.3rem 0;
-    display: flex;
-    align-items: center;
-  }
-
-  .ticker-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.6rem;
-    background: var(--red);
-    color: #fff;
-    padding: 0.2rem 0.6rem;
-    white-space: nowrap;
-    flex-shrink: 0;
-    letter-spacing: 0.08em;
-  }
-
-  .ticker-track {
-    display: flex;
-    animation: ticker 40s linear infinite;
-    white-space: nowrap;
-  }
-
-  .ticker-track span {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.65rem;
-    padding: 0 2rem;
-    color: #ccc;
-  }
-
-  .ticker-track span::before {
-    content: '◆ ';
-    color: var(--gold);
-  }
-
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-
-  /* ── LAYOUT ── */
-  main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.5rem 1.5rem;
-  }
-
-  /* ── DATE SECTION ── */
-  .date-section {
-    border-bottom: 2px solid var(--ink);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-
-  .date-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    font-style: italic;
-  }
-
-  .date-section .edition-info {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-  }
-
-  /* ── GENERATE FORM ── */
-  .generate-section {
-    border: 2px solid var(--ink);
-    padding: 1.2rem;
-    margin-bottom: 2rem;
-    background: #fff;
-    position: relative;
-  }
-
-  .generate-section::before {
-    content: 'REDAÇÃO';
-    position: absolute;
-    top: -0.7rem;
-    left: 1rem;
-    background: #fff;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    padding: 0 0.4rem;
-    color: var(--muted);
-  }
-
-  .gen-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.5rem;
-    display: block;
-    color: var(--muted);
-  }
-
-  .gen-row {
-    display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-  }
-
-  .gen-input {
-    flex: 1;
-    min-width: 200px;
-    border: 1.5px solid var(--ink);
-    background: var(--paper);
-    font-family: 'Source Serif 4', serif;
-    font-size: 0.9rem;
-    padding: 0.5rem 0.7rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .gen-input:focus { border-color: var(--red); }
-
-  .gen-btn {
-    background: var(--ink);
-    color: var(--paper);
-    border: none;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    padding: 0.5rem 1.2rem;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: background 0.2s;
-    white-space: nowrap;
-  }
-
-  .gen-btn:hover { background: var(--red); }
-  .gen-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  .gen-status {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    margin-top: 0.5rem;
-    min-height: 1em;
-  }
-
-  /* ── NEWS GRID ── */
-  .section-rule {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    font-weight: 700;
-    border-top: 3px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
-    padding: 0.3rem 0;
-    margin: 1.5rem 0 1rem;
-    letter-spacing: 0.05em;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-
-  .section-rule .pill {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.55rem;
-    background: var(--red);
-    color: #fff;
-    padding: 0.15rem 0.5rem;
-    letter-spacing: 0.12em;
-  }
-
-  .news-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 0;
-    border-left: 1px solid #ccc;
-  }
-
-  .news-grid .col-main {
-    padding: 0 1.5rem 0 1.5rem;
-    border-right: 1px solid #ccc;
-  }
-
-  .news-grid .col-side {
-    padding: 0 0 0 1.5rem;
-  }
-
-  .news-list-small {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  /* ── ARTICLE CARDS ── */
-  .article-main {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-
-  .article-main:hover { opacity: 0.8; }
-
-  .article-main:last-child { border-bottom: none; }
-
-  .article-tag {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--red);
-    margin-bottom: 0.3rem;
-  }
-
-  .article-main h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 0.4rem;
-    color: var(--ink);
-  }
-
-  .article-main.big h3 {
-    font-size: 2rem;
-  }
-
-  .article-main p.lead {
-    font-size: 0.88rem;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .article-meta {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.58rem;
-    color: #999;
-    margin-top: 0.4rem;
-  }
-
-  /* Small side articles */
-  .article-small {
-    padding: 0.8rem 0;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-
-  .article-small:hover { opacity: 0.7; }
-  .article-small:last-child { border-bottom: none; }
-
-  .article-small .article-tag { margin-bottom: 0.2rem; }
-
-  .article-small h4 {
-    font-family: 'Playfair Display', serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    line-height: 1.25;
-    color: var(--ink);
-  }
-
-  .article-small .article-meta { margin-top: 0.2rem; }
-
-  /* ── MODAL ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    z-index: 1000;
-    overflow-y: auto;
-    padding: 2rem 1rem;
-  }
-
-  .modal-overlay.open { display: flex; justify-content: center; }
-
-  .modal {
-    background: var(--paper);
-    max-width: 720px;
-    width: 100%;
-    padding: 2rem;
-    position: relative;
-    animation: slideUp 0.3s ease;
-    align-self: flex-start;
-  }
-
-  @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to   { transform: translateY(0); opacity: 1; }
-  }
-
-  .modal-close {
-    position: absolute;
-    top: 1rem; right: 1rem;
-    background: none; border: none;
-    font-size: 1.2rem; cursor: pointer;
-    color: var(--muted);
-    font-family: 'IBM Plex Mono', monospace;
-  }
-
-  .modal-tag {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    color: var(--red);
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-
-  .modal h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-weight: 900;
-    line-height: 1.15;
-    margin-bottom: 0.8rem;
-    border-bottom: 2px solid var(--ink);
-    padding-bottom: 0.8rem;
-  }
-
-  .modal-meta {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-    margin-bottom: 1.2rem;
-  }
-
-  .modal-body {
-    font-size: 0.95rem;
-    line-height: 1.8;
-    color: #222;
-  }
-
-  .modal-body p { margin-bottom: 1rem; }
-
-  /* ── LOADING STATE ── */
-  .loading-placeholder {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem 0;
-  }
-
-  .skeleton {
-    background: linear-gradient(90deg, #e0d9cc 25%, #ece5d8 50%, #e0d9cc 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 2px;
-  }
-
-  @keyframes shimmer {
-    from { background-position: 200% 0; }
-    to   { background-position: -200% 0; }
-  }
-
-  /* ── EMPTY STATE ── */
-  .empty-state {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--muted);
-  }
-
-  .empty-state h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .empty-state p {
-    font-size: 0.85rem;
-    margin-bottom: 1rem;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 3px double var(--ink);
-    text-align: center;
-    padding: 1.5rem;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    margin-top: 3rem;
-  }
-
-  footer strong { color: var(--red); }
-
-  /* ── WEEKEND / SPECIAL BANNER ── */
-  .edition-banner {
-    background: var(--ink);
-    color: var(--paper);
-    text-align: center;
-    padding: 0.8rem;
-    margin-bottom: 1.5rem;
-    display: none;
-  }
-
-  .edition-banner.show { display: block; }
-
-  .edition-banner h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-style: italic;
-  }
-
-  .edition-banner p {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.65rem;
-    color: #aaa;
-    margin-top: 0.2rem;
-  }
-
-  /* ── AUTO BADGE ── */
-  .auto-indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.55rem;
-    color: #fff;
-    background: var(--accent);
-    padding: 0.15rem 0.4rem;
-    border-radius: 2px;
-    vertical-align: middle;
-  }
-
-  .auto-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: #4dff91;
-    animation: blink 1.5s ease-in-out infinite;
-    flex-shrink: 0;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.2; }
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 700px) {
-    .news-grid {
-      grid-template-columns: 1fr;
-    }
-    .news-grid .col-main {
-      padding: 0;
-      border-right: none;
-      border-bottom: 1px solid #ccc;
-      margin-bottom: 1rem;
-    }
-    .news-grid .col-side { padding: 0; }
-    .masthead { padding: 0.5rem 1rem 0; }
-    main { padding: 1rem; }
-    .logo-main { font-size: 2rem; }
-  }
+:root {
+  --green: #3cb54a;
+  --green-dark: #2a8a36;
+  --green-neon: #4dff6e;
+  --bg: #0a0e0f;
+  --surface: #111618;
+  --surface2: #181e20;
+  --border: #1e2a2d;
+  --text: #e8f0f2;
+  --muted: #6b8a8f;
+  --white: #ffffff;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; }
+
+/* ── HEADER ── */
+header {
+background: linear-gradient(135deg, #0d1a0f 0%, #0a0e0f 60%);
+border-bottom: 1px solid var(–border);
+position: sticky; top:0; z-index:200;
+}
+.header-top {
+display:flex; align-items:center; justify-content:space-between;
+padding: 0.7rem 1.5rem;
+border-bottom: 1px solid var(–border);
+}
+/* ── LOGO SVG ── */
+.logo-wrap { display:flex; align-items:center; gap:0.8rem; cursor:default; }
+.logo-svg-container { display:flex; align-items:center; }
+.logo-text-wrap { line-height:1; }
+.logo-tagline {
+font-family:‘Inter’,sans-serif; font-size:0.55rem;
+color:var(–green); letter-spacing:0.18em; text-transform:uppercase;
+opacity:0.85;
+}
+.ainews-badge {
+font-family:‘Space Grotesk’,sans-serif; font-size:0.6rem;
+background: linear-gradient(90deg, var(–green), #7fff8a);
+-webkit-background-clip:text; -webkit-text-fill-color:transparent;
+letter-spacing:0.2em; font-weight:700;
+}
+.header-right { display:flex; align-items:center; gap:0.8rem; }
+.live-dot { display:flex; align-items:center; gap:0.4rem;
+font-size:0.6rem; color:var(–green); font-weight:600; letter-spacing:0.1em; }
+.dot { width:6px; height:6px; border-radius:50%; background:var(–green-neon);
+animation: pulse 1.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+.date-display { font-size:0.6rem; color:var(–muted); font-family:‘Space Grotesk’,sans-serif; }
+
+/* ── TICKER ── */
+.ticker { background:#0d1f10; border-bottom:1px solid #1a3320;
+display:flex; align-items:center; overflow:hidden; height:28px; }
+.ticker-label { background:var(–green); color:#000; font-size:0.55rem;
+font-weight:800; letter-spacing:0.12em; padding:0 0.8rem; height:100%;
+display:flex; align-items:center; white-space:nowrap; flex-shrink:0; }
+.ticker-scroll { overflow:hidden; flex:1; }
+.ticker-inner { display:flex; animation: scroll 50s linear infinite; white-space:nowrap; }
+.ticker-inner span { padding:0 2.5rem; font-size:0.65rem; color:#7aff8a; font-weight:500; }
+.ticker-inner span::before { content:’▶ ’; opacity:0.5; }
+@keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── MAIN LAYOUT ── */
+main { max-width:1280px; margin:0 auto; padding:1.5rem; }
+
+/* ── CONTROLS ── */
+.controls {
+background:var(–surface); border:1px solid var(–border);
+border-radius:12px; padding:1.2rem; margin-bottom:1.5rem;
+position:relative; overflow:hidden;
+}
+.controls::before {
+content:’’; position:absolute; inset:0; pointer-events:none;
+background: linear-gradient(135deg, rgba(60,181,74,0.05) 0%, transparent 60%);
+}
+.controls-row { display:flex; gap:0.7rem; flex-wrap:wrap; align-items:center; }
+.ctrl-input {
+flex:1; min-width:220px;
+background:var(–bg); border:1.5px solid var(–border); border-radius:8px;
+color:var(–text); font-family:‘Inter’,sans-serif; font-size:0.85rem;
+padding:0.6rem 1rem; outline:none; transition:border-color 0.2s;
+}
+.ctrl-input:focus { border-color:var(–green); }
+.ctrl-input::placeholder { color:var(–muted); }
+.btn {
+border:none; border-radius:8px; font-family:‘Inter’,sans-serif;
+font-size:0.72rem; font-weight:700; letter-spacing:0.06em;
+padding:0.6rem 1.2rem; cursor:pointer; transition:all 0.2s;
+white-space:nowrap; text-transform:uppercase;
+}
+.btn-green { background:var(–green); color:#000; }
+.btn-green:hover { background:var(–green-neon); transform:translateY(-1px); }
+.btn-dark { background:var(–surface2); color:var(–text); border:1px solid var(–border); }
+.btn-dark:hover { border-color:var(–green); color:var(–green); }
+.btn:disabled { opacity:0.4; cursor:not-allowed; transform:none !important; }
+.status-bar { margin-top:0.7rem; font-size:0.68rem; color:var(–muted);
+display:flex; align-items:center; gap:0.4rem; min-height:1.2em; }
+.status-bar.loading { color:var(–green); }
+.status-bar.error { color:#ff6b6b; }
+.status-bar.ok { color:var(–green-neon); }
+.spin { display:inline-block; animation:spin 0.8s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* ── PROGRESS BAR ── */
+.progress-wrap { margin-top:0.5rem; height:3px; background:var(–border); border-radius:2px; display:none; }
+.progress-wrap.show { display:block; }
+.progress-bar { height:100%; background:linear-gradient(90deg,var(–green),var(–green-neon));
+border-radius:2px; transition:width 0.4s ease; width:0%; }
+
+/* ── SECTION TITLE ── */
+.section-title {
+display:flex; align-items:center; gap:0.8rem;
+margin-bottom:1rem; padding-bottom:0.6rem;
+border-bottom:1px solid var(–border);
+}
+.section-title h2 { font-family:‘Space Grotesk’,sans-serif; font-size:0.8rem;
+font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(–muted); }
+.section-title .pill {
+font-size:0.55rem; font-weight:700; letter-spacing:0.12em;
+background:rgba(60,181,74,0.15); color:var(–green);
+border:1px solid rgba(60,181,74,0.3); border-radius:4px; padding:0.15rem 0.5rem;
+}
+.count-badge { margin-left:auto; font-size:0.6rem; color:var(–muted); }
+
+/* ── NEWS GRID ── */
+.news-grid { display:grid; grid-template-columns:2fr 1fr; gap:1.5rem; margin-bottom:1.5rem; }
+.news-grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+
+/* ── CARDS ── */
+.card {
+background:var(–surface); border:1px solid var(–border); border-radius:12px;
+padding:1.2rem; cursor:pointer; transition:all 0.2s;
+display:flex; flex-direction:column; gap:0.6rem;
+}
+.card:hover { border-color:var(–green); transform:translateY(-2px);
+box-shadow:0 8px 30px rgba(60,181,74,0.1); }
+.card.featured { padding:1.5rem; }
+.card-tag {
+font-size:0.55rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;
+color:var(–green); background:rgba(60,181,74,0.1); border-radius:4px;
+padding:0.2rem 0.5rem; display:inline-block; align-self:flex-start;
+}
+.card h3 { font-family:‘Space Grotesk’,sans-serif; font-size:1.05rem;
+font-weight:700; line-height:1.25; color:var(–white); }
+.card.featured h3 { font-size:1.5rem; }
+.card p { font-size:0.8rem; color:var(–muted); line-height:1.6; flex:1; }
+.card-meta { font-size:0.6rem; color:#3a5a60; font-weight:500;
+display:flex; align-items:center; gap:0.4rem; margin-top:auto; }
+.card-meta::before { content:’’; display:block; width:16px; height:1px; background:var(–border); }
+
+.card-small { padding:0.9rem; gap:0.4rem; }
+.card-small h4 { font-family:‘Space Grotesk’,sans-serif; font-size:0.85rem;
+font-weight:600; line-height:1.3; color:var(–white); }
+
+/* ── EMPTY / SKELETON ── */
+.empty { text-align:center; padding:4rem 1rem; color:var(–muted); }
+.empty .icon { font-size:3rem; margin-bottom:1rem; opacity:0.3; }
+.empty h3 { font-size:1.1rem; margin-bottom:0.4rem; color:var(–text); }
+.empty p { font-size:0.8rem; }
+
+.skel { background:linear-gradient(90deg,var(–surface) 25%,var(–surface2) 50%,var(–surface) 75%);
+background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:6px; }
+@keyframes shimmer { from{background-position:200% 0} to{background-position:-200% 0} }
+
+/* ── MODAL ── */
+.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85);
+z-index:1000; overflow-y:auto; padding:2rem 1rem; backdrop-filter:blur(4px); }
+.modal-bg.open { display:flex; justify-content:center; }
+.modal {
+background:var(–surface); border:1px solid var(–border); border-radius:16px;
+max-width:760px; width:100%; padding:2rem; position:relative;
+align-self:flex-start; animation:slideUp 0.25s ease;
+}
+@keyframes slideUp { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
+.modal-close {
+position:absolute; top:1rem; right:1rem;
+background:var(–surface2); border:1px solid var(–border); color:var(–muted);
+width:32px; height:32px; border-radius:8px; font-size:0.9rem;
+cursor:pointer; display:flex; align-items:center; justify-content:center;
+transition:all 0.2s;
+}
+.modal-close:hover { border-color:var(–green); color:var(–green); }
+.modal-tag { font-size:0.55rem; font-weight:700; letter-spacing:0.15em;
+color:var(–green); margin-bottom:0.8rem; }
+.modal h2 { font-family:‘Space Grotesk’,sans-serif; font-size:1.8rem;
+font-weight:700; line-height:1.2; color:var(–white); margin-bottom:1rem;
+padding-bottom:1rem; border-bottom:1px solid var(–border); }
+.modal-meta { font-size:0.65rem; color:var(–muted); margin-bottom:1.5rem;
+display:flex; align-items:center; gap:0.6rem; }
+.modal-body p { font-size:0.9rem; line-height:1.8; color:#b0c4c8; margin-bottom:1rem; }
+
+/* ── FOOTER ── */
+footer { border-top:1px solid var(–border); text-align:center; padding:2rem;
+font-size:0.6rem; color:var(–muted); letter-spacing:0.08em; margin-top:2rem; }
+footer strong { color:var(–green); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px) {
+.news-grid { grid-template-columns:1fr; }
+.news-grid-3 { grid-template-columns:1fr; }
+.header-top { padding:0.6rem 1rem; }
+main { padding:1rem; }
+}
 </style>
+
 </head>
 <body>
 
-<!-- MASTHEAD -->
-<header class="masthead">
-  <div class="masthead-top">
-    <span class="masthead-meta" id="dateDisplay">Carregando...</span>
-    <div class="logo">
-      <span class="logo-main">VCtv AInews</span>
-      <span class="logo-sub">Inteligência Artificial · <span>Notícias do Mundo</span> · Automático</span>
+<!-- HEADER -->
+
+<header>
+  <div class="header-top">
+    <!-- Logo VCtv SVG fiel à imagem -->
+    <div class="logo-wrap">
+      <div class="logo-svg-container">
+        <svg width="90" height="44" viewBox="0 0 90 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Ícones pequenos acima do VCtv -->
+          <!-- câmera -->
+          <g transform="translate(2,0)" stroke="#3cb54a" stroke-width="1.2" fill="none">
+            <rect x="1" y="4" width="11" height="8" rx="1.5"/>
+            <circle cx="6.5" cy="8" r="2.2"/>
+            <rect x="8.5" y="2.5" width="3" height="2" rx="0.5"/>
+          </g>
+          <!-- globo -->
+          <g transform="translate(18,0)" stroke="#3cb54a" stroke-width="1.2" fill="none">
+            <circle cx="6" cy="6" r="5"/>
+            <ellipse cx="6" cy="6" rx="2.5" ry="5"/>
+            <line x1="1" y1="6" x2="11" y2="6"/>
+          </g>
+          <!-- celular -->
+          <g transform="translate(35,0)" stroke="#3cb54a" stroke-width="1.2" fill="none">
+            <rect x="3" y="1" width="7" height="11" rx="1.5"/>
+            <line x1="5.5" y1="10.5" x2="7.5" y2="10.5"/>
+          </g>
+          <!-- microfone -->
+          <g transform="translate(51,0)" stroke="#3cb54a" stroke-width="1.2" fill="none">
+            <rect x="4" y="1" width="5" height="7" rx="2.5"/>
+            <path d="M2 6.5c0 3 8 3 8 0"/>
+            <line x1="6.5" y1="9.5" x2="6.5" y2="12"/>
+          </g>
+          <!-- jornal -->
+          <g transform="translate(67,0)" stroke="#3cb54a" stroke-width="1.2" fill="none">
+            <rect x="1" y="2" width="11" height="10" rx="1"/>
+            <line x1="3" y1="5" x2="10" y2="5"/>
+            <line x1="3" y1="7" x2="10" y2="7"/>
+            <rect x="3" y="8.5" width="4" height="2"/>
+          </g>
+          <!-- Letras VCtv grandes -->
+          <text x="0" y="42" font-family="Inter,sans-serif" font-size="26" font-weight="900" fill="white">V</text>
+          <text x="18" y="42" font-family="Inter,sans-serif" font-size="26" font-weight="900" fill="#3cb54a">C</text>
+          <text x="36" y="42" font-family="Inter,sans-serif" font-size="22" font-weight="400" fill="white">t</text>
+          <text x="46" y="42" font-family="Inter,sans-serif" font-size="26" font-weight="900" fill="white">v</text>
+        </svg>
+      </div>
+      <div class="logo-text-wrap">
+        <div class="ainews-badge">AI NEWS</div>
+        <div class="logo-tagline">O jornal feito por VC, pra você</div>
+      </div>
     </div>
-    <span class="edition-badge" id="editionBadge">Edição Diária</span>
+
+```
+<div class="header-right">
+  <div class="live-dot"><span class="dot"></span>AO VIVO</div>
+  <div class="date-display" id="dateDisplay">—</div>
+</div>
+```
+
   </div>
-  <div class="ticker-wrap">
-    <span class="ticker-label">AO VIVO</span>
-    <div class="ticker-track" id="tickerTrack">
-      <span>Carregando manchetes...</span><span>Carregando manchetes...</span>
+
+  <!-- Ticker -->
+
+  <div class="ticker">
+    <div class="ticker-label">DESTAQUES</div>
+    <div class="ticker-scroll">
+      <div class="ticker-inner" id="tickerInner">
+        <span>Carregando manchetes...</span><span>Carregando manchetes...</span>
+      </div>
     </div>
   </div>
 </header>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay">
+
+<div class="modal-bg" id="modalBg">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal()">✕ FECHAR</button>
-    <div class="modal-tag" id="modalTag"></div>
-    <h2 id="modalTitle"></h2>
-    <div class="modal-meta" id="modalMeta"></div>
-    <div class="modal-body" id="modalBody"></div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-tag" id="mTag"></div>
+    <h2 id="mTitle"></h2>
+    <div class="modal-meta" id="mMeta"></div>
+    <div class="modal-body" id="mBody"></div>
   </div>
 </div>
 
 <main>
 
-  <!-- EDITION BANNER -->
-  <div class="edition-banner" id="editionBanner">
-    <h2 id="bannerTitle"></h2>
-    <p id="bannerSub"></p>
-  </div>
+  <!-- CONTROLS -->
 
-  <!-- DATE SECTION -->
-  <div class="date-section">
-    <h2 id="sectionDate">Hoje</h2>
-    <div class="edition-info">
-      <span class="auto-indicator"><span class="auto-dot"></span>AUTO</span>
-      &nbsp;Gerado por IA · Fontes abertas
+  <div class="controls">
+    <div class="controls-row">
+      <input class="ctrl-input" id="topicInput" type="text"
+        placeholder="🔍 Digite um tema: ex. tecnologia, IA, futebol, saúde..."
+        onkeydown="if(event.key==='Enter')genCustom()">
+      <button class="btn btn-green" id="btnCustom" onclick="genCustom()">⚡ GERAR NOTÍCIA</button>
+      <button class="btn btn-dark" id="btnDaily" onclick="genDaily(true)">🔄 EDIÇÃO DIÁRIA</button>
     </div>
+    <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="status-bar" id="statusBar">Pronto.</div>
   </div>
 
-  <!-- GENERATE SECTION -->
-  <div class="generate-section">
-    <span class="gen-label">GERAR NOTÍCIA PERSONALIZADA</span>
-    <div class="gen-row">
-      <input class="gen-input" id="customTopic" type="text"
-             placeholder="Ex: inteligência artificial, clima, futebol, tecnologia..."
-             onkeydown="if(event.key==='Enter')generateCustom()">
-      <button class="gen-btn" id="genBtn" onclick="generateCustom()">▶ GERAR NOTÍCIA</button>
-      <button class="gen-btn" id="autoBtn" onclick="generateDailyNews(true)"
-              style="background:var(--accent)">⟳ EDIÇÃO DIÁRIA</button>
-    </div>
-    <div class="gen-status" id="genStatus"></div>
+  <!-- MANCHETES -->
+
+  <div class="section-title">
+    <h2>Manchetes</h2>
+    <span class="pill">HOJE</span>
+    <span class="count-badge" id="countBadge">0 notícias</span>
   </div>
 
-  <!-- NEWS GRID -->
-  <div class="section-rule">
-    MANCHETES DE HOJE <span class="pill">PRINCIPAL</span>
-  </div>
+  <!-- FEATURED + SIDE -->
 
-  <div class="news-grid">
-    <div class="col-main" id="mainCol">
-      <div class="loading-placeholder">
-        <div class="skeleton" style="height:14px;width:60%"></div>
-        <div class="skeleton" style="height:32px;width:90%"></div>
-        <div class="skeleton" style="height:32px;width:75%"></div>
-        <div class="skeleton" style="height:12px;width:85%;margin-top:4px"></div>
-        <div class="skeleton" style="height:12px;width:70%"></div>
+  <div class="news-grid" id="mainGrid">
+    <div id="featuredSlot">
+      <div class="card featured">
+        <div style="display:flex;flex-direction:column;gap:0.5rem">
+          <div class="skel" style="height:14px;width:60px"></div>
+          <div class="skel" style="height:28px;width:90%"></div>
+          <div class="skel" style="height:28px;width:70%"></div>
+          <div class="skel" style="height:12px;width:85%;margin-top:8px"></div>
+          <div class="skel" style="height:12px;width:75%"></div>
+        </div>
       </div>
     </div>
-    <div class="col-side" id="sideCol">
-      <div class="loading-placeholder">
-        <div class="skeleton" style="height:80px"></div>
-        <div class="skeleton" style="height:80px;margin-top:8px"></div>
-        <div class="skeleton" style="height:80px;margin-top:8px"></div>
+    <div id="sideSlot">
+      <div style="display:flex;flex-direction:column;gap:0.8rem">
+        <div class="skel" style="height:90px;border-radius:12px"></div>
+        <div class="skel" style="height:90px;border-radius:12px"></div>
+        <div class="skel" style="height:90px;border-radius:12px"></div>
       </div>
     </div>
   </div>
 
-  <div class="section-rule">
-    MAIS NOTÍCIAS <span class="pill">GERAL</span>
+  <!-- MAIS NOTÍCIAS -->
+
+  <div class="section-title" id="moreSectionTitle" style="display:none">
+    <h2>Mais Notícias</h2><span class="pill">GERAL</span>
   </div>
-  <div id="moreCol" class="news-grid" style="grid-template-columns:1fr 1fr;gap:0">
-    <div class="col-main loading-placeholder" style="border-right:1px solid #ccc">
-      <div class="skeleton" style="height:70px"></div>
-      <div class="skeleton" style="height:70px;margin-top:8px"></div>
-    </div>
-    <div class="col-side loading-placeholder">
-      <div class="skeleton" style="height:70px"></div>
-      <div class="skeleton" style="height:70px;margin-top:8px"></div>
-    </div>
-  </div>
+  <div class="news-grid-3" id="moreGrid"></div>
 
 </main>
 
 <footer>
-  <strong>VCtv AInews</strong> · Gerado automaticamente por Inteligência Artificial ·
-  Conteúdo informativo com base em tendências e fontes abertas ·
-  Notícias publicadas diariamente, edições especiais nos fins de semana e eventos notáveis
+  <strong>VCtv AInews</strong> · O jornal feito por VC, pra você ·
+  Gerado automaticamente por Inteligência Artificial · Conteúdo baseado em fontes abertas
 </footer>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-//  VCtv AInews — Motor de Notícias com Pollinations AI
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  VCtv AInews — Motor IA via Pollinations (sem erros)
+// ════════════════════════════════════════════════════════════
 
-const POLLINATIONS_API = 'https://text.pollinations.ai/';
-const STORAGE_KEY = 'vctv_ainews_v2';
-const ONE_DAY = 24 * 60 * 60 * 1000;
-
-// Tópicos de notícias gerais
-const NEWS_TOPICS = [
-  'inteligência artificial e tecnologia 2025',
-  'mudanças climáticas e meio ambiente',
-  'economia global e mercados financeiros',
-  'política internacional e diplomacia',
-  'ciência e descobertas científicas',
-  'saúde e medicina moderna',
-  'espaço e exploração espacial',
-  'cultura pop e entretenimento',
-  'inovações em energias renováveis',
-  'direitos humanos e sociedade',
+const STORAGE_KEY = 'vctv_ainews_v3';
+const TOPICS = [
+  'inteligência artificial e inovação tecnológica',
+  'mudanças climáticas e sustentabilidade ambiental',
+  'economia global e mercados financeiros em 2025',
+  'política internacional e relações diplomáticas',
+  'descobertas científicas e pesquisa moderna',
+  'saúde pública e avanços na medicina',
+  'exploração espacial e astronomia',
   'cibersegurança e privacidade digital',
+  'energias renováveis e transição energética',
+  'cultura digital e redes sociais',
   'startups e empreendedorismo',
-  'geopolítica e conflitos globais',
-  'educação e futuro do trabalho',
-  'esportes e competições internacionais'
+  'educação e futuro do trabalho'
 ];
 
-const TAGS = ['MUNDO', 'TECH', 'CIÊNCIA', 'POLÍTICA', 'ECONOMIA', 'SAÚDE', 'CULTURA', 'ESPORTE', 'INOVAÇÃO', 'CLIMA'];
+let db = [];
 
-let articlesDB = [];
+// ── Persistência ──
+function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); } catch(e){} }
+function load() { try { const r = localStorage.getItem(STORAGE_KEY); if(r) db = JSON.parse(r); } catch(e){ db=[]; } }
+function todayKey() { return new Date().toISOString().split('T')[0]; }
 
-// ── PERSISTÊNCIA ──────────────────────────────────────────────
-function saveDB() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(articlesDB)); } catch(e){}
+// ── Status UI ──
+function setStatus(msg, type='') {
+  const el = document.getElementById('statusBar');
+  el.className = 'status-bar ' + type;
+  el.innerHTML = msg;
 }
 
-function loadDB() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) articlesDB = JSON.parse(raw);
-  } catch(e) { articlesDB = []; }
+function setProgress(pct) {
+  const w = document.getElementById('progressWrap');
+  const b = document.getElementById('progressBar');
+  if(pct <= 0) { w.classList.remove('show'); b.style.width='0%'; return; }
+  w.classList.add('show');
+  b.style.width = Math.min(100,pct) + '%';
 }
 
-// ── DATA E TIPO DE EDIÇÃO ─────────────────────────────────────
-function getTodayKey() {
-  return new Date().toISOString().split('T')[0];
+function lockBtns(v) {
+  document.getElementById('btnCustom').disabled = v;
+  document.getElementById('btnDaily').disabled = v;
 }
 
-function getEditionType() {
-  const d = new Date();
-  const dow = d.getDay(); // 0=Dom, 6=Sab
-  const month = d.getMonth();
-  const day = d.getDate();
-  // Eventos especiais (datas notáveis)
-  const specials = {
-    '01-01': 'Ano Novo',
-    '12-25': 'Natal',
-    '04-22': 'Dia da Terra',
-    '05-01': 'Dia do Trabalhador',
-    '11-15': 'Proclamação da República',
-    '09-07': 'Independência do Brasil',
-  };
-  const key = `${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-  if (specials[key]) return { type: 'special', label: specials[key] };
-  if (dow === 0 || dow === 6) return { type: 'weekend', label: 'Fim de Semana' };
-  return { type: 'daily', label: 'Diária' };
+// ── Chamar Pollinations com retry ──
+async function askAI(prompt, retries=3) {
+  const encoded = encodeURIComponent(prompt);
+  const seed = Math.floor(Math.random()*99999);
+  const url = `https://text.pollinations.ai/${encoded}?seed=${seed}&model=openai-large`;
+  
+  for(let i=0; i<retries; i++) {
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 25000); // 25s timeout
+      const res = await fetch(url, { signal: ctrl.signal });
+      clearTimeout(timer);
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      const text = await res.text();
+      if(text && text.trim().length > 20) return text.trim();
+      throw new Error('Resposta vazia');
+    } catch(e) {
+      if(i < retries-1) await sleep(1500 * (i+1));
+      else throw e;
+    }
+  }
 }
 
-// ── POLLINATIONS AI TEXT ──────────────────────────────────────
-async function askAI(prompt, seed) {
-  const encodedPrompt = encodeURIComponent(prompt);
-  const seedParam = seed ? `?seed=${seed}` : `?seed=${Math.floor(Math.random()*99999)}`;
-  const url = `${POLLINATIONS_API}${encodedPrompt}${seedParam}&model=openai&json=false`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return await res.text();
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── Gerar artigo (prompt rápido e direto) ──
+async function genArticle(topic, big=false) {
+  const paras = big ? 4 : 2;
+  const prompt = `Jornalista VCtv NEWS. Escreva em português brasileiro sobre: "${topic}".
+Formato EXATO (sem markdown):
+TITULO: [máx 10 palavras]
+TAG: [só 1: MUNDO|TECH|CIÊNCIA|POLÍTICA|ECONOMIA|SAÚDE|CULTURA|ESPORTE|INOVAÇÃO|CLIMA]
+RESUMO: [1 frase, máx 18 palavras]
+CORPO: [${paras} parágrafos separados por linha em branco]`;
+
+  const raw = await askAI(prompt);
+  return parseArt(raw, topic);
 }
 
-async function generateArticle(topic, editionType = 'daily', isMain = false) {
-  const sizeInstruction = isMain
-    ? 'Escreva um artigo completo com 4 parágrafos substanciais (cada parágrafo com pelo menos 3 frases).'
-    : 'Escreva um artigo com 2 parágrafos (cada um com 2-3 frases).';
-
-  const editionCtx = editionType === 'weekend'
-    ? 'Esta é uma EDIÇÃO DE FIM DE SEMANA — faça uma análise mais profunda e reflexiva.'
-    : editionType === 'special'
-    ? 'Esta é uma EDIÇÃO ESPECIAL — dê ênfase histórica e importância ao tema.'
-    : 'Esta é uma edição diária — seja informativo e direto.';
-
-  const prompt = `Você é um jornalista profissional do VCtv AInews. ${editionCtx}
-Escreva uma notícia jornalística em PORTUGUÊS BRASILEIRO sobre: "${topic}".
-${sizeInstruction}
-Formato exato (sem markdown, sem asteriscos):
-TITULO: [título impactante e informativo, máximo 12 palavras]
-TAG: [uma palavra em maiúsculas: MUNDO, TECH, CIÊNCIA, POLÍTICA, ECONOMIA, SAÚDE, CULTURA, ESPORTE, INOVAÇÃO ou CLIMA]
-RESUMO: [uma frase de resumo, máximo 20 palavras]
-CORPO: [parágrafos separados por duas quebras de linha]
-Escreva apenas o conteúdo, sem comentários extras.`;
-
-  const raw = await askAI(prompt, Date.now() + topic.length);
-  return parseArticle(raw, topic);
-}
-
-function parseArticle(raw, fallbackTopic) {
+function parseArt(raw, topic) {
+  let title='', tag='MUNDO', summary='', body=[];
   const lines = raw.split('\n');
-  let title = '', tag = 'MUNDO', summary = '', bodyLines = [];
-  let inBody = false;
+  let bodyLines=[], inBody=false;
 
-  for (const line of lines) {
-    const l = line.trim();
-    if (l.startsWith('TITULO:')) { title = l.replace('TITULO:', '').trim(); continue; }
-    if (l.startsWith('TAG:')) { tag = l.replace('TAG:', '').trim().toUpperCase(); continue; }
-    if (l.startsWith('RESUMO:')) { summary = l.replace('RESUMO:', '').trim(); continue; }
-    if (l.startsWith('CORPO:')) { inBody = true; bodyLines.push(l.replace('CORPO:', '').trim()); continue; }
-    if (inBody && l) bodyLines.push(l);
+  for(const l of lines) {
+    const t = l.trim();
+    if(t.startsWith('TITULO:')) { title = t.slice(7).trim().replace(/\*\*/g,''); continue; }
+    if(t.startsWith('TAG:')) { tag = t.slice(4).trim().toUpperCase().replace(/\*\*/g,''); continue; }
+    if(t.startsWith('RESUMO:')) { summary = t.slice(7).trim().replace(/\*\*/g,''); continue; }
+    if(t.startsWith('CORPO:')) { inBody=true; const r=t.slice(6).trim(); if(r) bodyLines.push(r); continue; }
+    if(inBody) bodyLines.push(t);
   }
 
-  // Fallbacks se o parse falhou
-  if (!title) {
-    const firstBold = raw.match(/\*\*(.*?)\*\*/);
-    title = firstBold ? firstBold[1] : `Notícia sobre ${fallbackTopic}`;
+  // Fallbacks
+  if(!title) title = raw.split('\n')[0].replace(/\*\*/g,'').slice(0,80) || `Notícia: ${topic}`;
+  if(!summary) summary = raw.replace(/TITULO:.*|TAG:.*|RESUMO:.*|CORPO:/g,'').trim().slice(0,120).replace(/\*\*/g,'') + '…';
+  
+  const validTags = ['MUNDO','TECH','CIÊNCIA','POLÍTICA','ECONOMIA','SAÚDE','CULTURA','ESPORTE','INOVAÇÃO','CLIMA'];
+  if(!validTags.includes(tag)) {
+    const found = validTags.find(t => raw.toUpperCase().includes(t));
+    tag = found || validTags[Math.floor(Math.random()*validTags.length)];
   }
-  if (!summary) summary = raw.slice(0, 120).replace(/\*\*/g, '') + '...';
-  const bodyText = bodyLines.filter(Boolean).join('\n\n') || raw.replace(/TITULO:.*|TAG:.*|RESUMO:.*|CORPO:/g, '').trim();
 
-  if (!TAGS.includes(tag)) tag = TAGS[Math.floor(Math.random() * TAGS.length)];
+  const bodyText = bodyLines.filter(Boolean).join('\n\n');
+  body = (bodyText || raw.replace(/TITULO:.*|TAG:.*|RESUMO:.*|CORPO:/g,'')).trim()
+    .replace(/\*\*/g,'').split(/\n{2,}/).map(p=>p.trim()).filter(Boolean);
 
   return {
     id: Date.now() + Math.random(),
-    title: title.replace(/\*\*/g, ''),
-    tag,
-    summary: summary.replace(/\*\*/g, ''),
-    body: bodyText.replace(/\*\*/g, '').split('\n\n').filter(Boolean),
-    topic: fallbackTopic,
+    title, tag, summary, body, topic,
     date: new Date().toISOString(),
-    dateKey: getTodayKey()
+    dateKey: todayKey()
   };
 }
 
-// ── GERAÇÃO AUTOMÁTICA DIÁRIA ─────────────────────────────────
-async function generateDailyNews(force = false) {
-  const today = getTodayKey();
-  const edition = getEditionType();
+// ── Gerar edição diária ──
+async function genDaily(force=false) {
+  const today = todayKey();
+  const existing = db.filter(a => a.dateKey === today);
+  if(!force && existing.length >= 4) { render(); return; }
 
-  // Verifica se já gerou hoje
-  const todayArticles = articlesDB.filter(a => a.dateKey === today);
-  if (!force && todayArticles.length >= 5) {
-    renderArticles();
-    return;
-  }
+  lockBtns(true);
+  setProgress(5);
 
-  const genBtn = document.getElementById('autoBtn');
-  const status = document.getElementById('genStatus');
-  genBtn.disabled = true;
-  status.textContent = '⏳ Gerando edição do dia...';
+  const count = 5;
+  const topics = [...TOPICS].sort(()=>Math.random()-0.5).slice(0, count);
 
-  // Determina quantas notícias gerar por tipo de edição
-  const count = edition.type === 'weekend' ? 8 : edition.type === 'special' ? 6 : 5;
-  const shuffled = [...NEWS_TOPICS].sort(() => Math.random() - 0.5).slice(0, count);
+  if(force) db = db.filter(a => a.dateKey !== today);
 
-  // Remove artigos antigos do dia se forçando
-  if (force) {
-    articlesDB = articlesDB.filter(a => a.dateKey !== today);
-  }
-
-  for (let i = 0; i < shuffled.length; i++) {
-    status.textContent = `⏳ Gerando notícia ${i+1} de ${count}...`;
+  for(let i=0; i<count; i++) {
+    setStatus(`<span class="spin">⟳</span> Gerando notícia ${i+1} de ${count}…`, 'loading');
+    setProgress(5 + (i/count)*90);
     try {
-      const isMain = i === 0;
-      const article = await generateArticle(shuffled[i], edition.type, isMain);
-      article.editionType = edition.type;
-      articlesDB.unshift(article);
-      saveDB();
-      if (i === 0) renderArticles(); // Mostra logo a primeira
+      const art = await genArticle(topics[i], i===0);
+      db.unshift(art);
+      save();
+      if(i===0) render();
     } catch(e) {
-      console.warn('Erro ao gerar artigo:', e);
+      console.warn('Erro notícia',i,e.message);
+      // Continua mesmo com erro
     }
-    // Pausa entre requisições para não sobrecarregar
-    await new Promise(r => setTimeout(r, 800));
+    if(i < count-1) await sleep(600);
   }
 
-  status.textContent = `✓ Edição ${edition.label} publicada com ${count} notícias.`;
-  genBtn.disabled = false;
-  renderArticles();
+  setProgress(100);
+  setTimeout(()=>setProgress(0), 800);
+  const ok = db.filter(a=>a.dateKey===today).length;
+  setStatus(`✓ Edição publicada com ${ok} notícias!`, 'ok');
+  lockBtns(false);
+  render();
   updateTicker();
 }
 
-// ── NOTÍCIA PERSONALIZADA ─────────────────────────────────────
-async function generateCustom() {
-  const input = document.getElementById('customTopic');
-  const btn = document.getElementById('genBtn');
-  const status = document.getElementById('genStatus');
+// ── Gerar notícia personalizada ──
+async function genCustom() {
+  const input = document.getElementById('topicInput');
   const topic = input.value.trim();
+  if(!topic) { setStatus('⚠ Digite um tema primeiro.','error'); return; }
 
-  if (!topic) {
-    status.textContent = '⚠ Digite um tema para gerar a notícia.';
-    return;
-  }
-
-  btn.disabled = true;
-  status.textContent = `⏳ Gerando notícia sobre "${topic}"...`;
+  lockBtns(true);
+  setProgress(20);
+  setStatus(`<span class="spin">⟳</span> Gerando notícia sobre "${topic}"…`, 'loading');
 
   try {
-    const article = await generateArticle(topic, 'daily', true);
-    article.editionType = 'custom';
-    article.custom = true;
-    articlesDB.unshift(article);
-    saveDB();
-    renderArticles();
-    updateTicker();
-    status.textContent = `✓ Notícia sobre "${topic}" publicada!`;
+    setProgress(60);
+    const art = await genArticle(topic, true);
+    art.custom = true;
+    db.unshift(art);
+    save();
+    setProgress(100);
+    setTimeout(()=>setProgress(0),600);
+    setStatus(`✓ Notícia publicada: "${art.title}"`, 'ok');
     input.value = '';
-    openModal(article);
+    render();
+    updateTicker();
+    openModal(art); // Abre automaticamente!
   } catch(e) {
-    status.textContent = `✗ Erro ao gerar notícia. Tente novamente.`;
-    console.error(e);
+    setProgress(0);
+    setStatus('✗ Falha ao gerar. Verifique sua conexão e tente novamente.','error');
   }
 
-  btn.disabled = false;
+  lockBtns(false);
 }
 
-// ── RENDER ────────────────────────────────────────────────────
-function renderArticles() {
-  const today = getTodayKey();
-  const todayArticles = articlesDB.filter(a => a.dateKey === today);
+// ── Render ──
+function render() {
+  const today = todayKey();
+  const arts = db.filter(a => a.dateKey === today);
 
-  if (todayArticles.length === 0) {
-    document.getElementById('mainCol').innerHTML = `
-      <div class="empty-state">
-        <h3>Nenhuma notícia ainda</h3>
-        <p>Clique em "EDIÇÃO DIÁRIA" para gerar as notícias de hoje.</p>
+  document.getElementById('countBadge').textContent = arts.length + ' notícias';
+
+  if(arts.length === 0) {
+    document.getElementById('featuredSlot').innerHTML = `
+      <div class="card featured">
+        <div class="empty">
+          <div class="icon">📰</div>
+          <h3>Nenhuma notícia ainda</h3>
+          <p>Clique em "EDIÇÃO DIÁRIA" para gerar as notícias de hoje.</p>
+        </div>
       </div>`;
-    document.getElementById('sideCol').innerHTML = '';
-    document.getElementById('moreCol').innerHTML = '';
+    document.getElementById('sideSlot').innerHTML = '';
+    document.getElementById('moreGrid').innerHTML = '';
+    document.getElementById('moreSectionTitle').style.display='none';
     return;
   }
 
-  const main = todayArticles[0];
-  const side = todayArticles.slice(1, 4);
-  const more = todayArticles.slice(4);
+  // Featured
+  document.getElementById('featuredSlot').innerHTML = cardHTML(arts[0], true);
 
-  // Coluna principal
-  document.getElementById('mainCol').innerHTML = buildMainArticle(main, true);
+  // Side (2-4)
+  const side = arts.slice(1,4);
+  document.getElementById('sideSlot').innerHTML =
+    `<div style="display:flex;flex-direction:column;gap:0.8rem">
+      ${side.map(a => cardSmallHTML(a)).join('')}
+     </div>`;
 
-  // Coluna lateral
-  document.getElementById('sideCol').innerHTML = `
-    <div class="news-list-small">
-      ${side.map(a => buildSideArticle(a)).join('')}
-    </div>`;
-
-  // Mais notícias
-  if (more.length > 0) {
-    const half = Math.ceil(more.length / 2);
-    document.getElementById('moreCol').innerHTML = `
-      <div class="col-main" style="border-right:1px solid #ccc">
-        ${more.slice(0, half).map(a => buildMainArticle(a, false)).join('')}
-      </div>
-      <div class="col-side">
-        ${more.slice(half).map(a => buildSideArticle(a)).join('')}
-      </div>`;
+  // More (5+)
+  const more = arts.slice(4);
+  if(more.length) {
+    document.getElementById('moreSectionTitle').style.display='flex';
+    document.getElementById('moreGrid').innerHTML = more.map(a => cardHTML(a, false)).join('');
   } else {
-    document.getElementById('moreCol').innerHTML = '';
+    document.getElementById('moreSectionTitle').style.display='none';
+    document.getElementById('moreGrid').innerHTML='';
   }
-
-  // Atualiza edição banner
-  updateEditionBanner();
 }
 
-function buildMainArticle(a, isBig) {
-  const id = CSS.escape ? CSS.escape(a.id) : a.id;
-  return `
-    <div class="article-main ${isBig ? 'big' : ''}" onclick="openArticleById(${JSON.stringify(a.id)})">
-      <div class="article-tag">${a.tag}</div>
-      <h3>${escHtml(a.title)}</h3>
-      <p class="lead">${escHtml(a.summary)}</p>
-      <div class="article-meta">${formatDate(a.date)} · VCtv AInews IA</div>
-    </div>`;
+function cardHTML(a, big) {
+  return `<div class="card ${big?'featured':''}" onclick="openById(${JSON.stringify(a.id)})">
+    <span class="card-tag">${esc(a.tag)}</span>
+    <h3>${esc(a.title)}</h3>
+    <p>${esc(a.summary)}</p>
+    <div class="card-meta">${fmtDate(a.date)} · VCtv AInews</div>
+  </div>`;
 }
 
-function buildSideArticle(a) {
-  return `
-    <div class="article-small" onclick="openArticleById(${JSON.stringify(a.id)})">
-      <div class="article-tag">${a.tag}</div>
-      <h4>${escHtml(a.title)}</h4>
-      <div class="article-meta">${formatDate(a.date)}</div>
-    </div>`;
+function cardSmallHTML(a) {
+  return `<div class="card card-small" onclick="openById(${JSON.stringify(a.id)})">
+    <span class="card-tag">${esc(a.tag)}</span>
+    <h4>${esc(a.title)}</h4>
+    <div class="card-meta">${fmtDate(a.date)}</div>
+  </div>`;
 }
 
-// ── MODAL ─────────────────────────────────────────────────────
-function openArticleById(id) {
-  const article = articlesDB.find(a => a.id == id);
-  if (article) openModal(article);
+// ── Modal ──
+function openById(id) {
+  const a = db.find(x => x.id == id);
+  if(a) openModal(a);
 }
 
-function openModal(article) {
-  document.getElementById('modalTag').textContent = article.tag;
-  document.getElementById('modalTitle').textContent = article.title;
-  document.getElementById('modalMeta').textContent =
-    `${formatDate(article.date)} · VCtv AInews · Gerado por IA`;
-  document.getElementById('modalBody').innerHTML =
-    article.body.map(p => `<p>${escHtml(p)}</p>`).join('');
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+function openModal(a) {
+  document.getElementById('mTag').textContent = a.tag;
+  document.getElementById('mTitle').textContent = a.title;
+  document.getElementById('mMeta').innerHTML =
+    `<span style="color:var(--green)">●</span> ${fmtDate(a.date)} &nbsp;·&nbsp; VCtv AInews &nbsp;·&nbsp; Gerado por IA`;
+  document.getElementById('mBody').innerHTML =
+    a.body.map(p=>`<p>${esc(p)}</p>`).join('');
+  document.getElementById('modalBg').classList.add('open');
+  document.body.style.overflow='hidden';
 }
 
 function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow = '';
+  document.getElementById('modalBg').classList.remove('open');
+  document.body.style.overflow='';
 }
+document.getElementById('modalBg').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
 
-document.getElementById('modalOverlay').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-// ── TICKER ────────────────────────────────────────────────────
+// ── Ticker ──
 function updateTicker() {
-  const today = getTodayKey();
-  const articles = articlesDB.filter(a => a.dateKey === today);
-  if (articles.length === 0) return;
-
-  const headlines = articles.map(a => a.title);
-  // Duplica para loop contínuo
-  const items = [...headlines, ...headlines]
-    .map(h => `<span>${escHtml(h)}</span>`).join('');
-
-  document.getElementById('tickerTrack').innerHTML = items;
+  const arts = db.filter(a => a.dateKey === todayKey());
+  if(!arts.length) return;
+  const items = [...arts,...arts].map(a=>`<span>${esc(a.title)}</span>`).join('');
+  document.getElementById('tickerInner').innerHTML = items;
 }
 
-// ── EDIÇÃO BANNER ─────────────────────────────────────────────
-function updateEditionBanner() {
-  const edition = getEditionType();
-  const banner = document.getElementById('editionBanner');
-  const badge = document.getElementById('editionBadge');
-
-  if (edition.type === 'weekend') {
-    banner.classList.add('show');
-    document.getElementById('bannerTitle').textContent = '📰 Grande Edição de Fim de Semana';
-    document.getElementById('bannerSub').textContent =
-      'Análises aprofundadas, reportagens especiais e as histórias mais importantes da semana.';
-    badge.textContent = 'Edição Weekend';
-    badge.classList.add('show');
-  } else if (edition.type === 'special') {
-    banner.classList.add('show');
-    document.getElementById('bannerTitle').textContent = `🌟 Edição Especial — ${edition.label}`;
-    document.getElementById('bannerSub').textContent =
-      'Uma edição comemorativa com cobertura especial desta data histórica.';
-    badge.textContent = 'Edição Especial';
-    badge.classList.add('show');
-  } else {
-    banner.classList.remove('show');
-    badge.textContent = 'Edição Diária';
-    badge.classList.add('show');
-  }
+// ── Utils ──
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function fmtDate(iso) {
+  return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+}
+function updateDate() {
+  document.getElementById('dateDisplay').textContent =
+    new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short',year:'numeric'}).toUpperCase();
 }
 
-// ── HEADER DATE ───────────────────────────────────────────────
-function updateDateDisplay() {
-  const now = new Date();
-  const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  const dateStr = now.toLocaleDateString('pt-BR', opts);
-  document.getElementById('dateDisplay').textContent = dateStr.toUpperCase();
-  document.getElementById('sectionDate').textContent =
-    now.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-}
+// ── INIT ──
+(async function() {
+  updateDate();
+  load();
+  const today = todayKey();
+  const existing = db.filter(a=>a.dateKey===today);
 
-// ── AUTO-REFRESH DIÁRIO ───────────────────────────────────────
-function scheduleNextDay() {
-  const now = new Date();
-  const tomorrow = new Date(now);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  tomorrow.setHours(7, 0, 0, 0); // 7h da manhã
-  const ms = tomorrow - now;
-  setTimeout(() => {
-    generateDailyNews(false);
-    scheduleNextDay();
-  }, ms);
-}
-
-// ── UTILS ─────────────────────────────────────────────────────
-function escHtml(s) {
-  return String(s)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
-}
-
-function formatDate(iso) {
-  const d = new Date(iso);
-  return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric',
-    hour:'2-digit', minute:'2-digit' });
-}
-
-// ── INIT ──────────────────────────────────────────────────────
-(async function init() {
-  updateDateDisplay();
-  loadDB();
-
-  const today = getTodayKey();
-  const todayArticles = articlesDB.filter(a => a.dateKey === today);
-
-  if (todayArticles.length > 0) {
-    // Já tem artigos de hoje — mostra imediatamente
-    renderArticles();
+  if(existing.length > 0) {
+    render();
     updateTicker();
-    updateEditionBanner();
+    setStatus(`✓ ${existing.length} notícias carregadas de hoje.`, 'ok');
   }
 
-  // Gera se não tem artigos ou se é início do dia (menos de 5)
-  if (todayArticles.length < 3) {
-    await generateDailyNews(false);
+  if(existing.length < 3) {
+    await genDaily(false);
   }
-
-  scheduleNextDay();
 })();
 </script>
+
 </body>
 </html>
