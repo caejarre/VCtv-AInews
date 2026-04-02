@@ -1,1 +1,1080 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VCtv AInews — Notícias do Futuro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f0e8;
+    --red: #c0392b;
+    --gold: #b8860b;
+    --muted: #5a5a5a;
+    --rule: #1a1a1a;
+    --accent: #1a3a5c;
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', serif;
+    min-height: 100vh;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    border-bottom: 4px double var(--ink);
+    padding: 0.5rem 2rem 0;
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .masthead-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .masthead-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .edition-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    background: var(--red);
+    color: #fff;
+    padding: 0.2rem 0.5rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: none;
+  }
+  .edition-badge.show { display: inline-block; }
+
+  .logo {
+    text-align: center;
+    line-height: 1;
+  }
+
+  .logo-main {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    display: block;
+  }
+
+  .logo-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .logo-sub span {
+    color: var(--red);
+    font-weight: 500;
+  }
+
+  /* ── NAV TICKER ── */
+  .ticker-wrap {
+    background: var(--ink);
+    color: var(--paper);
+    overflow: hidden;
+    padding: 0.3rem 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .ticker-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    background: var(--red);
+    color: #fff;
+    padding: 0.2rem 0.6rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: 0.08em;
+  }
+
+  .ticker-track {
+    display: flex;
+    animation: ticker 40s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-track span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0 2rem;
+    color: #ccc;
+  }
+
+  .ticker-track span::before {
+    content: '◆ ';
+    color: var(--gold);
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── LAYOUT ── */
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem;
+  }
+
+  /* ── DATE SECTION ── */
+  .date-section {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .date-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  .date-section .edition-info {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+
+  /* ── GENERATE FORM ── */
+  .generate-section {
+    border: 2px solid var(--ink);
+    padding: 1.2rem;
+    margin-bottom: 2rem;
+    background: #fff;
+    position: relative;
+  }
+
+  .generate-section::before {
+    content: 'REDAÇÃO';
+    position: absolute;
+    top: -0.7rem;
+    left: 1rem;
+    background: #fff;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    padding: 0 0.4rem;
+    color: var(--muted);
+  }
+
+  .gen-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: var(--muted);
+  }
+
+  .gen-row {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .gen-input {
+    flex: 1;
+    min-width: 200px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.7rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .gen-input:focus { border-color: var(--red); }
+
+  .gen-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .gen-btn:hover { background: var(--red); }
+  .gen-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .gen-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    min-height: 1em;
+  }
+
+  /* ── NEWS GRID ── */
+  .section-rule {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 0.3rem 0;
+    margin: 1.5rem 0 1rem;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .section-rule .pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    background: var(--red);
+    color: #fff;
+    padding: 0.15rem 0.5rem;
+    letter-spacing: 0.12em;
+  }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0;
+    border-left: 1px solid #ccc;
+  }
+
+  .news-grid .col-main {
+    padding: 0 1.5rem 0 1.5rem;
+    border-right: 1px solid #ccc;
+  }
+
+  .news-grid .col-side {
+    padding: 0 0 0 1.5rem;
+  }
+
+  .news-list-small {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── ARTICLE CARDS ── */
+  .article-main {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .article-main:hover { opacity: 0.8; }
+
+  .article-main:last-child { border-bottom: none; }
+
+  .article-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.3rem;
+  }
+
+  .article-main h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+    color: var(--ink);
+  }
+
+  .article-main.big h3 {
+    font-size: 2rem;
+  }
+
+  .article-main p.lead {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .article-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    color: #999;
+    margin-top: 0.4rem;
+  }
+
+  /* Small side articles */
+  .article-small {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .article-small:hover { opacity: 0.7; }
+  .article-small:last-child { border-bottom: none; }
+
+  .article-small .article-tag { margin-bottom: 0.2rem; }
+
+  .article-small h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  .article-small .article-meta { margin-top: 0.2rem; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 2rem 1rem;
+  }
+
+  .modal-overlay.open { display: flex; justify-content: center; }
+
+  .modal {
+    background: var(--paper);
+    max-width: 720px;
+    width: 100%;
+    padding: 2rem;
+    position: relative;
+    animation: slideUp 0.3s ease;
+    align-self: flex-start;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none; border: none;
+    font-size: 1.2rem; cursor: pointer;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .modal-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 0.8rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 0.8rem;
+  }
+
+  .modal-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+
+  .modal-body {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #222;
+  }
+
+  .modal-body p { margin-bottom: 1rem; }
+
+  /* ── LOADING STATE ── */
+  .loading-placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 0;
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, #e0d9cc 25%, #ece5d8 50%, #e0d9cc 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 2px;
+  }
+
+  @keyframes shimmer {
+    from { background-position: 200% 0; }
+    to   { background-position: -200% 0; }
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+  }
+
+  .empty-state h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state p {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 3px double var(--ink);
+    text-align: center;
+    padding: 1.5rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-top: 3rem;
+  }
+
+  footer strong { color: var(--red); }
+
+  /* ── WEEKEND / SPECIAL BANNER ── */
+  .edition-banner {
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+    padding: 0.8rem;
+    margin-bottom: 1.5rem;
+    display: none;
+  }
+
+  .edition-banner.show { display: block; }
+
+  .edition-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+  }
+
+  .edition-banner p {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: #aaa;
+    margin-top: 0.2rem;
+  }
+
+  /* ── AUTO BADGE ── */
+  .auto-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    color: #fff;
+    background: var(--accent);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+
+  .auto-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #4dff91;
+    animation: blink 1.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.2; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+    .news-grid .col-main {
+      padding: 0;
+      border-right: none;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 1rem;
+    }
+    .news-grid .col-side { padding: 0; }
+    .masthead { padding: 0.5rem 1rem 0; }
+    main { padding: 1rem; }
+    .logo-main { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-top">
+    <span class="masthead-meta" id="dateDisplay">Carregando...</span>
+    <div class="logo">
+      <span class="logo-main">VCtv AInews</span>
+      <span class="logo-sub">Inteligência Artificial · <span>Notícias do Mundo</span> · Automático</span>
+    </div>
+    <span class="edition-badge" id="editionBadge">Edição Diária</span>
+  </div>
+  <div class="ticker-wrap">
+    <span class="ticker-label">AO VIVO</span>
+    <div class="ticker-track" id="tickerTrack">
+      <span>Carregando manchetes...</span><span>Carregando manchetes...</span>
+    </div>
+  </div>
+</header>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕ FECHAR</button>
+    <div class="modal-tag" id="modalTag"></div>
+    <h2 id="modalTitle"></h2>
+    <div class="modal-meta" id="modalMeta"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<main>
+
+  <!-- EDITION BANNER -->
+  <div class="edition-banner" id="editionBanner">
+    <h2 id="bannerTitle"></h2>
+    <p id="bannerSub"></p>
+  </div>
+
+  <!-- DATE SECTION -->
+  <div class="date-section">
+    <h2 id="sectionDate">Hoje</h2>
+    <div class="edition-info">
+      <span class="auto-indicator"><span class="auto-dot"></span>AUTO</span>
+      &nbsp;Gerado por IA · Fontes abertas
+    </div>
+  </div>
+
+  <!-- GENERATE SECTION -->
+  <div class="generate-section">
+    <span class="gen-label">GERAR NOTÍCIA PERSONALIZADA</span>
+    <div class="gen-row">
+      <input class="gen-input" id="customTopic" type="text"
+             placeholder="Ex: inteligência artificial, clima, futebol, tecnologia..."
+             onkeydown="if(event.key==='Enter')generateCustom()">
+      <button class="gen-btn" id="genBtn" onclick="generateCustom()">▶ GERAR NOTÍCIA</button>
+      <button class="gen-btn" id="autoBtn" onclick="generateDailyNews(true)"
+              style="background:var(--accent)">⟳ EDIÇÃO DIÁRIA</button>
+    </div>
+    <div class="gen-status" id="genStatus"></div>
+  </div>
+
+  <!-- NEWS GRID -->
+  <div class="section-rule">
+    MANCHETES DE HOJE <span class="pill">PRINCIPAL</span>
+  </div>
+
+  <div class="news-grid">
+    <div class="col-main" id="mainCol">
+      <div class="loading-placeholder">
+        <div class="skeleton" style="height:14px;width:60%"></div>
+        <div class="skeleton" style="height:32px;width:90%"></div>
+        <div class="skeleton" style="height:32px;width:75%"></div>
+        <div class="skeleton" style="height:12px;width:85%;margin-top:4px"></div>
+        <div class="skeleton" style="height:12px;width:70%"></div>
+      </div>
+    </div>
+    <div class="col-side" id="sideCol">
+      <div class="loading-placeholder">
+        <div class="skeleton" style="height:80px"></div>
+        <div class="skeleton" style="height:80px;margin-top:8px"></div>
+        <div class="skeleton" style="height:80px;margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-rule">
+    MAIS NOTÍCIAS <span class="pill">GERAL</span>
+  </div>
+  <div id="moreCol" class="news-grid" style="grid-template-columns:1fr 1fr;gap:0">
+    <div class="col-main loading-placeholder" style="border-right:1px solid #ccc">
+      <div class="skeleton" style="height:70px"></div>
+      <div class="skeleton" style="height:70px;margin-top:8px"></div>
+    </div>
+    <div class="col-side loading-placeholder">
+      <div class="skeleton" style="height:70px"></div>
+      <div class="skeleton" style="height:70px;margin-top:8px"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <strong>VCtv AInews</strong> · Gerado automaticamente por Inteligência Artificial ·
+  Conteúdo informativo com base em tendências e fontes abertas ·
+  Notícias publicadas diariamente, edições especiais nos fins de semana e eventos notáveis
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  VCtv AInews — Motor de Notícias com Pollinations AI
+// ═══════════════════════════════════════════════════════════════
+
+const POLLINATIONS_API = 'https://text.pollinations.ai/';
+const STORAGE_KEY = 'vctv_ainews_v2';
+const ONE_DAY = 24 * 60 * 60 * 1000;
+
+// Tópicos de notícias gerais
+const NEWS_TOPICS = [
+  'inteligência artificial e tecnologia 2025',
+  'mudanças climáticas e meio ambiente',
+  'economia global e mercados financeiros',
+  'política internacional e diplomacia',
+  'ciência e descobertas científicas',
+  'saúde e medicina moderna',
+  'espaço e exploração espacial',
+  'cultura pop e entretenimento',
+  'inovações em energias renováveis',
+  'direitos humanos e sociedade',
+  'cibersegurança e privacidade digital',
+  'startups e empreendedorismo',
+  'geopolítica e conflitos globais',
+  'educação e futuro do trabalho',
+  'esportes e competições internacionais'
+];
+
+const TAGS = ['MUNDO', 'TECH', 'CIÊNCIA', 'POLÍTICA', 'ECONOMIA', 'SAÚDE', 'CULTURA', 'ESPORTE', 'INOVAÇÃO', 'CLIMA'];
+
+let articlesDB = [];
+
+// ── PERSISTÊNCIA ──────────────────────────────────────────────
+function saveDB() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(articlesDB)); } catch(e){}
+}
+
+function loadDB() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) articlesDB = JSON.parse(raw);
+  } catch(e) { articlesDB = []; }
+}
+
+// ── DATA E TIPO DE EDIÇÃO ─────────────────────────────────────
+function getTodayKey() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function getEditionType() {
+  const d = new Date();
+  const dow = d.getDay(); // 0=Dom, 6=Sab
+  const month = d.getMonth();
+  const day = d.getDate();
+  // Eventos especiais (datas notáveis)
+  const specials = {
+    '01-01': 'Ano Novo',
+    '12-25': 'Natal',
+    '04-22': 'Dia da Terra',
+    '05-01': 'Dia do Trabalhador',
+    '11-15': 'Proclamação da República',
+    '09-07': 'Independência do Brasil',
+  };
+  const key = `${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  if (specials[key]) return { type: 'special', label: specials[key] };
+  if (dow === 0 || dow === 6) return { type: 'weekend', label: 'Fim de Semana' };
+  return { type: 'daily', label: 'Diária' };
+}
+
+// ── POLLINATIONS AI TEXT ──────────────────────────────────────
+async function askAI(prompt, seed) {
+  const encodedPrompt = encodeURIComponent(prompt);
+  const seedParam = seed ? `?seed=${seed}` : `?seed=${Math.floor(Math.random()*99999)}`;
+  const url = `${POLLINATIONS_API}${encodedPrompt}${seedParam}&model=openai&json=false`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.text();
+}
+
+async function generateArticle(topic, editionType = 'daily', isMain = false) {
+  const sizeInstruction = isMain
+    ? 'Escreva um artigo completo com 4 parágrafos substanciais (cada parágrafo com pelo menos 3 frases).'
+    : 'Escreva um artigo com 2 parágrafos (cada um com 2-3 frases).';
+
+  const editionCtx = editionType === 'weekend'
+    ? 'Esta é uma EDIÇÃO DE FIM DE SEMANA — faça uma análise mais profunda e reflexiva.'
+    : editionType === 'special'
+    ? 'Esta é uma EDIÇÃO ESPECIAL — dê ênfase histórica e importância ao tema.'
+    : 'Esta é uma edição diária — seja informativo e direto.';
+
+  const prompt = `Você é um jornalista profissional do VCtv AInews. ${editionCtx}
+Escreva uma notícia jornalística em PORTUGUÊS BRASILEIRO sobre: "${topic}".
+${sizeInstruction}
+Formato exato (sem markdown, sem asteriscos):
+TITULO: [título impactante e informativo, máximo 12 palavras]
+TAG: [uma palavra em maiúsculas: MUNDO, TECH, CIÊNCIA, POLÍTICA, ECONOMIA, SAÚDE, CULTURA, ESPORTE, INOVAÇÃO ou CLIMA]
+RESUMO: [uma frase de resumo, máximo 20 palavras]
+CORPO: [parágrafos separados por duas quebras de linha]
+Escreva apenas o conteúdo, sem comentários extras.`;
+
+  const raw = await askAI(prompt, Date.now() + topic.length);
+  return parseArticle(raw, topic);
+}
+
+function parseArticle(raw, fallbackTopic) {
+  const lines = raw.split('\n');
+  let title = '', tag = 'MUNDO', summary = '', bodyLines = [];
+  let inBody = false;
+
+  for (const line of lines) {
+    const l = line.trim();
+    if (l.startsWith('TITULO:')) { title = l.replace('TITULO:', '').trim(); continue; }
+    if (l.startsWith('TAG:')) { tag = l.replace('TAG:', '').trim().toUpperCase(); continue; }
+    if (l.startsWith('RESUMO:')) { summary = l.replace('RESUMO:', '').trim(); continue; }
+    if (l.startsWith('CORPO:')) { inBody = true; bodyLines.push(l.replace('CORPO:', '').trim()); continue; }
+    if (inBody && l) bodyLines.push(l);
+  }
+
+  // Fallbacks se o parse falhou
+  if (!title) {
+    const firstBold = raw.match(/\*\*(.*?)\*\*/);
+    title = firstBold ? firstBold[1] : `Notícia sobre ${fallbackTopic}`;
+  }
+  if (!summary) summary = raw.slice(0, 120).replace(/\*\*/g, '') + '...';
+  const bodyText = bodyLines.filter(Boolean).join('\n\n') || raw.replace(/TITULO:.*|TAG:.*|RESUMO:.*|CORPO:/g, '').trim();
+
+  if (!TAGS.includes(tag)) tag = TAGS[Math.floor(Math.random() * TAGS.length)];
+
+  return {
+    id: Date.now() + Math.random(),
+    title: title.replace(/\*\*/g, ''),
+    tag,
+    summary: summary.replace(/\*\*/g, ''),
+    body: bodyText.replace(/\*\*/g, '').split('\n\n').filter(Boolean),
+    topic: fallbackTopic,
+    date: new Date().toISOString(),
+    dateKey: getTodayKey()
+  };
+}
+
+// ── GERAÇÃO AUTOMÁTICA DIÁRIA ─────────────────────────────────
+async function generateDailyNews(force = false) {
+  const today = getTodayKey();
+  const edition = getEditionType();
+
+  // Verifica se já gerou hoje
+  const todayArticles = articlesDB.filter(a => a.dateKey === today);
+  if (!force && todayArticles.length >= 5) {
+    renderArticles();
+    return;
+  }
+
+  const genBtn = document.getElementById('autoBtn');
+  const status = document.getElementById('genStatus');
+  genBtn.disabled = true;
+  status.textContent = '⏳ Gerando edição do dia...';
+
+  // Determina quantas notícias gerar por tipo de edição
+  const count = edition.type === 'weekend' ? 8 : edition.type === 'special' ? 6 : 5;
+  const shuffled = [...NEWS_TOPICS].sort(() => Math.random() - 0.5).slice(0, count);
+
+  // Remove artigos antigos do dia se forçando
+  if (force) {
+    articlesDB = articlesDB.filter(a => a.dateKey !== today);
+  }
+
+  for (let i = 0; i < shuffled.length; i++) {
+    status.textContent = `⏳ Gerando notícia ${i+1} de ${count}...`;
+    try {
+      const isMain = i === 0;
+      const article = await generateArticle(shuffled[i], edition.type, isMain);
+      article.editionType = edition.type;
+      articlesDB.unshift(article);
+      saveDB();
+      if (i === 0) renderArticles(); // Mostra logo a primeira
+    } catch(e) {
+      console.warn('Erro ao gerar artigo:', e);
+    }
+    // Pausa entre requisições para não sobrecarregar
+    await new Promise(r => setTimeout(r, 800));
+  }
+
+  status.textContent = `✓ Edição ${edition.label} publicada com ${count} notícias.`;
+  genBtn.disabled = false;
+  renderArticles();
+  updateTicker();
+}
+
+// ── NOTÍCIA PERSONALIZADA ─────────────────────────────────────
+async function generateCustom() {
+  const input = document.getElementById('customTopic');
+  const btn = document.getElementById('genBtn');
+  const status = document.getElementById('genStatus');
+  const topic = input.value.trim();
+
+  if (!topic) {
+    status.textContent = '⚠ Digite um tema para gerar a notícia.';
+    return;
+  }
+
+  btn.disabled = true;
+  status.textContent = `⏳ Gerando notícia sobre "${topic}"...`;
+
+  try {
+    const article = await generateArticle(topic, 'daily', true);
+    article.editionType = 'custom';
+    article.custom = true;
+    articlesDB.unshift(article);
+    saveDB();
+    renderArticles();
+    updateTicker();
+    status.textContent = `✓ Notícia sobre "${topic}" publicada!`;
+    input.value = '';
+    openModal(article);
+  } catch(e) {
+    status.textContent = `✗ Erro ao gerar notícia. Tente novamente.`;
+    console.error(e);
+  }
+
+  btn.disabled = false;
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+function renderArticles() {
+  const today = getTodayKey();
+  const todayArticles = articlesDB.filter(a => a.dateKey === today);
+
+  if (todayArticles.length === 0) {
+    document.getElementById('mainCol').innerHTML = `
+      <div class="empty-state">
+        <h3>Nenhuma notícia ainda</h3>
+        <p>Clique em "EDIÇÃO DIÁRIA" para gerar as notícias de hoje.</p>
+      </div>`;
+    document.getElementById('sideCol').innerHTML = '';
+    document.getElementById('moreCol').innerHTML = '';
+    return;
+  }
+
+  const main = todayArticles[0];
+  const side = todayArticles.slice(1, 4);
+  const more = todayArticles.slice(4);
+
+  // Coluna principal
+  document.getElementById('mainCol').innerHTML = buildMainArticle(main, true);
+
+  // Coluna lateral
+  document.getElementById('sideCol').innerHTML = `
+    <div class="news-list-small">
+      ${side.map(a => buildSideArticle(a)).join('')}
+    </div>`;
+
+  // Mais notícias
+  if (more.length > 0) {
+    const half = Math.ceil(more.length / 2);
+    document.getElementById('moreCol').innerHTML = `
+      <div class="col-main" style="border-right:1px solid #ccc">
+        ${more.slice(0, half).map(a => buildMainArticle(a, false)).join('')}
+      </div>
+      <div class="col-side">
+        ${more.slice(half).map(a => buildSideArticle(a)).join('')}
+      </div>`;
+  } else {
+    document.getElementById('moreCol').innerHTML = '';
+  }
+
+  // Atualiza edição banner
+  updateEditionBanner();
+}
+
+function buildMainArticle(a, isBig) {
+  const id = CSS.escape ? CSS.escape(a.id) : a.id;
+  return `
+    <div class="article-main ${isBig ? 'big' : ''}" onclick="openArticleById(${JSON.stringify(a.id)})">
+      <div class="article-tag">${a.tag}</div>
+      <h3>${escHtml(a.title)}</h3>
+      <p class="lead">${escHtml(a.summary)}</p>
+      <div class="article-meta">${formatDate(a.date)} · VCtv AInews IA</div>
+    </div>`;
+}
+
+function buildSideArticle(a) {
+  return `
+    <div class="article-small" onclick="openArticleById(${JSON.stringify(a.id)})">
+      <div class="article-tag">${a.tag}</div>
+      <h4>${escHtml(a.title)}</h4>
+      <div class="article-meta">${formatDate(a.date)}</div>
+    </div>`;
+}
+
+// ── MODAL ─────────────────────────────────────────────────────
+function openArticleById(id) {
+  const article = articlesDB.find(a => a.id == id);
+  if (article) openModal(article);
+}
+
+function openModal(article) {
+  document.getElementById('modalTag').textContent = article.tag;
+  document.getElementById('modalTitle').textContent = article.title;
+  document.getElementById('modalMeta').textContent =
+    `${formatDate(article.date)} · VCtv AInews · Gerado por IA`;
+  document.getElementById('modalBody').innerHTML =
+    article.body.map(p => `<p>${escHtml(p)}</p>`).join('');
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ── TICKER ────────────────────────────────────────────────────
+function updateTicker() {
+  const today = getTodayKey();
+  const articles = articlesDB.filter(a => a.dateKey === today);
+  if (articles.length === 0) return;
+
+  const headlines = articles.map(a => a.title);
+  // Duplica para loop contínuo
+  const items = [...headlines, ...headlines]
+    .map(h => `<span>${escHtml(h)}</span>`).join('');
+
+  document.getElementById('tickerTrack').innerHTML = items;
+}
+
+// ── EDIÇÃO BANNER ─────────────────────────────────────────────
+function updateEditionBanner() {
+  const edition = getEditionType();
+  const banner = document.getElementById('editionBanner');
+  const badge = document.getElementById('editionBadge');
+
+  if (edition.type === 'weekend') {
+    banner.classList.add('show');
+    document.getElementById('bannerTitle').textContent = '📰 Grande Edição de Fim de Semana';
+    document.getElementById('bannerSub').textContent =
+      'Análises aprofundadas, reportagens especiais e as histórias mais importantes da semana.';
+    badge.textContent = 'Edição Weekend';
+    badge.classList.add('show');
+  } else if (edition.type === 'special') {
+    banner.classList.add('show');
+    document.getElementById('bannerTitle').textContent = `🌟 Edição Especial — ${edition.label}`;
+    document.getElementById('bannerSub').textContent =
+      'Uma edição comemorativa com cobertura especial desta data histórica.';
+    badge.textContent = 'Edição Especial';
+    badge.classList.add('show');
+  } else {
+    banner.classList.remove('show');
+    badge.textContent = 'Edição Diária';
+    badge.classList.add('show');
+  }
+}
+
+// ── HEADER DATE ───────────────────────────────────────────────
+function updateDateDisplay() {
+  const now = new Date();
+  const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const dateStr = now.toLocaleDateString('pt-BR', opts);
+  document.getElementById('dateDisplay').textContent = dateStr.toUpperCase();
+  document.getElementById('sectionDate').textContent =
+    now.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+// ── AUTO-REFRESH DIÁRIO ───────────────────────────────────────
+function scheduleNextDay() {
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(7, 0, 0, 0); // 7h da manhã
+  const ms = tomorrow - now;
+  setTimeout(() => {
+    generateDailyNews(false);
+    scheduleNextDay();
+  }, ms);
+}
+
+// ── UTILS ─────────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric',
+    hour:'2-digit', minute:'2-digit' });
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+(async function init() {
+  updateDateDisplay();
+  loadDB();
+
+  const today = getTodayKey();
+  const todayArticles = articlesDB.filter(a => a.dateKey === today);
+
+  if (todayArticles.length > 0) {
+    // Já tem artigos de hoje — mostra imediatamente
+    renderArticles();
+    updateTicker();
+    updateEditionBanner();
+  }
+
+  // Gera se não tem artigos ou se é início do dia (menos de 5)
+  if (todayArticles.length < 3) {
+    await generateDailyNews(false);
+  }
+
+  scheduleNextDay();
+})();
+</script>
+</body>
+</html>
