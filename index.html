@@ -1,678 +1,621 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VCtv AInews</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --green: #3cb54a;
-  --green-dark: #2a8a36;
-  --green-neon: #4dff6e;
-  --bg: #0a0e0f;
-  --surface: #111618;
-  --surface2: #181e20;
-  --border: #1e2a2d;
-  --text: #e8f0f2;
-  --muted: #6b8a8f;
-  --white: #ffffff;
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; }
+  :root {
+    --red: #cc0000;
+    --dark: #0a0a0a;
+    --darker: #050505;
+    --card: #111;
+    --border: #222;
+    --text: #e8e8e8;
+    --muted: #888;
+    --accent: #ff3333;
+    --gold: #f5c518;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--dark); color:var(--text); font-family:'Georgia',serif; min-height:100vh; }
 
-/* ── HEADER ── */
-header {
-background: linear-gradient(135deg, #0d1a0f 0%, #0a0e0f 60%);
-border-bottom: 1px solid var(–border);
-position: sticky; top:0; z-index:200;
-}
-.header-top {
-display:flex; align-items:center; justify-content:space-between;
-padding: 0.7rem 1.5rem;
-border-bottom: 1px solid var(–border);
-}
-/* ── LOGO SVG ── */
-.logo-wrap { display:flex; align-items:center; gap:0.8rem; cursor:default; }
-.logo-svg-container { display:flex; align-items:center; }
-.logo-text-wrap { line-height:1; }
-.logo-tagline {
-font-family:‘Inter’,sans-serif; font-size:0.55rem;
-color:var(–green); letter-spacing:0.18em; text-transform:uppercase;
-opacity:0.85;
-}
-.ainews-badge {
-font-family:‘Space Grotesk’,sans-serif; font-size:0.6rem;
-background: linear-gradient(90deg, var(–green), #7fff8a);
--webkit-background-clip:text; -webkit-text-fill-color:transparent;
-letter-spacing:0.2em; font-weight:700;
-}
-.header-right { display:flex; align-items:center; gap:0.8rem; }
-.live-dot { display:flex; align-items:center; gap:0.4rem;
-font-size:0.6rem; color:var(–green); font-weight:600; letter-spacing:0.1em; }
-.dot { width:6px; height:6px; border-radius:50%; background:var(–green-neon);
-animation: pulse 1.5s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
-.date-display { font-size:0.6rem; color:var(–muted); font-family:‘Space Grotesk’,sans-serif; }
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 50%, #0a0a0a 100%);
+    border-bottom: 3px solid var(--red);
+    padding: 0;
+    position: sticky; top:0; z-index:100;
+    box-shadow: 0 2px 20px rgba(204,0,0,0.4);
+  }
+  .header-top {
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 12px 24px;
+    gap: 16px;
+  }
+  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .logo-icon {
+    background: var(--red);
+    color: white;
+    font-size: 11px; font-weight:900; letter-spacing:1px;
+    padding: 4px 8px; border-radius:4px;
+    font-family: 'Arial Black', sans-serif;
+  }
+  .logo-text {
+    font-size: 22px; font-weight:900; color:white;
+    font-family: 'Arial Black', sans-serif; letter-spacing:2px;
+  }
+  .logo-text span { color: var(--red); }
+  .edition-badge {
+    font-size:11px; padding:4px 10px; border-radius:20px; font-weight:700;
+    font-family: Arial, sans-serif; letter-spacing:1px;
+  }
+  .badge-daily { background:#1a3a1a; color:#4caf50; border:1px solid #4caf50; }
+  .badge-weekend { background:#1a1a3a; color:#6699ff; border:1px solid #6699ff; }
+  .badge-special { background:#3a2a00; color:var(--gold); border:1px solid var(--gold); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
 
-/* ── TICKER ── */
-.ticker { background:#0d1f10; border-bottom:1px solid #1a3320;
-display:flex; align-items:center; overflow:hidden; height:28px; }
-.ticker-label { background:var(–green); color:#000; font-size:0.55rem;
-font-weight:800; letter-spacing:0.12em; padding:0 0.8rem; height:100%;
-display:flex; align-items:center; white-space:nowrap; flex-shrink:0; }
-.ticker-scroll { overflow:hidden; flex:1; }
-.ticker-inner { display:flex; animation: scroll 50s linear infinite; white-space:nowrap; }
-.ticker-inner span { padding:0 2.5rem; font-size:0.65rem; color:#7aff8a; font-weight:500; }
-.ticker-inner span::before { content:’▶ ’; opacity:0.5; }
-@keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .ticker-bar {
+    background: var(--red);
+    padding: 6px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 40s linear infinite;
+    font-size: 12px; font-family: Arial, sans-serif; font-weight:600; letter-spacing:0.5px;
+  }
+  @keyframes ticker { 0%{transform:translateX(100vw)} 100%{transform:translateX(-100%)} }
 
-/* ── MAIN LAYOUT ── */
-main { max-width:1280px; margin:0 auto; padding:1.5rem; }
+  /* NAV */
+  nav {
+    display:flex; gap:0; overflow-x:auto;
+    border-bottom: 1px solid var(--border);
+    background:#0d0d0d;
+  }
+  nav button {
+    background:none; border:none; color:var(--muted);
+    padding: 10px 18px; cursor:pointer; font-size:13px;
+    font-family: Arial, sans-serif; font-weight:600; letter-spacing:0.5px;
+    border-bottom: 2px solid transparent; transition: all 0.2s;
+    white-space:nowrap;
+  }
+  nav button:hover, nav button.active { color:white; border-bottom-color:var(--red); }
 
-/* ── CONTROLS ── */
-.controls {
-background:var(–surface); border:1px solid var(–border);
-border-radius:12px; padding:1.2rem; margin-bottom:1.5rem;
-position:relative; overflow:hidden;
-}
-.controls::before {
-content:’’; position:absolute; inset:0; pointer-events:none;
-background: linear-gradient(135deg, rgba(60,181,74,0.05) 0%, transparent 60%);
-}
-.controls-row { display:flex; gap:0.7rem; flex-wrap:wrap; align-items:center; }
-.ctrl-input {
-flex:1; min-width:220px;
-background:var(–bg); border:1.5px solid var(–border); border-radius:8px;
-color:var(–text); font-family:‘Inter’,sans-serif; font-size:0.85rem;
-padding:0.6rem 1rem; outline:none; transition:border-color 0.2s;
-}
-.ctrl-input:focus { border-color:var(–green); }
-.ctrl-input::placeholder { color:var(–muted); }
-.btn {
-border:none; border-radius:8px; font-family:‘Inter’,sans-serif;
-font-size:0.72rem; font-weight:700; letter-spacing:0.06em;
-padding:0.6rem 1.2rem; cursor:pointer; transition:all 0.2s;
-white-space:nowrap; text-transform:uppercase;
-}
-.btn-green { background:var(–green); color:#000; }
-.btn-green:hover { background:var(–green-neon); transform:translateY(-1px); }
-.btn-dark { background:var(–surface2); color:var(–text); border:1px solid var(–border); }
-.btn-dark:hover { border-color:var(–green); color:var(–green); }
-.btn:disabled { opacity:0.4; cursor:not-allowed; transform:none !important; }
-.status-bar { margin-top:0.7rem; font-size:0.68rem; color:var(–muted);
-display:flex; align-items:center; gap:0.4rem; min-height:1.2em; }
-.status-bar.loading { color:var(–green); }
-.status-bar.error { color:#ff6b6b; }
-.status-bar.ok { color:var(–green-neon); }
-.spin { display:inline-block; animation:spin 0.8s linear infinite; }
-@keyframes spin { to{transform:rotate(360deg)} }
+  /* MAIN */
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
 
-/* ── PROGRESS BAR ── */
-.progress-wrap { margin-top:0.5rem; height:3px; background:var(–border); border-radius:2px; display:none; }
-.progress-wrap.show { display:block; }
-.progress-bar { height:100%; background:linear-gradient(90deg,var(–green),var(–green-neon));
-border-radius:2px; transition:width 0.4s ease; width:0%; }
+  /* GENERATE BAR */
+  .gen-bar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 28px;
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  .gen-bar input {
+    flex:1; min-width:200px;
+    background:#1a1a1a; border:1px solid #333; color:white;
+    padding: 10px 14px; border-radius:6px; font-size:14px;
+    font-family: Georgia, serif;
+  }
+  .gen-bar input:focus { outline:none; border-color:var(--red); }
+  .gen-bar button {
+    background: var(--red); color:white; border:none;
+    padding: 10px 20px; border-radius:6px; cursor:pointer;
+    font-weight:700; font-family:Arial,sans-serif; font-size:13px;
+    transition: background 0.2s;
+  }
+  .gen-bar button:hover { background:#aa0000; }
+  .gen-bar button:disabled { background:#444; cursor:not-allowed; }
 
-/* ── SECTION TITLE ── */
-.section-title {
-display:flex; align-items:center; gap:0.8rem;
-margin-bottom:1rem; padding-bottom:0.6rem;
-border-bottom:1px solid var(–border);
-}
-.section-title h2 { font-family:‘Space Grotesk’,sans-serif; font-size:0.8rem;
-font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(–muted); }
-.section-title .pill {
-font-size:0.55rem; font-weight:700; letter-spacing:0.12em;
-background:rgba(60,181,74,0.15); color:var(–green);
-border:1px solid rgba(60,181,74,0.3); border-radius:4px; padding:0.15rem 0.5rem;
-}
-.count-badge { margin-left:auto; font-size:0.6rem; color:var(–muted); }
+  /* GRID */
+  .news-grid { display:grid; grid-template-columns: 2fr 1fr; gap:24px; }
+  .news-grid.weekend { grid-template-columns: 1fr 1fr 1fr; }
+  @media(max-width:768px) { .news-grid, .news-grid.weekend { grid-template-columns:1fr; } }
 
-/* ── NEWS GRID ── */
-.news-grid { display:grid; grid-template-columns:2fr 1fr; gap:1.5rem; margin-bottom:1.5rem; }
-.news-grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+  .main-col { display:flex; flex-direction:column; gap:20px; }
+  .side-col { display:flex; flex-direction:column; gap:16px; }
 
-/* ── CARDS ── */
-.card {
-background:var(–surface); border:1px solid var(–border); border-radius:12px;
-padding:1.2rem; cursor:pointer; transition:all 0.2s;
-display:flex; flex-direction:column; gap:0.6rem;
-}
-.card:hover { border-color:var(–green); transform:translateY(-2px);
-box-shadow:0 8px 30px rgba(60,181,74,0.1); }
-.card.featured { padding:1.5rem; }
-.card-tag {
-font-size:0.55rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;
-color:var(–green); background:rgba(60,181,74,0.1); border-radius:4px;
-padding:0.2rem 0.5rem; display:inline-block; align-self:flex-start;
-}
-.card h3 { font-family:‘Space Grotesk’,sans-serif; font-size:1.05rem;
-font-weight:700; line-height:1.25; color:var(–white); }
-.card.featured h3 { font-size:1.5rem; }
-.card p { font-size:0.8rem; color:var(–muted); line-height:1.6; flex:1; }
-.card-meta { font-size:0.6rem; color:#3a5a60; font-weight:500;
-display:flex; align-items:center; gap:0.4rem; margin-top:auto; }
-.card-meta::before { content:’’; display:block; width:16px; height:1px; background:var(–border); }
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .card:hover { border-color: var(--red); transform: translateY(-2px); }
+  .card-img {
+    width:100%; height:200px; object-fit:cover;
+    background: linear-gradient(135deg, #1a0000, #0a0a1a);
+    display:flex; align-items:center; justify-content:center;
+    font-size:48px;
+  }
+  .card-img.small { height:120px; font-size:32px; }
+  .card-body { padding:16px; }
+  .card-cat {
+    font-size:10px; font-weight:700; color:var(--red);
+    font-family:Arial,sans-serif; letter-spacing:1.5px; text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .card-title {
+    font-size:18px; font-weight:700; line-height:1.3;
+    margin-bottom:8px; color:white;
+  }
+  .card-title.small { font-size:14px; }
+  .card-body p { font-size:14px; color:#aaa; line-height:1.6; margin-bottom:10px; }
+  .card-meta {
+    font-size:11px; color:var(--muted);
+    font-family:Arial,sans-serif; display:flex; gap:12px; align-items:center;
+  }
+  .card-meta .source { color: var(--red); font-weight:700; }
 
-.card-small { padding:0.9rem; gap:0.4rem; }
-.card-small h4 { font-family:‘Space Grotesk’,sans-serif; font-size:0.85rem;
-font-weight:600; line-height:1.3; color:var(–white); }
+  /* FEATURED (hero) */
+  .hero-card {
+    background: linear-gradient(to bottom, #1a0505, var(--card));
+    border: 2px solid var(--red);
+    border-radius: 12px; overflow:hidden;
+  }
+  .hero-card .card-img { height:280px; font-size:64px; }
+  .hero-card .card-title { font-size:24px; }
 
-/* ── EMPTY / SKELETON ── */
-.empty { text-align:center; padding:4rem 1rem; color:var(–muted); }
-.empty .icon { font-size:3rem; margin-bottom:1rem; opacity:0.3; }
-.empty h3 { font-size:1.1rem; margin-bottom:0.4rem; color:var(–text); }
-.empty p { font-size:0.8rem; }
+  /* SPECIAL BANNER */
+  .special-banner {
+    background: linear-gradient(135deg, #1a1400, #2a2000);
+    border: 2px solid var(--gold);
+    border-radius:10px; padding:16px 20px;
+    margin-bottom:24px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .special-banner .icon { font-size:28px; }
+  .special-banner h2 { color:var(--gold); font-size:18px; margin-bottom:4px; }
+  .special-banner p { color:#ccc; font-size:13px; }
 
-.skel { background:linear-gradient(90deg,var(–surface) 25%,var(–surface2) 50%,var(–surface) 75%);
-background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:6px; }
-@keyframes shimmer { from{background-position:200% 0} to{background-position:-200% 0} }
+  /* LOADING */
+  .loading {
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:center; padding:60px 20px; gap:16px; color:var(--muted);
+  }
+  .spinner {
+    width:40px; height:40px; border:3px solid #222;
+    border-top-color:var(--red); border-radius:50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to{transform:rotate(360deg)} }
 
-/* ── MODAL ── */
-.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85);
-z-index:1000; overflow-y:auto; padding:2rem 1rem; backdrop-filter:blur(4px); }
-.modal-bg.open { display:flex; justify-content:center; }
-.modal {
-background:var(–surface); border:1px solid var(–border); border-radius:16px;
-max-width:760px; width:100%; padding:2rem; position:relative;
-align-self:flex-start; animation:slideUp 0.25s ease;
-}
-@keyframes slideUp { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
-.modal-close {
-position:absolute; top:1rem; right:1rem;
-background:var(–surface2); border:1px solid var(–border); color:var(–muted);
-width:32px; height:32px; border-radius:8px; font-size:0.9rem;
-cursor:pointer; display:flex; align-items:center; justify-content:center;
-transition:all 0.2s;
-}
-.modal-close:hover { border-color:var(–green); color:var(–green); }
-.modal-tag { font-size:0.55rem; font-weight:700; letter-spacing:0.15em;
-color:var(–green); margin-bottom:0.8rem; }
-.modal h2 { font-family:‘Space Grotesk’,sans-serif; font-size:1.8rem;
-font-weight:700; line-height:1.2; color:var(–white); margin-bottom:1rem;
-padding-bottom:1rem; border-bottom:1px solid var(–border); }
-.modal-meta { font-size:0.65rem; color:var(–muted); margin-bottom:1.5rem;
-display:flex; align-items:center; gap:0.6rem; }
-.modal-body p { font-size:0.9rem; line-height:1.8; color:#b0c4c8; margin-bottom:1rem; }
+  /* MODAL */
+  .modal-overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,0.85); z-index:200;
+    align-items:center; justify-content:center; padding:16px;
+  }
+  .modal-overlay.open { display:flex; }
+  .modal {
+    background:#111; border:1px solid #333; border-radius:12px;
+    max-width:700px; width:100%; max-height:90vh; overflow-y:auto;
+    padding:28px;
+  }
+  .modal-cat { font-size:11px; color:var(--red); font-weight:700; letter-spacing:1.5px; font-family:Arial,sans-serif; margin-bottom:8px; }
+  .modal h2 { font-size:22px; line-height:1.3; margin-bottom:12px; }
+  .modal-meta { font-size:12px; color:var(--muted); font-family:Arial,sans-serif; margin-bottom:16px; }
+  .modal-body { font-size:15px; line-height:1.8; color:#ccc; }
+  .modal-body p { margin-bottom:12px; }
+  .modal-close {
+    background:none; border:1px solid #444; color:#aaa;
+    padding:8px 16px; border-radius:6px; cursor:pointer;
+    font-size:13px; margin-top:20px; float:right;
+  }
+  .modal-close:hover { background:#222; }
 
-/* ── FOOTER ── */
-footer { border-top:1px solid var(–border); text-align:center; padding:2rem;
-font-size:0.6rem; color:var(–muted); letter-spacing:0.08em; margin-top:2rem; }
-footer strong { color:var(–green); }
+  /* WEEKEND SECTION TITLE */
+  .section-title {
+    font-size:13px; font-weight:700; color:var(--red);
+    font-family:Arial,sans-serif; letter-spacing:2px; text-transform:uppercase;
+    border-left:3px solid var(--red); padding-left:10px;
+    margin-bottom:16px;
+  }
 
-/* ── RESPONSIVE ── */
-@media(max-width:768px) {
-.news-grid { grid-template-columns:1fr; }
-.news-grid-3 { grid-template-columns:1fr; }
-.header-top { padding:0.6rem 1rem; }
-main { padding:1rem; }
-}
+  /* FOOTER */
+  footer {
+    border-top:1px solid var(--border); margin-top:48px;
+    padding:20px; text-align:center; color:var(--muted);
+    font-size:12px; font-family:Arial,sans-serif;
+  }
+  footer span { color:var(--red); }
 </style>
-
 </head>
 <body>
 
-<!-- HEADER -->
-
 <header>
   <div class="header-top">
-    <!-- Logo VCtv SVG fiel à imagem -->
-    <div class="logo-wrap">
-      <div class="logo-svg-container">
-        <svg width="90" height="44" viewBox="0 0 90 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Ícones pequenos acima do VCtv -->
-          <!-- câmera -->
-          <g transform="translate(2,0)" stroke="#3cb54a" stroke-width="1.2" fill="none">
-            <rect x="1" y="4" width="11" height="8" rx="1.5"/>
-            <circle cx="6.5" cy="8" r="2.2"/>
-            <rect x="8.5" y="2.5" width="3" height="2" rx="0.5"/>
-          </g>
-          <!-- globo -->
-          <g transform="translate(18,0)" stroke="#3cb54a" stroke-width="1.2" fill="none">
-            <circle cx="6" cy="6" r="5"/>
-            <ellipse cx="6" cy="6" rx="2.5" ry="5"/>
-            <line x1="1" y1="6" x2="11" y2="6"/>
-          </g>
-          <!-- celular -->
-          <g transform="translate(35,0)" stroke="#3cb54a" stroke-width="1.2" fill="none">
-            <rect x="3" y="1" width="7" height="11" rx="1.5"/>
-            <line x1="5.5" y1="10.5" x2="7.5" y2="10.5"/>
-          </g>
-          <!-- microfone -->
-          <g transform="translate(51,0)" stroke="#3cb54a" stroke-width="1.2" fill="none">
-            <rect x="4" y="1" width="5" height="7" rx="2.5"/>
-            <path d="M2 6.5c0 3 8 3 8 0"/>
-            <line x1="6.5" y1="9.5" x2="6.5" y2="12"/>
-          </g>
-          <!-- jornal -->
-          <g transform="translate(67,0)" stroke="#3cb54a" stroke-width="1.2" fill="none">
-            <rect x="1" y="2" width="11" height="10" rx="1"/>
-            <line x1="3" y1="5" x2="10" y2="5"/>
-            <line x1="3" y1="7" x2="10" y2="7"/>
-            <rect x="3" y="8.5" width="4" height="2"/>
-          </g>
-          <!-- Letras VCtv grandes -->
-          <text x="0" y="42" font-family="Inter,sans-serif" font-size="26" font-weight="900" fill="white">V</text>
-          <text x="18" y="42" font-family="Inter,sans-serif" font-size="26" font-weight="900" fill="#3cb54a">C</text>
-          <text x="36" y="42" font-family="Inter,sans-serif" font-size="22" font-weight="400" fill="white">t</text>
-          <text x="46" y="42" font-family="Inter,sans-serif" font-size="26" font-weight="900" fill="white">v</text>
-        </svg>
-      </div>
-      <div class="logo-text-wrap">
-        <div class="ainews-badge">AI NEWS</div>
-        <div class="logo-tagline">O jornal feito por VC, pra você</div>
-      </div>
-    </div>
-
-```
-<div class="header-right">
-  <div class="live-dot"><span class="dot"></span>AO VIVO</div>
-  <div class="date-display" id="dateDisplay">—</div>
-</div>
-```
-
+    <a class="logo" href="#">
+      <span class="logo-icon">VC</span>
+      <span class="logo-text">VCtv <span>AI</span>news</span>
+    </a>
+    <span id="editionBadge" class="edition-badge badge-daily">EDIÇÃO DIÁRIA</span>
+    <span id="dateDisplay" style="font-size:12px;color:#888;font-family:Arial,sans-serif;"></span>
   </div>
-
-  <!-- Ticker -->
-
-  <div class="ticker">
-    <div class="ticker-label">DESTAQUES</div>
-    <div class="ticker-scroll">
-      <div class="ticker-inner" id="tickerInner">
-        <span>Carregando manchetes...</span><span>Carregando manchetes...</span>
-      </div>
-    </div>
+  <div class="ticker-bar">
+    <span class="ticker-inner" id="tickerText">⚡ Carregando últimas notícias... aguarde...</span>
   </div>
+  <nav>
+    <button class="active" onclick="setCategory('tudo',this)">TUDO</button>
+    <button onclick="setCategory('tecnologia',this)">TECNOLOGIA</button>
+    <button onclick="setCategory('mundo',this)">MUNDO</button>
+    <button onclick="setCategory('ciencia',this)">CIÊNCIA</button>
+    <button onclick="setCategory('economia',this)">ECONOMIA</button>
+    <button onclick="setCategory('cultura',this)">CULTURA</button>
+    <button onclick="setCategory('esportes',this)">ESPORTES</button>
+  </nav>
 </header>
 
-<!-- MODAL -->
-
-<div class="modal-bg" id="modalBg">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-tag" id="mTag"></div>
-    <h2 id="mTitle"></h2>
-    <div class="modal-meta" id="mMeta"></div>
-    <div class="modal-body" id="mBody"></div>
+<div class="container">
+  <div class="gen-bar">
+    <input id="topicInput" type="text" placeholder="✍️ Escreva sobre o que quer uma notícia... ex: 'Copa do Mundo 2026'" />
+    <button id="genBtn" onclick="generateCustomNews()">Gerar Notícia</button>
+  </div>
+  <div id="specialBanner"></div>
+  <div id="newsContainer" class="loading">
+    <div class="spinner"></div>
+    <span>Buscando notícias do dia...</span>
   </div>
 </div>
 
-<main>
-
-  <!-- CONTROLS -->
-
-  <div class="controls">
-    <div class="controls-row">
-      <input class="ctrl-input" id="topicInput" type="text"
-        placeholder="🔍 Digite um tema: ex. tecnologia, IA, futebol, saúde..."
-        onkeydown="if(event.key==='Enter')genCustom()">
-      <button class="btn btn-green" id="btnCustom" onclick="genCustom()">⚡ GERAR NOTÍCIA</button>
-      <button class="btn btn-dark" id="btnDaily" onclick="genDaily(true)">🔄 EDIÇÃO DIÁRIA</button>
-    </div>
-    <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
-    <div class="status-bar" id="statusBar">Pronto.</div>
-  </div>
-
-  <!-- MANCHETES -->
-
-  <div class="section-title">
-    <h2>Manchetes</h2>
-    <span class="pill">HOJE</span>
-    <span class="count-badge" id="countBadge">0 notícias</span>
-  </div>
-
-  <!-- FEATURED + SIDE -->
-
-  <div class="news-grid" id="mainGrid">
-    <div id="featuredSlot">
-      <div class="card featured">
-        <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <div class="skel" style="height:14px;width:60px"></div>
-          <div class="skel" style="height:28px;width:90%"></div>
-          <div class="skel" style="height:28px;width:70%"></div>
-          <div class="skel" style="height:12px;width:85%;margin-top:8px"></div>
-          <div class="skel" style="height:12px;width:75%"></div>
-        </div>
-      </div>
-    </div>
-    <div id="sideSlot">
-      <div style="display:flex;flex-direction:column;gap:0.8rem">
-        <div class="skel" style="height:90px;border-radius:12px"></div>
-        <div class="skel" style="height:90px;border-radius:12px"></div>
-        <div class="skel" style="height:90px;border-radius:12px"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MAIS NOTÍCIAS -->
-
-  <div class="section-title" id="moreSectionTitle" style="display:none">
-    <h2>Mais Notícias</h2><span class="pill">GERAL</span>
-  </div>
-  <div class="news-grid-3" id="moreGrid"></div>
-
-</main>
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent"></div>
+</div>
 
 <footer>
-  <strong>VCtv AInews</strong> · O jornal feito por VC, pra você ·
-  Gerado automaticamente por Inteligência Artificial · Conteúdo baseado em fontes abertas
+  <p><span>VCtv AInews</span> — Gerado por IA · Atualizado diariamente · <span>VCtv</span> © 2025</p>
 </footer>
 
 <script>
-// ════════════════════════════════════════════════════════════
-//  VCtv AInews — Motor IA via Pollinations (sem erros)
-// ════════════════════════════════════════════════════════════
-
-const STORAGE_KEY = 'vctv_ainews_v3';
-const TOPICS = [
-  'inteligência artificial e inovação tecnológica',
-  'mudanças climáticas e sustentabilidade ambiental',
-  'economia global e mercados financeiros em 2025',
-  'política internacional e relações diplomáticas',
-  'descobertas científicas e pesquisa moderna',
-  'saúde pública e avanços na medicina',
-  'exploração espacial e astronomia',
-  'cibersegurança e privacidade digital',
-  'energias renováveis e transição energética',
-  'cultura digital e redes sociais',
-  'startups e empreendedorismo',
-  'educação e futuro do trabalho'
+// ─── CONFIG ────────────────────────────────────────────────────────────────
+const POLLINATIONS_TEXT = "https://text.pollinations.ai/";
+const RSS_PROXIES = [
+  "https://api.rss2json.com/v1/api.json?rss_url=",
+  "https://rss.app/feeds/"
 ];
 
-let db = [];
+// RSS feeds públicos (CORS-friendly via rss2json)
+const RSS_FEEDS = [
+  { url:"https://feeds.bbci.co.uk/portuguese/rss.xml", name:"BBC Brasil", cat:"mundo" },
+  { url:"https://g1.globo.com/rss/g1/tecnologia/", name:"G1 Tech", cat:"tecnologia" },
+  { url:"https://g1.globo.com/rss/g1/ciencia-e-saude/", name:"G1 Ciência", cat:"ciencia" },
+  { url:"https://g1.globo.com/rss/g1/economia/", name:"G1 Economia", cat:"economia" },
+  { url:"https://feeds.bbci.co.uk/portuguese/science/rss.xml", name:"BBC Ciência", cat:"ciencia" },
+  { url:"https://www.nasa.gov/rss/dyn/breaking_news.rss", name:"NASA", cat:"ciencia" },
+  { url:"https://techcrunch.com/feed/", name:"TechCrunch", cat:"tecnologia" },
+];
 
-// ── Persistência ──
-function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); } catch(e){} }
-function load() { try { const r = localStorage.getItem(STORAGE_KEY); if(r) db = JSON.parse(r); } catch(e){ db=[]; } }
-function todayKey() { return new Date().toISOString().split('T')[0]; }
+const EMOJIS = { tecnologia:"💻", mundo:"🌍", ciencia:"🔬", economia:"💰", cultura:"🎭", esportes:"⚽", geral:"📰" };
+const SPECIAL_DATES = {
+  "01-01":"🎆 Feliz Ano Novo! Edição Especial de Ano Novo",
+  "25-12":"🎄 Feliz Natal! Edição Especial de Natal",
+  "07-09":"🇧🇷 Independência do Brasil — Edição Patriótica",
+  "12-10":"🎉 Dia das Crianças — Edição Especial",
+  "02-11":"🕯️ Finados — Edição Reflexiva",
+  "15-11":"🇧🇷 Proclamação da República — Edição Histórica",
+};
 
-// ── Status UI ──
-function setStatus(msg, type='') {
-  const el = document.getElementById('statusBar');
-  el.className = 'status-bar ' + type;
-  el.innerHTML = msg;
+let allNews = [];
+let currentCategory = "tudo";
+let currentEdition = "daily";
+
+// ─── DATE HELPERS ───────────────────────────────────────────────────────────
+const now = new Date();
+const todayKey = now.toDateString();
+const dayOfWeek = now.getDay(); // 0=dom, 6=sab
+const mmdd = String(now.getDate()).padStart(2,"0") + "-" + String(now.getMonth()+1).padStart(2,"0");
+const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+const isSpecial = !!SPECIAL_DATES[mmdd];
+
+function getEditionType() {
+  if (isSpecial) return "special";
+  if (isWeekend) return "weekend";
+  return "daily";
 }
 
-function setProgress(pct) {
-  const w = document.getElementById('progressWrap');
-  const b = document.getElementById('progressBar');
-  if(pct <= 0) { w.classList.remove('show'); b.style.width='0%'; return; }
-  w.classList.add('show');
-  b.style.width = Math.min(100,pct) + '%';
+function formatDate(d) {
+  return d.toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
 }
 
-function lockBtns(v) {
-  document.getElementById('btnCustom').disabled = v;
-  document.getElementById('btnDaily').disabled = v;
-}
+// ─── INIT ───────────────────────────────────────────────────────────────────
+document.getElementById("dateDisplay").textContent = formatDate(now);
 
-// ── Chamar Pollinations com retry ──
-async function askAI(prompt, retries=3) {
-  const encoded = encodeURIComponent(prompt);
-  const seed = Math.floor(Math.random()*99999);
-  const url = `https://text.pollinations.ai/${encoded}?seed=${seed}&model=openai-large`;
-  
-  for(let i=0; i<retries; i++) {
-    try {
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 25000); // 25s timeout
-      const res = await fetch(url, { signal: ctrl.signal });
-      clearTimeout(timer);
-      if(!res.ok) throw new Error(`HTTP ${res.status}`);
-      const text = await res.text();
-      if(text && text.trim().length > 20) return text.trim();
-      throw new Error('Resposta vazia');
-    } catch(e) {
-      if(i < retries-1) await sleep(1500 * (i+1));
-      else throw e;
-    }
+(async function init() {
+  currentEdition = getEditionType();
+  setupEditionBadge();
+  showSpecialBanner();
+  await loadNews();
+})();
+
+function setupEditionBadge() {
+  const badge = document.getElementById("editionBadge");
+  if (currentEdition === "special") {
+    badge.className = "edition-badge badge-special";
+    badge.textContent = "✨ EDIÇÃO ESPECIAL";
+  } else if (currentEdition === "weekend") {
+    badge.className = "edition-badge badge-weekend";
+    badge.textContent = "📅 EDIÇÃO FIM DE SEMANA";
+  } else {
+    badge.className = "edition-badge badge-daily";
+    badge.textContent = "📰 EDIÇÃO DIÁRIA";
   }
 }
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-// ── Gerar artigo (prompt rápido e direto) ──
-async function genArticle(topic, big=false) {
-  const paras = big ? 4 : 2;
-  const prompt = `Jornalista VCtv NEWS. Escreva em português brasileiro sobre: "${topic}".
-Formato EXATO (sem markdown):
-TITULO: [máx 10 palavras]
-TAG: [só 1: MUNDO|TECH|CIÊNCIA|POLÍTICA|ECONOMIA|SAÚDE|CULTURA|ESPORTE|INOVAÇÃO|CLIMA]
-RESUMO: [1 frase, máx 18 palavras]
-CORPO: [${paras} parágrafos separados por linha em branco]`;
-
-  const raw = await askAI(prompt);
-  return parseArt(raw, topic);
+function showSpecialBanner() {
+  if (!isSpecial) return;
+  document.getElementById("specialBanner").innerHTML = `
+    <div class="special-banner">
+      <span class="icon">✨</span>
+      <div>
+        <h2>${SPECIAL_DATES[mmdd]}</h2>
+        <p>Hoje publicamos uma edição especial comemorativa com cobertura ampliada.</p>
+      </div>
+    </div>`;
 }
 
-function parseArt(raw, topic) {
-  let title='', tag='MUNDO', summary='', body=[];
-  const lines = raw.split('\n');
-  let bodyLines=[], inBody=false;
-
-  for(const l of lines) {
-    const t = l.trim();
-    if(t.startsWith('TITULO:')) { title = t.slice(7).trim().replace(/\*\*/g,''); continue; }
-    if(t.startsWith('TAG:')) { tag = t.slice(4).trim().toUpperCase().replace(/\*\*/g,''); continue; }
-    if(t.startsWith('RESUMO:')) { summary = t.slice(7).trim().replace(/\*\*/g,''); continue; }
-    if(t.startsWith('CORPO:')) { inBody=true; const r=t.slice(6).trim(); if(r) bodyLines.push(r); continue; }
-    if(inBody) bodyLines.push(t);
-  }
-
-  // Fallbacks
-  if(!title) title = raw.split('\n')[0].replace(/\*\*/g,'').slice(0,80) || `Notícia: ${topic}`;
-  if(!summary) summary = raw.replace(/TITULO:.*|TAG:.*|RESUMO:.*|CORPO:/g,'').trim().slice(0,120).replace(/\*\*/g,'') + '…';
-  
-  const validTags = ['MUNDO','TECH','CIÊNCIA','POLÍTICA','ECONOMIA','SAÚDE','CULTURA','ESPORTE','INOVAÇÃO','CLIMA'];
-  if(!validTags.includes(tag)) {
-    const found = validTags.find(t => raw.toUpperCase().includes(t));
-    tag = found || validTags[Math.floor(Math.random()*validTags.length)];
-  }
-
-  const bodyText = bodyLines.filter(Boolean).join('\n\n');
-  body = (bodyText || raw.replace(/TITULO:.*|TAG:.*|RESUMO:.*|CORPO:/g,'')).trim()
-    .replace(/\*\*/g,'').split(/\n{2,}/).map(p=>p.trim()).filter(Boolean);
-
-  return {
-    id: Date.now() + Math.random(),
-    title, tag, summary, body, topic,
-    date: new Date().toISOString(),
-    dateKey: todayKey()
-  };
-}
-
-// ── Gerar edição diária ──
-async function genDaily(force=false) {
-  const today = todayKey();
-  const existing = db.filter(a => a.dateKey === today);
-  if(!force && existing.length >= 4) { render(); return; }
-
-  lockBtns(true);
-  setProgress(5);
-
-  const count = 5;
-  const topics = [...TOPICS].sort(()=>Math.random()-0.5).slice(0, count);
-
-  if(force) db = db.filter(a => a.dateKey !== today);
-
-  for(let i=0; i<count; i++) {
-    setStatus(`<span class="spin">⟳</span> Gerando notícia ${i+1} de ${count}…`, 'loading');
-    setProgress(5 + (i/count)*90);
-    try {
-      const art = await genArticle(topics[i], i===0);
-      db.unshift(art);
-      save();
-      if(i===0) render();
-    } catch(e) {
-      console.warn('Erro notícia',i,e.message);
-      // Continua mesmo com erro
-    }
-    if(i < count-1) await sleep(600);
-  }
-
-  setProgress(100);
-  setTimeout(()=>setProgress(0), 800);
-  const ok = db.filter(a=>a.dateKey===today).length;
-  setStatus(`✓ Edição publicada com ${ok} notícias!`, 'ok');
-  lockBtns(false);
-  render();
-  updateTicker();
-}
-
-// ── Gerar notícia personalizada ──
-async function genCustom() {
-  const input = document.getElementById('topicInput');
-  const topic = input.value.trim();
-  if(!topic) { setStatus('⚠ Digite um tema primeiro.','error'); return; }
-
-  lockBtns(true);
-  setProgress(20);
-  setStatus(`<span class="spin">⟳</span> Gerando notícia sobre "${topic}"…`, 'loading');
-
+// ─── FETCH RSS ───────────────────────────────────────────────────────────────
+async function fetchRSS(feed) {
+  const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}&api_key=&count=5`;
   try {
-    setProgress(60);
-    const art = await genArticle(topic, true);
-    art.custom = true;
-    db.unshift(art);
-    save();
-    setProgress(100);
-    setTimeout(()=>setProgress(0),600);
-    setStatus(`✓ Notícia publicada: "${art.title}"`, 'ok');
-    input.value = '';
-    render();
-    updateTicker();
-    openModal(art); // Abre automaticamente!
-  } catch(e) {
-    setProgress(0);
-    setStatus('✗ Falha ao gerar. Verifique sua conexão e tente novamente.','error');
-  }
-
-  lockBtns(false);
+    const r = await fetch(url);
+    const d = await r.json();
+    if (d.status !== "ok" || !d.items?.length) return [];
+    return d.items.map(item => ({
+      title: item.title || "",
+      summary: stripHtml(item.description || item.content || "").slice(0,300),
+      link: item.link,
+      date: item.pubDate ? new Date(item.pubDate) : now,
+      source: feed.name,
+      category: feed.cat,
+      emoji: EMOJIS[feed.cat] || "📰",
+      content: null
+    }));
+  } catch { return []; }
 }
 
-// ── Render ──
-function render() {
-  const today = todayKey();
-  const arts = db.filter(a => a.dateKey === today);
+function stripHtml(h) {
+  return h.replace(/<[^>]*>/g,"").replace(/&[a-z]+;/g," ").replace(/\s+/g," ").trim();
+}
 
-  document.getElementById('countBadge').textContent = arts.length + ' notícias';
-
-  if(arts.length === 0) {
-    document.getElementById('featuredSlot').innerHTML = `
-      <div class="card featured">
-        <div class="empty">
-          <div class="icon">📰</div>
-          <h3>Nenhuma notícia ainda</h3>
-          <p>Clique em "EDIÇÃO DIÁRIA" para gerar as notícias de hoje.</p>
-        </div>
-      </div>`;
-    document.getElementById('sideSlot').innerHTML = '';
-    document.getElementById('moreGrid').innerHTML = '';
-    document.getElementById('moreSectionTitle').style.display='none';
+// ─── LOAD ALL NEWS ────────────────────────────────────────────────────────────
+async function loadNews() {
+  const container = document.getElementById("newsContainer");
+  // Check cache
+  const cacheKey = "vctv_news_" + todayKey + "_" + currentEdition;
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    allNews = JSON.parse(cached);
+    renderNews();
+    updateTicker();
     return;
   }
 
-  // Featured
-  document.getElementById('featuredSlot').innerHTML = cardHTML(arts[0], true);
+  // Fetch RSS
+  const feedsToFetch = isWeekend || isSpecial ? RSS_FEEDS : RSS_FEEDS.slice(0,5);
+  const results = await Promise.all(feedsToFetch.map(fetchRSS));
+  let raw = results.flat().filter(n => n.title.length > 10);
 
-  // Side (2-4)
-  const side = arts.slice(1,4);
-  document.getElementById('sideSlot').innerHTML =
-    `<div style="display:flex;flex-direction:column;gap:0.8rem">
-      ${side.map(a => cardSmallHTML(a)).join('')}
-     </div>`;
+  // Remove duplicates
+  const seen = new Set();
+  raw = raw.filter(n => { if (seen.has(n.title)) return false; seen.add(n.title); return true; });
 
-  // More (5+)
-  const more = arts.slice(4);
-  if(more.length) {
-    document.getElementById('moreSectionTitle').style.display='flex';
-    document.getElementById('moreGrid').innerHTML = more.map(a => cardHTML(a, false)).join('');
+  // Sort by date
+  raw.sort((a,b) => b.date - a.date);
+  allNews = raw.slice(0, isWeekend || isSpecial ? 20 : 12);
+
+  // Enhance top stories with AI
+  if (allNews.length > 0) {
+    await enhanceWithAI(allNews.slice(0, isWeekend ? 6 : 3));
+  }
+
+  // Fallback if RSS failed
+  if (allNews.length === 0) {
+    allNews = await generateFallbackNews();
+  }
+
+  try { localStorage.setItem(cacheKey, JSON.stringify(allNews)); } catch(e){}
+  renderNews();
+  updateTicker();
+}
+
+// ─── AI ENHANCE ──────────────────────────────────────────────────────────────
+async function enhanceWithAI(items) {
+  for (let i = 0; i < items.length; i++) {
+    try {
+      const prompt = `Você é um jornalista brasileiro. Escreva um parágrafo introdutório jornalístico de 3 frases sobre esta notícia, em português, de forma envolvente e informativa. Título: "${items[i].title}". Resumo: "${items[i].summary}". Responda APENAS com o parágrafo, sem título.`;
+      const res = await fetch(POLLINATIONS_TEXT + encodeURIComponent(prompt) + "?model=openai&seed=42");
+      const text = await res.text();
+      if (text && text.length > 20) allNews[i].aiIntro = text.trim().slice(0,500);
+    } catch(e) {}
+  }
+}
+
+// ─── FALLBACK: full AI news ───────────────────────────────────────────────────
+async function generateFallbackNews() {
+  const prompt = `Você é redator da VCtv AInews. Gere 6 notícias atuais importantes de ${new Date().toLocaleDateString("pt-BR")} em JSON. Retorne APENAS um array JSON sem markdown. Cada objeto: {"title":"...","summary":"...","category":"tecnologia|mundo|ciencia|economia|cultura|esportes","emoji":"..."}. As notícias devem ser realistas, variadas e relevantes.`;
+  try {
+    const res = await fetch(POLLINATIONS_TEXT + encodeURIComponent(prompt) + "?model=openai&seed=99");
+    const text = await res.text();
+    const clean = text.replace(/```json|```/g,"").trim();
+    const arr = JSON.parse(clean);
+    return arr.map(n => ({...n, source:"VCtv IA", date:now, content:null}));
+  } catch {
+    return [{title:"Sem conexão — modo offline", summary:"Verifique sua internet para carregar notícias.", category:"geral", emoji:"📡", source:"Sistema", date:now}];
+  }
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function setCategory(cat, btn) {
+  currentCategory = cat;
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  renderNews();
+}
+
+function renderNews() {
+  const container = document.getElementById("newsContainer");
+  let filtered = currentCategory === "tudo" ? allNews : allNews.filter(n => n.category === currentCategory);
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="loading"><span>Nenhuma notícia nesta categoria hoje.</span></div>`;
+    return;
+  }
+  container.className = "";
+
+  if (currentEdition === "weekend" || currentEdition === "special") {
+    container.innerHTML = renderWeekendLayout(filtered);
   } else {
-    document.getElementById('moreSectionTitle').style.display='none';
-    document.getElementById('moreGrid').innerHTML='';
+    container.innerHTML = renderDailyLayout(filtered);
   }
 }
 
-function cardHTML(a, big) {
-  return `<div class="card ${big?'featured':''}" onclick="openById(${JSON.stringify(a.id)})">
-    <span class="card-tag">${esc(a.tag)}</span>
-    <h3>${esc(a.title)}</h3>
-    <p>${esc(a.summary)}</p>
-    <div class="card-meta">${fmtDate(a.date)} · VCtv AInews</div>
+function renderDailyLayout(news) {
+  const [hero, ...rest] = news;
+  const side = rest.slice(0,4);
+  const below = rest.slice(4);
+  return `
+    <div class="news-grid">
+      <div class="main-col">
+        ${heroCard(hero)}
+        ${below.map(n => smallCard(n)).join("")}
+      </div>
+      <div class="side-col">
+        ${side.map(n => sideCard(n)).join("")}
+      </div>
+    </div>`;
+}
+
+function renderWeekendLayout(news) {
+  const sections = {};
+  news.forEach(n => { if (!sections[n.category]) sections[n.category] = []; sections[n.category].push(n); });
+  let html = `<div class="news-grid weekend">`;
+  let col = 0;
+  for (const [cat, items] of Object.entries(sections)) {
+    if (col === 0) html += `<div class="main-col">`;
+    html += `<div class="section-title">${EMOJIS[cat]||"📰"} ${cat.toUpperCase()}</div>`;
+    items.forEach(n => { html += smallCard(n); });
+    if (col === 2) { html += `</div>`; col = 0; } else col++;
+  }
+  if (col > 0) html += `</div>`;
+  html += `</div>`;
+  return html;
+}
+
+function heroCard(n) {
+  if (!n) return "";
+  const idx = allNews.indexOf(n);
+  return `<div class="card hero-card" onclick="openModal(${idx})">
+    <div class="card-img">${n.emoji}</div>
+    <div class="card-body">
+      <div class="card-cat">${n.category?.toUpperCase()||"GERAL"}</div>
+      <div class="card-title">${esc(n.title)}</div>
+      <p>${esc(n.aiIntro || n.summary || "")}</p>
+      <div class="card-meta"><span class="source">${n.source||""}</span><span>${fmtDate(n.date)}</span></div>
+    </div>
   </div>`;
 }
 
-function cardSmallHTML(a) {
-  return `<div class="card card-small" onclick="openById(${JSON.stringify(a.id)})">
-    <span class="card-tag">${esc(a.tag)}</span>
-    <h4>${esc(a.title)}</h4>
-    <div class="card-meta">${fmtDate(a.date)}</div>
+function smallCard(n) {
+  const idx = allNews.indexOf(n);
+  return `<div class="card" onclick="openModal(${idx})">
+    <div class="card-body">
+      <div class="card-cat">${n.category?.toUpperCase()||"GERAL"}</div>
+      <div class="card-title small">${esc(n.title)}</div>
+      <p style="font-size:13px">${esc((n.aiIntro||n.summary||"").slice(0,120))}...</p>
+      <div class="card-meta"><span class="source">${n.source||""}</span><span>${fmtDate(n.date)}</span></div>
+    </div>
   </div>`;
 }
 
-// ── Modal ──
-function openById(id) {
-  const a = db.find(x => x.id == id);
-  if(a) openModal(a);
+function sideCard(n) {
+  const idx = allNews.indexOf(n);
+  return `<div class="card" onclick="openModal(${idx})">
+    <div class="card-img small">${n.emoji}</div>
+    <div class="card-body">
+      <div class="card-cat">${n.category?.toUpperCase()||"GERAL"}</div>
+      <div class="card-title small">${esc(n.title)}</div>
+      <div class="card-meta"><span class="source">${n.source||""}</span></div>
+    </div>
+  </div>`;
 }
 
-function openModal(a) {
-  document.getElementById('mTag').textContent = a.tag;
-  document.getElementById('mTitle').textContent = a.title;
-  document.getElementById('mMeta').innerHTML =
-    `<span style="color:var(--green)">●</span> ${fmtDate(a.date)} &nbsp;·&nbsp; VCtv AInews &nbsp;·&nbsp; Gerado por IA`;
-  document.getElementById('mBody').innerHTML =
-    a.body.map(p=>`<p>${esc(p)}</p>`).join('');
-  document.getElementById('modalBg').classList.add('open');
-  document.body.style.overflow='hidden';
+function esc(s) { return (s||"").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function fmtDate(d) {
+  if (!d) return "";
+  try { return new Date(d).toLocaleDateString("pt-BR"); } catch { return ""; }
 }
 
-function closeModal() {
-  document.getElementById('modalBg').classList.remove('open');
-  document.body.style.overflow='';
-}
-document.getElementById('modalBg').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+// ─── MODAL ───────────────────────────────────────────────────────────────────
+async function openModal(idx) {
+  const n = allNews[idx];
+  if (!n) return;
+  const overlay = document.getElementById("modalOverlay");
+  const mc = document.getElementById("modalContent");
+  mc.innerHTML = `
+    <div class="modal-cat">${n.emoji} ${(n.category||"geral").toUpperCase()}</div>
+    <h2>${esc(n.title)}</h2>
+    <div class="modal-meta">${n.source||""} · ${fmtDate(n.date)}</div>
+    <div class="modal-body"><div class="spinner" style="margin:20px auto"></div></div>
+    <button class="modal-close" onclick="closeModal()">Fechar</button>`;
+  overlay.classList.add("open");
 
-// ── Ticker ──
+  if (!n.content) {
+    try {
+      const prompt = `Você é um jornalista da VCtv AInews. Escreva um artigo jornalístico completo em português sobre: "${n.title}". Contexto: ${n.summary||""}. Escreva 4 parágrafos bem desenvolvidos, com fatos, contexto e impacto. Tom profissional e informativo.`;
+      const res = await fetch(POLLINATIONS_TEXT + encodeURIComponent(prompt) + "?model=openai&seed=" + idx);
+      const text = await res.text();
+      n.content = text.trim();
+    } catch { n.content = n.summary || "Conteúdo indisponível."; }
+  }
+
+  const paras = n.content.split(/\n+/).filter(p=>p.trim()).map(p=>`<p>${esc(p)}</p>`).join("");
+  mc.innerHTML = `
+    <div class="modal-cat">${n.emoji} ${(n.category||"geral").toUpperCase()}</div>
+    <h2>${esc(n.title)}</h2>
+    <div class="modal-meta">${n.source||""} · ${fmtDate(n.date)}${n.link?` · <a href="${n.link}" target="_blank" style="color:var(--red)">Fonte original</a>`:""}</div>
+    <div class="modal-body">${paras}</div>
+    <button class="modal-close" onclick="closeModal()">Fechar</button>`;
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById("modalOverlay"))
+    document.getElementById("modalOverlay").classList.remove("open");
+}
+
+// ─── CUSTOM NEWS ─────────────────────────────────────────────────────────────
+async function generateCustomNews() {
+  const topic = document.getElementById("topicInput").value.trim();
+  if (!topic) return;
+  const btn = document.getElementById("genBtn");
+  btn.disabled = true; btn.textContent = "Gerando...";
+  try {
+    const prompt = `Você é um jornalista da VCtv AInews. Crie uma notícia jornalística completa em português sobre: "${topic}". Retorne APENAS um JSON com: {"title":"...","summary":"...","category":"tecnologia|mundo|ciencia|economia|cultura|esportes|geral","emoji":"...","content":"..."}. O content deve ter 4 parágrafos separados por \\n\\n.`;
+    const res = await fetch(POLLINATIONS_TEXT + encodeURIComponent(prompt) + "?model=openai&seed=" + Date.now());
+    const text = await res.text();
+    const clean = text.replace(/```json|```/g,"").trim();
+    const n = JSON.parse(clean);
+    n.source = "VCtv IA · Gerado agora";
+    n.date = new Date();
+    allNews.unshift(n);
+    renderNews();
+    openModal(0);
+  } catch(e) {
+    alert("Erro ao gerar notícia. Tente novamente.");
+  }
+  btn.disabled = false; btn.textContent = "Gerar Notícia";
+  document.getElementById("topicInput").value = "";
+}
+
+// ─── TICKER ───────────────────────────────────────────────────────────────────
 function updateTicker() {
-  const arts = db.filter(a => a.dateKey === todayKey());
-  if(!arts.length) return;
-  const items = [...arts,...arts].map(a=>`<span>${esc(a.title)}</span>`).join('');
-  document.getElementById('tickerInner').innerHTML = items;
+  const titles = allNews.slice(0,8).map(n => `${n.emoji} ${n.title}`).join("  ·  ");
+  document.getElementById("tickerText").textContent = titles;
 }
-
-// ── Utils ──
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function fmtDate(iso) {
-  return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
-}
-function updateDate() {
-  document.getElementById('dateDisplay').textContent =
-    new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short',year:'numeric'}).toUpperCase();
-}
-
-// ── INIT ──
-(async function() {
-  updateDate();
-  load();
-  const today = todayKey();
-  const existing = db.filter(a=>a.dateKey===today);
-
-  if(existing.length > 0) {
-    render();
-    updateTicker();
-    setStatus(`✓ ${existing.length} notícias carregadas de hoje.`, 'ok');
-  }
-
-  if(existing.length < 3) {
-    await genDaily(false);
-  }
-})();
 </script>
-
 </body>
 </html>
