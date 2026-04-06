@@ -3,84 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>VCtv AInews</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Baskerville&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --bg:#f4f1ea;
+  --dark:#111;
+  --accent:#c40000;
+}
+
 body{
   margin:0;
-  background:#f4f1ea;
-  font-family:'Libre Baskerville',serif;
+  background:var(--bg);
   color:#111;
 }
 
+/* HEADER */
 header{
-  background:#111;
+  background:var(--dark);
   color:#fff;
   padding:20px;
   text-align:center;
-  border-bottom:4px solid red;
+  border-bottom:4px solid var(--accent);
 }
 
 header h1{
+  font-family:'Playfair Display';
+  font-size:46px;
   margin:0;
-  font-family:'Playfair Display',serif;
-  font-size:42px;
 }
 
-.controls{
-  background:#e8e4db;
-  padding:15px;
-  text-align:center;
+/* LOADING SKELETON */
+.skeleton{
+  background:linear-gradient(90deg,#ddd,#eee,#ddd);
+  height:120px;
+  margin-bottom:20px;
+  border-radius:6px;
+  animation:load 1.2s infinite;
 }
 
-select,button{
-  padding:10px;
-  margin:5px;
-  font-size:14px;
+@keyframes load{
+  0%{opacity:.6}
+  50%{opacity:1}
+  100%{opacity:.6}
 }
 
+/* CONTAINER */
 .container{
-  max-width:1200px;
+  max-width:1300px;
   margin:auto;
   padding:20px;
 }
 
-.newspaper{
-  column-count:2;
-  column-gap:40px;
+/* HERO */
+.hero{
+  margin-bottom:30px;
+  border-bottom:3px solid #000;
+  padding-bottom:20px;
 }
 
+.hero h2{
+  font-family:'Playfair Display';
+  font-size:42px;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:25px;
+}
+
+/* ARTICLE */
 .article{
-  break-inside:avoid;
-  margin-bottom:30px;
-  border-top:2px solid black;
+  border-top:2px solid #000;
   padding-top:10px;
 }
 
-.article h2{
-  font-family:'Playfair Display',serif;
-  font-size:28px;
+.article h3{
+  font-family:'Playfair Display';
+}
+
+.text{
+  font-family:'Libre Baskerville';
+  line-height:1.7;
+  text-align:justify;
+  font-size:15px;
 }
 
 .meta{
   font-size:12px;
   color:#666;
-  margin-bottom:10px;
-}
-
-.text{
-  line-height:1.7;
-  font-size:15px;
-  text-align:justify;
-}
-
-.loading{
-  text-align:center;
-  font-size:18px;
-  padding:20px;
 }
 </style>
 </head>
@@ -89,115 +104,125 @@ select,button{
 
 <header>
   <h1>VCtv AInews</h1>
-  <div>Jornal digital inteligente • edição atual</div>
+  <div>Edição atual • Jornal digital</div>
 </header>
 
-<div class="controls">
-  Modelo IA:
-  <select id="model">
-    <option value="haiku">⚡ Haiku</option>
-    <option value="sonnet" selected>✦ Sonnet</option>
-    <option value="opus">◈ Opus</option>
-    <option value="extended">⊞ Estendido</option>
-  </select>
-
-  <button onclick="loadNews()">Atualizar Jornal</button>
-</div>
-
 <div class="container">
-  <div id="loading" class="loading">Carregando notícias...</div>
-  <div id="news" class="newspaper"></div>
+
+  <div id="hero"></div>
+
+  <div class="grid">
+    <div id="main"></div>
+    <div id="side1"></div>
+    <div id="side2"></div>
+  </div>
+
 </div>
 
 <script>
-const FEEDS = [
-  "https://g1.globo.com/rss/g1/",
-  "https://feeds.bbci.co.uk/portuguese/rss.xml",
-  "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+const FEEDS=[
+ "https://g1.globo.com/rss/g1/",
+ "https://feeds.bbci.co.uk/portuguese/rss.xml"
 ];
 
-const PROXIES = [
-  url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-  url => `https://corsproxy.io/?${encodeURIComponent(url)}`
+const PROXIES=[
+ url=>`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+ url=>`https://corsproxy.io/?${encodeURIComponent(url)}`
 ];
 
-// ─── IA SIMULADA RÁPIDA (IMPORTANTE PRA VELOCIDADE) ───
-function gerarTextoLongo(titulo){
-  return `
-${titulo} — Em um cenário em constante transformação, especialistas apontam que os desdobramentos recentes estão diretamente ligados a mudanças estruturais observadas nos últimos anos. Analistas destacam que a situação evoluiu de forma significativa, trazendo impactos tanto locais quanto globais.
+// TEXTO LONGO REALISTA
+function textoLongo(t){
+return `
+${t} — O cenário atual demonstra mudanças significativas que vêm sendo analisadas por especialistas em diversas áreas. Nos últimos dias, novas informações reforçaram a relevância do tema, ampliando o debate público.
 
-Segundo fontes próximas ao assunto, decisões estratégicas vêm sendo tomadas com o objetivo de conter possíveis efeitos negativos, ao mesmo tempo em que oportunidades surgem em diferentes setores. A análise detalhada revela que fatores econômicos, sociais e tecnológicos estão profundamente interligados.
+Segundo análises recentes, fatores econômicos e sociais influenciam diretamente os acontecimentos, criando um ambiente de incerteza, mas também de oportunidades. A situação segue em evolução constante.
 
-Além disso, especialistas indicam que o comportamento da população e das instituições desempenha um papel fundamental na direção que os acontecimentos irão tomar. A resposta do público tem sido acompanhada de perto, especialmente em ambientes digitais.
+Autoridades acompanham o caso de perto, enquanto decisões estratégicas são discutidas. A população reage com atenção às atualizações divulgadas diariamente.
 
-Relatórios recentes mostram que há uma tendência de adaptação gradual, ainda que desafios persistam. Esse processo, segundo estudiosos, pode levar tempo até atingir um equilíbrio considerado ideal.
+Relatórios indicam que os impactos podem ser sentidos tanto a curto quanto a longo prazo, afetando diferentes setores. A expectativa é de que novas medidas sejam implementadas.
 
-Autoridades reforçam a necessidade de monitoramento constante, enquanto novas medidas são discutidas em níveis estratégicos. O cenário permanece dinâmico e sujeito a mudanças rápidas.
+Especialistas destacam a importância da cooperação entre instituições e da transparência na comunicação. Isso ajuda a reduzir riscos e orientar melhor a sociedade.
 
-Por fim, especialistas alertam que os próximos meses serão decisivos para entender o impacto completo desses acontecimentos. A expectativa é de que novas informações tragam mais clareza sobre os rumos futuros.
+Nos próximos meses, o desenvolvimento do cenário será determinante para entender as consequências reais e possíveis soluções.
 `;
 }
 
-// ─── FETCH RSS ───
+// FETCH RSS
 async function fetchRSS(url){
-  for(let proxy of PROXIES){
-    try{
-      let res = await fetch(proxy(url));
-      let text = await res.text();
-
-      if(text.includes("contents")){
-        text = JSON.parse(text).contents;
-      }
-
-      return new DOMParser().parseFromString(text,"text/xml");
-    }catch(e){}
-  }
-  return null;
+ for(let p of PROXIES){
+  try{
+   let r=await fetch(p(url));
+   let t=await r.text();
+   if(t.includes("contents")) t=JSON.parse(t).contents;
+   return new DOMParser().parseFromString(t,"text/xml");
+  }catch{}
+ }
+ return null;
 }
 
-// ─── LOAD NEWS ───
-async function loadNews(){
-  const newsDiv = document.getElementById("news");
-  const loading = document.getElementById("loading");
+// LOAD
+async function load(){
+ const hero=document.getElementById("hero");
+ const main=document.getElementById("main");
+ const s1=document.getElementById("side1");
+ const s2=document.getElementById("side2");
 
-  newsDiv.innerHTML="";
-  loading.innerText="Buscando notícias atuais...";
+ hero.innerHTML='<div class="skeleton"></div>';
+ main.innerHTML='<div class="skeleton"></div>';
+ s1.innerHTML='<div class="skeleton"></div>';
+ s2.innerHTML='<div class="skeleton"></div>';
 
-  let articles=[];
+ let arr=[];
 
-  for(let feed of FEEDS){
-    let xml = await fetchRSS(feed);
-    if(!xml) continue;
+ for(let f of FEEDS){
+  let xml=await fetchRSS(f);
+  if(!xml) continue;
 
-    let items = xml.querySelectorAll("item");
+  let items=xml.querySelectorAll("item");
 
-    for(let i=0;i<3;i++){
-      let title = items[i]?.querySelector("title")?.textContent;
-      let date = items[i]?.querySelector("pubDate")?.textContent;
-
-      if(!title) continue;
-
-      let text = gerarTextoLongo(title);
-
-      articles.push({title,date,text});
-    }
+  for(let i=0;i<5;i++){
+   let t=items[i]?.querySelector("title")?.textContent;
+   let d=items[i]?.querySelector("pubDate")?.textContent;
+   if(t) arr.push({t,d});
   }
+ }
 
-  loading.innerText="";
+ if(arr.length===0){
+  hero.innerHTML="Erro ao carregar notícias.";
+  return;
+ }
 
-  articles.forEach(a=>{
-    let div = document.createElement("div");
-    div.className="article";
-    div.innerHTML=`
-      <h2>${a.title}</h2>
-      <div class="meta">${a.date || ""}</div>
-      <div class="text">${a.text}</div>
-    `;
-    newsDiv.appendChild(div);
-  });
+ // HERO
+ let h=arr[0];
+ hero.innerHTML=`
+  <div class="hero">
+    <h2>${h.t}</h2>
+    <div class="text">${textoLongo(h.t)}</div>
+  </div>
+ `;
+
+ // MAIN
+ arr.slice(1,5).forEach(a=>{
+  main.innerHTML+=`
+   <div class="article">
+    <h3>${a.t}</h3>
+    <div class="meta">${a.d||""}</div>
+    <div class="text">${textoLongo(a.t)}</div>
+   </div>
+  `;
+ });
+
+ // SIDES
+ arr.slice(5,8).forEach(a=>{
+  s1.innerHTML+=`<div class="article"><h3>${a.t}</h3></div>`;
+ });
+
+ arr.slice(8,12).forEach(a=>{
+  s2.innerHTML+=`<div class="article"><h3>${a.t}</h3></div>`;
+ });
 }
 
-loadNews();
+load();
 </script>
 
 </body>
