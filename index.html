@@ -2,236 +2,202 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>VCtv AInews</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<title>VCtv AInews V5 FAST</title>
 
 <style>
-:root{
-  --bg:#0a0a0a;
-  --card:#121212;
-  --red:#cc0000;
-  --text:#e5e5e5;
-}
-
 body{
+  background:#0b0b0b;
+  color:#eee;
+  font-family:Georgia, serif;
   margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Inter',sans-serif;
 }
 
 /* HEADER */
 header{
-  padding:12px 16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:2px solid var(--red);
-}
-
-header h1{
-  font-family:'Playfair Display';
+  border-bottom:3px solid #cc0000;
+  padding:15px;
   font-size:22px;
+  font-weight:bold;
 }
 
-/* LIST */
-.feed{
-  max-width:700px;
+/* GRID */
+.container{
+  max-width:1100px;
   margin:auto;
+  padding:20px;
 }
 
-/* CARD */
-.card{
-  background:var(--card);
-  margin:10px;
-  border-radius:10px;
-  overflow:hidden;
+.grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:20px;
+}
+
+.hero{
+  font-size:28px;
+  font-weight:bold;
+  border-bottom:2px solid red;
+  padding-bottom:10px;
   cursor:pointer;
-  transition:.2s;
 }
 
-.card:hover{transform:scale(1.02);}
-
-.card img{
-  width:100%;
-  height:180px;
-  object-fit:cover;
+.card{
+  border-bottom:1px solid #222;
+  padding:12px 0;
+  cursor:pointer;
 }
 
-.card-content{
-  padding:12px;
-}
-
-.card h2{
-  font-size:18px;
-}
-
-.meta{
-  font-size:12px;
-  color:#888;
-}
-
-/* SKELETON */
+/* LOADING */
 .skeleton{
-  height:220px;
-  margin:10px;
-  border-radius:10px;
-  background:linear-gradient(90deg,#222,#333,#222);
-  animation:load 1.2s infinite;
+  background:#1a1a1a;
+  height:20px;
+  margin:10px 0;
+  animation:pulse 1s infinite;
 }
 
-@keyframes load{
-  0%{opacity:.6}
-  50%{opacity:1}
-  100%{opacity:.6}
+@keyframes pulse{
+  50%{opacity:.4;}
 }
 
 /* MODAL */
 .modal{
   position:fixed;
   inset:0;
-  background:#000d;
+  background:#000c;
   display:none;
+  justify-content:center;
+  align-items:center;
 }
-
-.modal.open{display:block;}
 
 .modal-content{
   background:#111;
+  padding:30px;
   max-width:700px;
-  margin:40px auto;
-  padding:20px;
+  max-height:80vh;
+  overflow:auto;
 }
-
 </style>
 </head>
 
 <body>
 
-<header>
-  <h1>VCtv AInews</h1>
-  <button onclick="loadNews()">Atualizar</button>
-</header>
+<header>VCtv AInews ⚡ FAST</header>
 
-<div id="feed" class="feed"></div>
+<div class="container">
+  <div id="news" class="grid"></div>
+</div>
 
-<div id="modal" class="modal" onclick="closeModal(event)">
+<div class="modal" id="modal">
   <div class="modal-content" id="modalContent"></div>
 </div>
 
 <script>
-const FEEDS=[
- "https://g1.globo.com/rss/g1/",
- "https://feeds.bbci.co.uk/portuguese/rss.xml"
+const FEEDS = [
+  "https://g1.globo.com/rss/g1/",
+  "https://feeds.bbci.co.uk/portuguese/rss.xml",
+  "https://g1.globo.com/rss/g1/tecnologia/"
 ];
 
-const PROXY=url=>`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+let news = [];
 
-let news=[];
-let page=0;
+/* ⚡ MOSTRA IMEDIATO */
+showSkeleton();
 
-// FETCH
-async function fetchRSS(url){
- try{
-  let r=await fetch(PROXY(url));
-  let j=await r.json();
-  let xml=new DOMParser().parseFromString(j.contents,"text/xml");
-  return xml;
- }catch{return null;}
-}
+/* ⚡ CARREGA DEPOIS */
+setTimeout(loadFastNews, 50);
 
-// LOAD
-async function loadNews(){
- const feed=document.getElementById("feed");
- feed.innerHTML='<div class="skeleton"></div>'.repeat(5);
-
- news=[];
-
- for(let f of FEEDS){
-  let xml=await fetchRSS(f);
-  if(!xml) continue;
-
-  let items=xml.querySelectorAll("item");
-
-  items.forEach(item=>{
-    news.push({
-      title:item.querySelector("title").textContent,
-      date:item.querySelector("pubDate")?.textContent,
-      img:"https://picsum.photos/600/400?random="+Math.random(),
-      content:null
-    });
-  });
- }
-
- renderMore();
-}
-
-// RENDER SCROLL
-function renderMore(){
- const feed=document.getElementById("feed");
-
- const chunk=news.slice(page,page+6);
-
- chunk.forEach((n,i)=>{
-  let card=document.createElement("div");
-  card.className="card";
-  card.onclick=()=>openArticle(page+i);
-
-  card.innerHTML=`
-    <img src="${n.img}">
-    <div class="card-content">
-      <h2>${n.title}</h2>
-      <div class="meta">${n.date||""}</div>
+function showSkeleton(){
+  document.getElementById("news").innerHTML = `
+    <div>
+      <div class="skeleton" style="height:40px"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+    </div>
+    <div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
     </div>
   `;
-
-  feed.appendChild(card);
- });
-
- page+=6;
 }
 
-// IA
-async function generateAI(title){
- const prompt=`Escreva uma notícia jornalística completa com mínimo de 20 linhas sobre: ${title}`;
- const res=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt));
- return await res.text();
+/* 🚀 CARREGAMENTO RÁPIDO */
+async function loadFastNews(){
+  let all = [];
+
+  for(let url of FEEDS){
+    try{
+      const res = await fetch("https://api.allorigins.win/get?url="+encodeURIComponent(url));
+      const data = await res.json();
+
+      const xml = new DOMParser().parseFromString(data.contents,"text/xml");
+
+      const items = [...xml.querySelectorAll("item")].slice(0,3);
+
+      items.forEach(i=>{
+        all.push({
+          title: i.querySelector("title").textContent,
+          desc: i.querySelector("description").textContent,
+        });
+      });
+
+    }catch(e){}
+  }
+
+  news = all.slice(0,8);
+  render();
 }
 
-// MODAL
-async function openArticle(i){
- const n=news[i];
- const modal=document.getElementById("modal");
- const content=document.getElementById("modalContent");
+/* 🎨 RENDER */
+function render(){
+  const hero = news[0];
+  const rest = news.slice(1);
 
- modal.classList.add("open");
+  document.getElementById("news").innerHTML = `
+    <div>
+      <div class="hero" onclick="openNews(0)">
+        ${hero.title}
+      </div>
+      <p>${hero.desc.slice(0,200)}...</p>
+    </div>
 
- content.innerHTML=`<h2>${n.title}</h2><p>Gerando...</p>`;
-
- if(!n.content){
-  n.content=await generateAI(n.title);
- }
-
- content.innerHTML=`<h2>${n.title}</h2><p>${n.content}</p>`;
+    <div>
+      ${rest.map((n,i)=>`
+        <div class="card" onclick="openNews(${i+1})">
+          ${n.title}
+        </div>
+      `).join("")}
+    </div>
+  `;
 }
 
-function closeModal(e){
- if(e.target.id==="modal"){
-  document.getElementById("modal").classList.remove("open");
- }
+/* 🧠 IA SÓ AO ABRIR (RÁPIDO) */
+async function openNews(i){
+  const n = news[i];
+
+  document.getElementById("modal").style.display="flex";
+  document.getElementById("modalContent").innerHTML="⏳ Gerando matéria...";
+
+  const prompt = `
+  Escreva uma notícia jornalística completa com no mínimo 20 linhas sobre:
+  ${n.title}
+  Tom profissional, estilo jornal.
+  `;
+
+  try{
+    const res = await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt));
+    const text = await res.text();
+
+    document.getElementById("modalContent").innerHTML = "<p>"+text.replace(/\n/g,"</p><p>")+"</p>";
+
+  }catch{
+    document.getElementById("modalContent").innerHTML="Erro ao gerar.";
+  }
 }
 
-// SCROLL INFINITO
-window.addEventListener("scroll",()=>{
- if(window.innerHeight+window.scrollY>=document.body.offsetHeight-100){
-  renderMore();
- }
-});
-
-loadNews();
+/* FECHAR */
+document.getElementById("modal").onclick = () =>
+  document.getElementById("modal").style.display="none";
 </script>
 
 </body>
