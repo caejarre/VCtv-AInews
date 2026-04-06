@@ -40,32 +40,25 @@
     backdrop-filter:blur(10px);
     border-bottom:1px solid #121212;
   }
-
   .brand-row{
     display:flex;justify-content:space-between;align-items:center;gap:16px;
     padding:12px 18px;border-bottom:1px solid #141414;
   }
-
   .brand{
     display:flex;align-items:center;gap:12px;min-width:0;
   }
-
   .brand-badge{
     background:var(--red);color:#fff;border-radius:6px;padding:5px 8px;
     font-family:var(--sans);font-size:12px;font-weight:900;letter-spacing:1.4px;
   }
-
   .brand-name{
     font-family:var(--sans);font-size:22px;font-weight:900;letter-spacing:1px;color:#fff;white-space:nowrap;
   }
-
   .brand-name span{color:var(--red)}
   .brand-sub{font-size:11px;color:var(--muted);font-family:var(--sans);margin-top:2px}
-
   .right-meta{
     display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end
   }
-
   .edition{
     font-family:var(--sans);font-size:10px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;
     padding:5px 10px;border-radius:999px;border:1px solid #2a2a2a;background:#111;color:#bbb;
@@ -79,16 +72,13 @@
     display:flex;gap:10px;align-items:center;flex-wrap:wrap;
     padding:10px 18px;background:#0a0a0a;border-bottom:1px solid #151515;
   }
-
   .select,.input,.btn{
     border-radius:999px;border:1px solid #2a2a2a;background:#121212;color:#ddd;
     padding:10px 14px;font-family:var(--sans);font-size:12px;font-weight:700;outline:none;
   }
-
   .select{min-width:210px}
   .input{flex:1;min-width:220px;color:#eee;font-weight:600}
   .input::placeholder{color:#5a5a5a}
-
   .btn{
     background:linear-gradient(180deg,#d10000,#ae0000);
     border-color:#b30000;color:#fff;cursor:pointer;transition:.18s transform,.18s opacity;
@@ -101,21 +91,16 @@
   .ticker{
     overflow:hidden;white-space:nowrap;background:var(--red);color:#fff;border-bottom:1px solid rgba(255,255,255,.1)
   }
-
   .ticker-inner{
     display:inline-block;padding:6px 0;font-family:var(--sans);font-size:11px;font-weight:800;letter-spacing:.4px;
     animation:ticker 52s linear infinite;
   }
-
   @keyframes ticker{
     from{transform:translateX(100vw)}
     to{transform:translateX(-100%)}
   }
 
-  .container{
-    max-width:1320px;margin:0 auto;padding:18px 16px 28px;
-  }
-
+  .container{max-width:1320px;margin:0 auto;padding:18px 16px 28px}
   .status{
     margin:0 0 14px;
     font-family:var(--sans);font-size:11px;color:#9a9a9a;
@@ -125,7 +110,6 @@
   .tabs{
     display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px
   }
-
   .tab{
     border:1px solid #262626;background:#101010;color:#8b8b8b;
     padding:8px 12px;border-radius:999px;font-size:11px;font-family:var(--sans);font-weight:800;
@@ -137,7 +121,6 @@
   .tools{
     display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px
   }
-
   .tools .small{
     font-family:var(--sans);font-size:11px;color:#8a8a8a
   }
@@ -145,11 +128,9 @@
   .layout{
     display:grid;grid-template-columns:1.7fr .95fr;gap:22px;align-items:start;
   }
-
   @media (max-width: 980px){
     .layout{grid-template-columns:1fr}
   }
-
   .panel{min-width:0}
 
   .logo-panel{
@@ -164,7 +145,6 @@
     cursor:pointer;
     user-select:none;
   }
-
   .logo-panel::before{
     content:"";
     position:absolute;inset:0;
@@ -174,12 +154,10 @@
       radial-gradient(circle at 95% 70%, rgba(255,255,255,.06), transparent 28%);
     pointer-events:none;
   }
-
   .logo-top{
     display:flex;justify-content:center;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:10px;
     filter:drop-shadow(0 2px 0 rgba(0,0,0,.12));
   }
-
   .logo-icon{
     width:36px;height:36px;border:3px solid #111;border-radius:7px;position:relative;background:rgba(255,255,255,.02)
   }
@@ -267,31 +245,23 @@
     background:linear-gradient(180deg,#131316,#0f0f11);
     border:1px solid #232326;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);
   }
-
   .hero-inner{padding:24px 24px 20px}
-
   .kicker{
     display:flex;align-items:center;gap:8px;flex-wrap:wrap;
     font-family:var(--sans);font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;
     color:var(--red);margin-bottom:10px
   }
-
   .kicker .dot{width:5px;height:5px;border-radius:50%;background:var(--red);display:inline-block}
-
   .hero h1{
     font-family:var(--display);font-size:40px;line-height:1.08;margin:0 0 12px;color:#fff
   }
-
   @media (max-width: 700px){
     .hero h1{font-size:31px}
   }
-
   .hero-lead{
     font-size:16px;line-height:1.9;color:#d5d5d5;margin-top:14px
   }
-
   .hero-lead p{margin:0 0 10px}
-
   .hero-meta{
     font-size:11px;font-family:var(--sans);color:#8b8b8b;border-top:1px solid #212126;padding-top:10px;margin-top:12px
   }
@@ -301,7 +271,6 @@
     display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
     background:#1e1e1e;border:1px solid #1e1e1e;border-radius:16px;overflow:hidden;
   }
-
   @media (max-width: 1020px){
     .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
@@ -313,21 +282,16 @@
     background:var(--card);padding:18px;cursor:pointer;transition:.18s background,.18s transform;
     display:flex;flex-direction:column;gap:8px;position:relative;
   }
-
   .story-card:hover,.card:hover,.rail-item:hover{background:#17171a;transform:translateY(-1px)}
-
   .story-cat{
     font-family:var(--sans);font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--red)
   }
-
   .story-title{
     font-family:var(--display);font-size:18px;line-height:1.35;color:#efefef;font-weight:700
   }
-
   .story-excerpt{
     font-size:13px;line-height:1.65;color:#9e9e9e;flex:1
   }
-
   .story-meta{
     display:flex;justify-content:space-between;gap:10px;align-items:center;
     border-top:1px solid #1f1f1f;padding-top:9px;font-family:var(--sans);font-size:10px;color:#666
@@ -345,38 +309,30 @@
     border:1px solid #222;border-radius:18px;padding:16px;box-shadow:var(--shadow);
     position:sticky;top:146px;
   }
-
   @media (max-width: 980px){
     .rail{position:static}
   }
-
   .rail-title{
     font-family:var(--sans);font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;
     color:#a1a1a1;border-bottom:1px solid #1f1f1f;padding-bottom:8px;margin-bottom:10px
   }
-
   .rail-item{
     display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #181818;
   }
   .rail-item:last-child{border-bottom:none}
-
   .rail-num{
     min-width:34px;font-family:var(--display);font-size:28px;line-height:1;color:#2c2c2c;font-weight:900
   }
-
   .rail-info{min-width:0}
   .rail-cat{
     font-family:var(--sans);font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);margin-bottom:4px
   }
-
   .rail-title-text{
     font-family:var(--display);font-size:15px;line-height:1.34;color:#dedede;margin-bottom:4px
   }
-
   .rail-excerpt{
     font-size:12px;line-height:1.55;color:#8a8a8a
   }
-
   .rail-meta{
     margin-top:5px;font-size:10px;font-family:var(--sans);color:#666
   }
@@ -384,11 +340,9 @@
   .section-divider{
     display:flex;align-items:center;gap:12px;margin:22px 0 14px;
   }
-
   .section-divider::before,.section-divider::after{
     content:"";height:1px;background:#1f1f1f;flex:1
   }
-
   .section-label{
     font-family:var(--sans);font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--red);white-space:nowrap
   }
@@ -396,7 +350,6 @@
   .empty{
     padding:24px;border:1px dashed #2a2a2a;border-radius:14px;color:#888;font-family:var(--sans);background:#0e0e0e
   }
-
   .skeleton{
     background:linear-gradient(90deg,#19191b,#242428,#19191b);
     background-size:200% 100%;
@@ -404,7 +357,6 @@
     border-radius:14px;
     min-height:160px
   }
-
   @keyframes shimmer{
     0%{background-position:200% 0}
     100%{background-position:-200% 0}
@@ -413,48 +365,35 @@
   .modal-overlay{
     display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:2000;overflow:auto;padding:24px
   }
-
   .modal-overlay.open{display:flex;align-items:flex-start;justify-content:center}
-
   .modal{
     width:100%;max-width:860px;margin:auto;background:#0f0f10;border:1px solid #2c2c31;border-radius:18px;
     box-shadow:0 30px 100px rgba(0,0,0,.6);padding:26px
   }
-
   .modal h2{
     font-family:var(--display);font-size:32px;line-height:1.14;margin:0 0 10px;color:#fff
   }
-
   .modal-meta{
     font-family:var(--sans);font-size:11px;color:#8a8a8a;border-bottom:1px solid #1f1f1f;padding-bottom:14px;margin-bottom:18px
   }
-
   .modal-meta a{color:var(--red);text-decoration:none}
-
   .modal-body{
     font-size:16px;line-height:1.95;color:#d7d7d7
   }
-
   .modal-body p{margin:0 0 14px}
-
   .modal-actions{
     display:flex;justify-content:flex-end;gap:10px;margin-top:22px
   }
-
   .close-btn{
     border:1px solid #2c2c2c;background:#151515;color:#ccc;border-radius:999px;padding:9px 16px;cursor:pointer
   }
-
   .close-btn:hover{background:#1a1a1a}
-
   .loader{
     display:flex;align-items:center;gap:10px;color:#8e8e8e;font-family:var(--sans);font-size:13px;padding:10px 0
   }
-
   .spinner{
     width:20px;height:20px;border-radius:50%;border:2px solid #2a2a2a;border-top-color:var(--red);animation:spin .8s linear infinite
   }
-
   @keyframes spin{to{transform:rotate(360deg)}}
 
   .egg-badge{
@@ -462,11 +401,53 @@
     padding:8px 12px;border-radius:999px;background:#121212;color:#ddd;border:1px solid #272727;
     font-family:var(--sans);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase
   }
-
   .secret{
     background:linear-gradient(180deg,#111,#0c0c0c);
     border:1px solid #2d2d16;
     box-shadow:0 0 0 1px rgba(240,180,41,.08), var(--shadow);
+  }
+
+  .print-mode .logo-panel,
+  .print-mode .hero,
+  .print-mode .cards,
+  .print-mode .rail,
+  .print-mode .modal{
+    border-radius:0;
+  }
+  .print-mode{
+    background:#f4f1ea;
+    color:#111;
+  }
+  .print-mode .topbar,
+  .print-mode .ticker,
+  .print-mode .container,
+  .print-mode .hero,
+  .print-mode .rail,
+  .print-mode .card,
+  .print-mode .story-card,
+  .print-mode .modal{
+    color:#111;
+  }
+  .print-mode .hero,
+  .print-mode .rail,
+  .print-mode .card,
+  .print-mode .story-card,
+  .print-mode .modal{
+    background:#fff;
+    border-color:#ddd;
+    box-shadow:none;
+  }
+  .print-mode .story-title,
+  .print-mode .rail-title-text,
+  .print-mode .modal h2,
+  .print-mode .hero h1{
+    color:#111;
+  }
+  .print-mode .story-excerpt,
+  .print-mode .rail-excerpt,
+  .print-mode .hero-lead,
+  .print-mode .modal-body{
+    color:#333;
   }
 
   footer{
@@ -512,7 +493,7 @@
 <div class="container">
   <div id="statusBar" class="status">🔄 Carregando jornal...</div>
 
-  <div class="logo-panel" id="logoPanel" onclick="logoTap()">
+  <div class="logo-panel" id="logoPanel" onclick="logoTap()" title="Clique 5 vezes para um segredo">
     <div class="logo-mini">VCtv</div>
     <div class="logo-top" aria-hidden="true">
       <div class="logo-icon camera"></div>
@@ -530,6 +511,7 @@
     <span class="small" id="countText"></span>
     <button class="btn secondary" onclick="clearSearch()">Limpar busca</button>
     <button class="btn secondary" onclick="toggleFavoritesView()" id="favToggleBtn">Favoritos</button>
+    <button class="btn secondary" onclick="togglePrintMode()" id="printToggleBtn">Modo impresso</button>
   </div>
 
   <div class="tabs">
@@ -584,14 +566,14 @@ const RSS_FALLBACKS = [
 ];
 
 const MODEL_PRESETS = {
-  haiku:    { id: "openai",       label: "Haiku",    paragraphs: 6, timeout: 11000 },
-  sonnet:   { id: "openai-large", label: "Sonnet",   paragraphs: 7, timeout: 15000 },
-  opus:     { id: "mistral-large", label: "Opus",    paragraphs: 8, timeout: 18000 },
-  extended: { id: "openai-large", label: "Estendido",paragraphs: 10, timeout: 22000 }
+  haiku:    { id: "openai",        label: "Haiku",    paragraphs: 6, timeout: 11000 },
+  sonnet:   { id: "openai-large",   label: "Sonnet",   paragraphs: 7, timeout: 15000 },
+  opus:     { id: "mistral-large",  label: "Opus",     paragraphs: 8, timeout: 18000 },
+  extended: { id: "openai-large",   label: "Estendido",paragraphs: 10, timeout: 22000 }
 };
 
 const POLLINATIONS_KEY = "";
-const CACHE_KEY = "vctv_ai_news_cache_v7";
+const CACHE_KEY = "vctv_ai_news_cache_v8";
 const CACHE_TTL = 10 * 60 * 1000;
 const LAST_MINUTES = 360;
 
@@ -614,14 +596,14 @@ const state = {
   currentModalIndex: null,
   eggClicks: 0,
   eggTimer: null,
-  showFavoritesOnly: JSON.parse(localStorage.getItem("vctv_show_favorites_only") || "false")
+  showFavoritesOnly: JSON.parse(localStorage.getItem("vctv_show_favorites_only") || "false"),
+  secretMode: false
 };
 
 const now = new Date();
 const dayKey = `${String(now.getDate()).padStart(2,"0")}-${String(now.getMonth()+1).padStart(2,"0")}`;
 const isWeekend = now.getDay() === 0 || now.getDay() === 6;
 const currentEdition = SPECIAL_DATES[dayKey] ? "special" : isWeekend ? "weekend" : "daily";
-
 const storyAngleMemory = new Map();
 
 function esc(s){
@@ -660,7 +642,6 @@ function normalizeArticle(a){
     key: a.key || hashKey((a.title || "") + "|" + (a.link || "") + "|" + (a.source || ""))
   };
 }
-
 function hashKey(str){
   let h = 0;
   for(let i = 0; i < str.length; i++){
@@ -668,7 +649,6 @@ function hashKey(str){
   }
   return String(h);
 }
-
 function dedupeArticles(items){
   const seen = new Set();
   const out = [];
@@ -680,7 +660,6 @@ function dedupeArticles(items){
   }
   return out;
 }
-
 function visibleArticles(){
   let items = state.activeCategory === "tudo" ? state.articles : state.articles.filter(a => a.category === state.activeCategory);
   const q = document.getElementById("searchInput").value.trim().toLowerCase();
@@ -696,7 +675,6 @@ function visibleArticles(){
   }
   return items;
 }
-
 function teaserFor(article){
   const add = {
     brasil: "A apuração acompanha efeitos políticos, econômicos e sociais no país.",
@@ -710,7 +688,6 @@ function teaserFor(article){
   const base = article.summary ? stripHtml(article.summary) : article.title;
   return `${base} ${add[article.category] || "A reportagem completa detalha o contexto e os próximos passos."}`.trim();
 }
-
 function paragraphsFromText(text){
   let paras = String(text || "").split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
   if(paras.length <= 1){
@@ -724,19 +701,16 @@ function paragraphsFromText(text){
   }
   return paras.filter(Boolean);
 }
-
 function buildParagraphHtml(text){
   const paras = paragraphsFromText(text);
   if(!paras.length) return `<p>Conteúdo indisponível.</p>`;
   return paras.map(p => `<p>${esc(p)}</p>`).join("");
 }
-
 function saveCache(){
   try{
     localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), articles: state.articles }));
   }catch{}
 }
-
 function loadCache(){
   try{
     const raw = localStorage.getItem(CACHE_KEY);
@@ -749,7 +723,6 @@ function loadCache(){
     return null;
   }
 }
-
 async function fetchWithTimeout(url, options = {}, timeout = 8000){
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
@@ -763,7 +736,6 @@ async function fetchWithTimeout(url, options = {}, timeout = 8000){
 function pick(arr){
   return arr[Math.floor(Math.random() * arr.length)];
 }
-
 function topicFingerprint(text){
   return String(text || "")
     .toLowerCase()
@@ -773,7 +745,6 @@ function topicFingerprint(text){
     .slice(0, 8)
     .join("-");
 }
-
 function buildAngle(topic, category){
   const angles = {
     brasil: [
@@ -819,17 +790,14 @@ function buildAngle(topic, category){
       "análise do desempenho e do calendário"
     ]
   };
-
   const list = angles[category] || [
     "o que aconteceu e por que importa",
     "efeitos imediatos e próximos passos",
     "repercussão prática para o público",
     "contexto e consequências"
   ];
-
   return pick(list);
 }
-
 function buildFreshPrompt(topic, category, preset, sourceContext = ""){
   const fingerprint = topicFingerprint(topic);
   const angle = buildAngle(topic, category);
@@ -882,7 +850,6 @@ Regras obrigatórias:
 Retorne apenas o texto final, sem título, sem markdown, sem bullets.
   `.trim();
 }
-
 function buildArticlePrompt(article, preset){
   const sourceContext = article.summary || teaserFor(article);
   const styles = [
@@ -995,7 +962,6 @@ function fallbackLocalLongForm(article){
 
   return paragraphs.join("\n\n");
 }
-
 function buildLocalCustomArticle(topic, category, preset){
   const angle = buildAngle(topic, category);
   const intro = [
@@ -1029,10 +995,7 @@ function buildLocalCustomArticle(topic, category, preset){
   return paras.join("\n\n");
 }
 
-function isFav(key){
-  return state.favorites.has(key);
-}
-
+function isFav(key){ return state.favorites.has(key); }
 function toggleFav(key){
   if(state.favorites.has(key)) state.favorites.delete(key);
   else state.favorites.add(key);
@@ -1102,12 +1065,10 @@ function renderSkeleton(){
     <div class="skeleton" style="min-height:120px"></div>
   `;
 }
-
 function renderEmpty(){
   document.getElementById("mainPanel").innerHTML = `<div class="empty">Nenhuma notícia encontrada nessa categoria agora.</div>`;
   document.getElementById("railPanel").innerHTML = `<div class="empty">Sem destaques por enquanto.</div>`;
 }
-
 function render(){
   const items = visibleArticles();
   document.getElementById("countText").textContent = items.length ? `${items.length} notícia(s) visível(is)` : "Sem resultados";
@@ -1149,14 +1110,12 @@ function render(){
 
   updateTicker();
 }
-
 function updateTicker(){
   const items = visibleArticles().slice(0, 10);
   document.getElementById("tickerText").textContent = items.length
     ? items.map(a => `${a.emoji} ${a.title}`).join("  ·  ")
     : "VCtv AInews — notícias do dia";
 }
-
 function setCategory(cat, btn){
   state.activeCategory = cat;
   document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
@@ -1164,19 +1123,21 @@ function setCategory(cat, btn){
   render();
   updateTicker();
 }
-
 function clearSearch(){
   document.getElementById("searchInput").value = "";
   render();
 }
-
 function toggleFavoritesView(){
   state.showFavoritesOnly = !state.showFavoritesOnly;
   localStorage.setItem("vctv_show_favorites_only", JSON.stringify(state.showFavoritesOnly));
   document.getElementById("favToggleBtn").textContent = state.showFavoritesOnly ? "Todos" : "Favoritos";
   render();
 }
-
+function togglePrintMode(){
+  state.secretMode = !state.secretMode;
+  document.body.classList.toggle("print-mode", state.secretMode);
+  document.getElementById("printToggleBtn").textContent = state.secretMode ? "Sair do modo impresso" : "Modo impresso";
+}
 function setLogoState(){
   const badge = document.getElementById("editionBadge");
   if(currentEdition === "special"){
@@ -1190,7 +1151,6 @@ function setLogoState(){
     badge.textContent = "EDIÇÃO DIÁRIA";
   }
 }
-
 function showModal(title, bodyHtml, extraClass=""){
   const ov = document.getElementById("modalOverlay");
   const mc = document.getElementById("modalContent");
@@ -1220,7 +1180,6 @@ function openModalSkeleton(article){
   `;
   document.getElementById("modalOverlay").classList.add("open");
 }
-
 async function aiGenerateLongArticle(article){
   const preset = getPreset();
   const system = "Você é um jornalista sênior da VCtv AInews. Escreva em português do Brasil, com tom jornalístico, fluido, atual e profissional. Não use markdown, não use títulos internos, não use bullets.";
@@ -1234,7 +1193,6 @@ async function aiGenerateLongArticle(article){
   const text = await fetchWithTimeout(url, {}, preset.timeout).then(r => r.text());
   return (text || "").trim();
 }
-
 async function openArticle(index){
   const article = state.articles[index];
   if(!article) return;
@@ -1271,15 +1229,8 @@ async function openArticle(index){
     }).catch(()=>{});
   }
 }
-
-function closeModal(){
-  document.getElementById("modalOverlay").classList.remove("open");
-  state.currentModalIndex = null;
-}
-
-function closeModalBg(e){
-  if(e.target === document.getElementById("modalOverlay")) closeModal();
-}
+function closeModal(){ document.getElementById("modalOverlay").classList.remove("open"); state.currentModalIndex = null; }
+function closeModalBg(e){ if(e.target === document.getElementById("modalOverlay")) closeModal(); }
 
 /* FONTE DE NOTÍCIAS */
 async function fetchGDELTCategory(cat){
@@ -1307,7 +1258,6 @@ async function fetchGDELTCategory(cat){
     });
   }).filter(a => a.title.length > 6);
 }
-
 async function fetchRSSFallback(feed){
   try{
     const proxies = [
@@ -1346,7 +1296,6 @@ async function fetchRSSFallback(feed){
   }catch{}
   return [];
 }
-
 async function loadCurrentArticles(){
   const coreCats = [CATEGORIES[0], CATEGORIES[1], CATEGORIES[2], CATEGORIES[4]];
   const extraCats = [CATEGORIES[3], CATEGORIES[5], CATEGORIES[6]];
@@ -1384,7 +1333,6 @@ async function loadCurrentArticles(){
 
   return articles;
 }
-
 function reindexArticles(){
   state.articles.forEach((a, i) => a.index = i);
 }
@@ -1428,11 +1376,11 @@ async function refreshNews(force = false){
 
 function boot(){
   document.getElementById("dateDisplay").textContent = fmtLongDate(now);
-
   setLogoState();
 
   document.getElementById("modelSelect").value = state.activeModel;
   document.getElementById("favToggleBtn").textContent = state.showFavoritesOnly ? "Todos" : "Favoritos";
+  document.getElementById("printToggleBtn").textContent = state.secretMode ? "Sair do modo impresso" : "Modo impresso";
 
   const cached = loadCache();
   if(cached?.length){
@@ -1446,12 +1394,10 @@ function boot(){
 
   updateTicker();
   render();
-
   setTimeout(() => refreshNews(false), 60);
   setInterval(updateTicker, 30000);
   document.addEventListener("keydown", handleKeys);
 }
-
 document.addEventListener("DOMContentLoaded", boot);
 
 /* NOTÍCIA CUSTOM */
@@ -1517,7 +1463,6 @@ function guessCategory(topic){
   if(/(brasil|política|politica|governo|prefeitura|congresso|eleição|eleicao|lula|bolsonaro|stf)/.test(t)) return "brasil";
   return "mundo";
 }
-
 function emojiFor(category){
   const map = {
     brasil: "🇧🇷",
@@ -1530,26 +1475,13 @@ function emojiFor(category){
   };
   return map[category] || "📰";
 }
-
 function clearCacheNow(){
   localStorage.removeItem(CACHE_KEY);
   localStorage.removeItem("vctv_favorites");
   localStorage.removeItem("vctv_show_favorites_only");
 }
 
-function handleKeys(e){
-  if(e.key === "Escape") closeModal();
-  if(e.key === "/" && document.activeElement !== document.getElementById("searchInput")){
-    e.preventDefault();
-    document.getElementById("searchInput").focus();
-  }
-  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k"){
-    e.preventDefault();
-    document.getElementById("searchInput").focus();
-  }
-}
-
-/* EASTER EGG */
+/* EASTER EGGS */
 function logoTap(){
   state.eggClicks += 1;
   clearTimeout(state.eggTimer);
@@ -1561,30 +1493,46 @@ function logoTap(){
     showEgg();
   }
 }
-
 function showEgg(){
   const eggText = `
-    <div class="egg-badge">Redação Secreta</div>
-    <p style="margin-top:12px">Você encontrou o modo escondido da VCtv.</p>
-    <p>Este espaço aparece só para quem clica no logo várias vezes.</p>
-    <p>Se quiser, dá para transformar isso num modo turbo, numa página secreta ou numa reportagem especial.</p>
+    <p>Você encontrou o modo escondido da VCtv.</p>
+    <p>Tem várias rotas secretas por aqui: logo, teclado e palavras-chave.</p>
+    <p>Esse espaço pode virar modo turbo, redação secreta ou edição especial.</p>
+    <p><strong>Dica:</strong> tenta digitar <em>vcpro</em>, <em>jornal</em>, <em>glitch</em> ou <em>666</em> na busca e apertar Enter.</p>
   `;
   showModal("Easter egg ativado", eggText, "secret");
 }
-
-function showModal(title, bodyHtml, extraClass=""){
-  const ov = document.getElementById("modalOverlay");
-  const mc = document.getElementById("modalContent");
-  mc.className = extraClass ? `modal ${extraClass}` : "modal";
-  mc.innerHTML = `
-    <div class="egg-badge">VCtv</div>
-    <h2 style="margin-top:12px">${esc(title)}</h2>
-    <div class="modal-body">${bodyHtml}</div>
-    <div class="modal-actions">
-      <button class="close-btn" onclick="closeModal()">Fechar</button>
-    </div>
-  `;
-  ov.classList.add("open");
+function triggerSecretInput(val){
+  if(val === "vcpro"){
+    togglePrintMode();
+    showModal("Modo VC Pro", "<p>Modo editorial ativo.</p><p>O layout muda para uma leitura mais limpa e especial.</p>", "secret");
+  }else if(val === "jornal"){
+    showModal("Redação secreta", "<p>Você entrou no modo jornal.</p><p>Essa área simula uma edição especial da redação VCtv.</p>", "secret");
+  }else if(val === "glitch"){
+    document.body.style.filter = "hue-rotate(240deg) contrast(1.1)";
+    showModal("Glitch ativado", "<p>Pequeno efeito visual secreto ativado.</p>", "secret");
+    setTimeout(() => document.body.style.filter = "", 2500);
+  }else if(val === "666"){
+    document.body.classList.add("print-mode");
+    state.secretMode = true;
+    document.getElementById("printToggleBtn").textContent = "Sair do modo impresso";
+    showModal("Modo obscuro", "<p>Uma edição escondida acabou de aparecer.</p><p>Esse é só um modo visual secreto, sem mudar o conteúdo.</p>", "secret");
+  }
+}
+function handleKeys(e){
+  if(e.key === "Escape") closeModal();
+  if(e.key === "/" && document.activeElement !== document.getElementById("searchInput")){
+    e.preventDefault();
+    document.getElementById("searchInput").focus();
+  }
+  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k"){
+    e.preventDefault();
+    document.getElementById("searchInput").focus();
+  }
+  if(e.key === "Enter" && document.activeElement === document.getElementById("searchInput")){
+    const val = document.getElementById("searchInput").value.trim().toLowerCase();
+    if(["vcpro","jornal","glitch","666"].includes(val)) triggerSecretInput(val);
+  }
 }
 </script>
 </body>
