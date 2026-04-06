@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>VCtv AInews</title>
 <meta name="theme-color" content="#070707" />
-
 <style>
   :root{
     --bg:#070707;
@@ -37,8 +36,8 @@
 
   .topbar{
     position:sticky;top:0;z-index:1000;
-    background:rgba(7,7,7,.95);
-    backdrop-filter:blur(8px);
+    background:rgba(7,7,7,.96);
+    backdrop-filter:blur(10px);
     border-bottom:1px solid #121212;
   }
 
@@ -74,7 +73,6 @@
   .edition.daily{color:var(--green);border-color:#214028;background:#0f1510}
   .edition.weekend{color:var(--blue);border-color:#24335c;background:#10131a}
   .edition.special{color:var(--gold);border-color:#4a3900;background:#171200}
-
   #dateDisplay{font-size:11px;color:var(--muted);font-family:var(--sans)}
 
   .toolbar{
@@ -106,7 +104,7 @@
 
   .ticker-inner{
     display:inline-block;padding:6px 0;font-family:var(--sans);font-size:11px;font-weight:800;letter-spacing:.4px;
-    animation:ticker 60s linear infinite;
+    animation:ticker 52s linear infinite;
   }
 
   @keyframes ticker{
@@ -125,7 +123,7 @@
   }
 
   .tabs{
-    display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px
+    display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px
   }
 
   .tab{
@@ -136,8 +134,16 @@
   .tab:hover{color:#fff;border-color:#3a3a3a}
   .tab.active{background:var(--red);color:#fff;border-color:var(--red)}
 
+  .tools{
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px
+  }
+
+  .tools .small{
+    font-family:var(--sans);font-size:11px;color:#8a8a8a
+  }
+
   .layout{
-    display:grid;grid-template-columns:1.72fr .9fr;gap:22px;align-items:start;
+    display:grid;grid-template-columns:1.7fr .95fr;gap:22px;align-items:start;
   }
 
   @media (max-width: 980px){
@@ -145,6 +151,117 @@
   }
 
   .panel{min-width:0}
+
+  .logo-panel{
+    background:linear-gradient(180deg,#18c85f,#11b955);
+    border-radius:18px;
+    padding:18px 18px 22px;
+    box-shadow:var(--shadow);
+    border:1px solid rgba(255,255,255,.14);
+    position:relative;
+    overflow:hidden;
+    margin-bottom:16px;
+    cursor:pointer;
+    user-select:none;
+  }
+
+  .logo-panel::before{
+    content:"";
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.08), transparent 24%),
+      radial-gradient(circle at 85% 15%, rgba(255,255,255,.08), transparent 20%),
+      radial-gradient(circle at 95% 70%, rgba(255,255,255,.06), transparent 28%);
+    pointer-events:none;
+  }
+
+  .logo-top{
+    display:flex;justify-content:center;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:10px;
+    filter:drop-shadow(0 2px 0 rgba(0,0,0,.12));
+  }
+
+  .logo-icon{
+    width:36px;height:36px;border:3px solid #111;border-radius:7px;position:relative;background:rgba(255,255,255,.02)
+  }
+  .logo-icon.phone::before,
+  .logo-icon.phone::after{
+    content:"";position:absolute;left:50%;transform:translateX(-50%);background:#111;border-radius:2px
+  }
+  .logo-icon.phone::before{top:4px;width:18px;height:2px}
+  .logo-icon.phone::after{bottom:4px;width:12px;height:2px}
+  .logo-icon.camera{
+    border-radius:10px;transform:rotate(-12deg);width:46px;height:34px
+  }
+  .logo-icon.camera::before{
+    content:"";position:absolute;top:8px;left:6px;width:26px;height:16px;border:3px solid #111;border-radius:50%
+  }
+  .logo-icon.mic{
+    width:26px;height:40px;border:none
+  }
+  .logo-icon.mic::before{
+    content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);
+    width:16px;height:24px;border:3px solid #111;border-radius:12px 12px 14px 14px
+  }
+  .logo-icon.mic::after{
+    content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+    width:3px;height:14px;background:#111;box-shadow:0 0 0 1px #111
+  }
+  .logo-icon.news{
+    width:50px;height:34px;transform:rotate(12deg);border-radius:6px
+  }
+  .logo-icon.news::before{
+    content:"";position:absolute;left:7px;top:7px;right:7px;bottom:7px;
+    background:
+      linear-gradient(#111,#111) 0 0/100% 3px no-repeat,
+      linear-gradient(#111,#111) 0 8px/100% 3px no-repeat,
+      linear-gradient(#111,#111) 0 16px/100% 3px no-repeat;
+  }
+  .logo-icon.news::after{
+    content:"";position:absolute;right:6px;bottom:6px;width:9px;height:9px;border:3px solid #111
+  }
+  .logo-icon.glob{
+    width:42px;height:42px;border-radius:50%;
+    background:
+      radial-gradient(circle at 50% 50%, transparent 0 6px, transparent 6px),
+      linear-gradient(#111,#111) 0 50%/100% 3px no-repeat,
+      linear-gradient(#111,#111) 50% 0/3px 100% no-repeat;
+  }
+  .logo-icon.glob::before,
+  .logo-icon.glob::after{
+    content:"";position:absolute;border:3px solid #111;border-radius:50%;inset:0
+  }
+  .logo-icon.glob::after{inset:7px 0}
+  .logo-word{
+    text-align:center;
+    font-family:var(--sans);
+    font-weight:900;
+    font-size:82px;
+    line-height:0.9;
+    color:#fff;
+    letter-spacing:-4px;
+    text-shadow:0 3px 12px rgba(0,0,0,.14);
+  }
+  @media (max-width:700px){
+    .logo-word{font-size:60px}
+  }
+  .logo-tagline{
+    text-align:center;
+    font-family:var(--sans);
+    color:#f4fff5;
+    font-size:22px;
+    line-height:1.15;
+    margin-top:10px;
+    text-shadow:0 2px 10px rgba(0,0,0,.12);
+  }
+  @media (max-width:700px){
+    .logo-tagline{font-size:17px}
+  }
+  .logo-mini{
+    position:absolute;top:14px;left:14px;
+    background:rgba(0,0,0,.15);
+    color:#fff;padding:5px 8px;border-radius:999px;
+    font-family:var(--sans);font-size:10px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase
+  }
 
   .hero{
     background:linear-gradient(180deg,#131316,#0f0f11);
@@ -194,7 +311,7 @@
 
   .story-card,.card,.rail-item{
     background:var(--card);padding:18px;cursor:pointer;transition:.18s background,.18s transform;
-    display:flex;flex-direction:column;gap:8px;
+    display:flex;flex-direction:column;gap:8px;position:relative;
   }
 
   .story-card:hover,.card:hover,.rail-item:hover{background:#17171a;transform:translateY(-1px)}
@@ -215,6 +332,13 @@
     display:flex;justify-content:space-between;gap:10px;align-items:center;
     border-top:1px solid #1f1f1f;padding-top:9px;font-family:var(--sans);font-size:10px;color:#666
   }
+
+  .fav-btn{
+    position:absolute;top:14px;right:14px;
+    border:none;background:#111;color:#bbb;width:30px;height:30px;border-radius:50%;
+    cursor:pointer;font-weight:900;display:grid;place-items:center;border:1px solid #2a2a2a
+  }
+  .fav-btn.on{color:#ffd66c;border-color:#5b4810;background:#1a1407}
 
   .rail{
     background:linear-gradient(180deg,#0f0f11,#0c0c0d);
@@ -333,6 +457,18 @@
 
   @keyframes spin{to{transform:rotate(360deg)}}
 
+  .egg-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:8px 12px;border-radius:999px;background:#121212;color:#ddd;border:1px solid #272727;
+    font-family:var(--sans);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase
+  }
+
+  .secret{
+    background:linear-gradient(180deg,#111,#0c0c0c);
+    border:1px solid #2d2d16;
+    box-shadow:0 0 0 1px rgba(240,180,41,.08), var(--shadow);
+  }
+
   footer{
     margin-top:26px;padding:20px 14px 30px;text-align:center;color:#555;font-family:var(--sans);font-size:11px;border-top:1px solid #141414
   }
@@ -347,7 +483,7 @@
       <span class="brand-badge">VC</span>
       <div>
         <div class="brand-name">VCtv <span>AI</span>news</div>
-        <div class="brand-sub">Estilo jornal • rápido • estável</div>
+        <div class="brand-sub">Estilo jornal • rápido • estável • com logo e easter egg</div>
       </div>
     </div>
 
@@ -375,6 +511,26 @@
 
 <div class="container">
   <div id="statusBar" class="status">🔄 Carregando jornal...</div>
+
+  <div class="logo-panel" id="logoPanel" onclick="logoTap()">
+    <div class="logo-mini">VCtv</div>
+    <div class="logo-top" aria-hidden="true">
+      <div class="logo-icon camera"></div>
+      <div class="logo-icon glob"></div>
+      <div class="logo-icon phone"></div>
+      <div class="logo-icon mic"></div>
+      <div class="logo-icon news"></div>
+    </div>
+    <div class="logo-word">VCtv</div>
+    <div class="logo-tagline">O jornal feito por VC, pra você.</div>
+  </div>
+
+  <div class="tools">
+    <input id="searchInput" class="input" style="flex:2" type="text" placeholder="Buscar nas notícias..." oninput="render()" />
+    <span class="small" id="countText"></span>
+    <button class="btn secondary" onclick="clearSearch()">Limpar busca</button>
+    <button class="btn secondary" onclick="toggleFavoritesView()" id="favToggleBtn">Favoritos</button>
+  </div>
 
   <div class="tabs">
     <button class="tab active" data-cat="tudo" onclick="setCategory('tudo', this)">TUDO</button>
@@ -428,14 +584,14 @@ const RSS_FALLBACKS = [
 ];
 
 const MODEL_PRESETS = {
-  haiku:    { id: "claude-fast",  label: "Haiku",    paragraphs: 6, timeout: 11000 },
-  sonnet:   { id: "claude",       label: "Sonnet",   paragraphs: 7, timeout: 15000 },
-  opus:     { id: "claude-large", label: "Opus",     paragraphs: 8, timeout: 18000 },
+  haiku:    { id: "openai",       label: "Haiku",    paragraphs: 6, timeout: 11000 },
+  sonnet:   { id: "openai-large", label: "Sonnet",   paragraphs: 7, timeout: 15000 },
+  opus:     { id: "mistral-large", label: "Opus",    paragraphs: 8, timeout: 18000 },
   extended: { id: "openai-large", label: "Estendido",paragraphs: 10, timeout: 22000 }
 };
 
 const POLLINATIONS_KEY = "";
-const CACHE_KEY = "vctv_ai_news_cache_v4";
+const CACHE_KEY = "vctv_ai_news_cache_v7";
 const CACHE_TTL = 10 * 60 * 1000;
 const LAST_MINUTES = 360;
 
@@ -453,13 +609,20 @@ const state = {
   articles: [],
   activeCategory: "tudo",
   activeModel: localStorage.getItem("vctv_model") || "sonnet",
-  loading: false
+  loading: false,
+  favorites: new Set(JSON.parse(localStorage.getItem("vctv_favorites") || "[]")),
+  currentModalIndex: null,
+  eggClicks: 0,
+  eggTimer: null,
+  showFavoritesOnly: JSON.parse(localStorage.getItem("vctv_show_favorites_only") || "false")
 };
 
 const now = new Date();
 const dayKey = `${String(now.getDate()).padStart(2,"0")}-${String(now.getMonth()+1).padStart(2,"0")}`;
 const isWeekend = now.getDay() === 0 || now.getDay() === 6;
 const currentEdition = SPECIAL_DATES[dayKey] ? "special" : isWeekend ? "weekend" : "daily";
+
+const storyAngleMemory = new Map();
 
 function esc(s){
   return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
@@ -483,6 +646,7 @@ function setModel(value){
   localStorage.setItem("vctv_model", value);
 }
 function getPreset(){ return MODEL_PRESETS[state.activeModel] || MODEL_PRESETS.sonnet; }
+
 function normalizeArticle(a){
   return {
     title: a.title || "Sem título",
@@ -492,9 +656,19 @@ function normalizeArticle(a){
     source: a.source || "VCtv AInews",
     category: a.category || "mundo",
     emoji: a.emoji || "📰",
-    content: a.content || null
+    content: a.content || null,
+    key: a.key || hashKey((a.title || "") + "|" + (a.link || "") + "|" + (a.source || ""))
   };
 }
+
+function hashKey(str){
+  let h = 0;
+  for(let i = 0; i < str.length; i++){
+    h = Math.imul(31, h) + str.charCodeAt(i) | 0;
+  }
+  return String(h);
+}
+
 function dedupeArticles(items){
   const seen = new Set();
   const out = [];
@@ -506,9 +680,23 @@ function dedupeArticles(items){
   }
   return out;
 }
+
 function visibleArticles(){
-  return state.activeCategory === "tudo" ? state.articles : state.articles.filter(a => a.category === state.activeCategory);
+  let items = state.activeCategory === "tudo" ? state.articles : state.articles.filter(a => a.category === state.activeCategory);
+  const q = document.getElementById("searchInput").value.trim().toLowerCase();
+  if(q){
+    items = items.filter(a => (
+      (a.title || "").toLowerCase().includes(q) ||
+      (a.summary || "").toLowerCase().includes(q) ||
+      (a.source || "").toLowerCase().includes(q)
+    ));
+  }
+  if(state.showFavoritesOnly){
+    items = items.filter(a => state.favorites.has(a.key));
+  }
+  return items;
 }
+
 function teaserFor(article){
   const add = {
     brasil: "A apuração acompanha efeitos políticos, econômicos e sociais no país.",
@@ -522,6 +710,7 @@ function teaserFor(article){
   const base = article.summary ? stripHtml(article.summary) : article.title;
   return `${base} ${add[article.category] || "A reportagem completa detalha o contexto e os próximos passos."}`.trim();
 }
+
 function paragraphsFromText(text){
   let paras = String(text || "").split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
   if(paras.length <= 1){
@@ -535,16 +724,19 @@ function paragraphsFromText(text){
   }
   return paras.filter(Boolean);
 }
+
 function buildParagraphHtml(text){
   const paras = paragraphsFromText(text);
   if(!paras.length) return `<p>Conteúdo indisponível.</p>`;
   return paras.map(p => `<p>${esc(p)}</p>`).join("");
 }
+
 function saveCache(){
   try{
     localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), articles: state.articles }));
   }catch{}
 }
+
 function loadCache(){
   try{
     const raw = localStorage.getItem(CACHE_KEY);
@@ -557,6 +749,7 @@ function loadCache(){
     return null;
   }
 }
+
 async function fetchWithTimeout(url, options = {}, timeout = 8000){
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
@@ -566,23 +759,294 @@ async function fetchWithTimeout(url, options = {}, timeout = 8000){
     clearTimeout(timer);
   }
 }
+
+function pick(arr){
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function topicFingerprint(text){
+  return String(text || "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, "")
+    .split(/\s+/)
+    .filter(w => w.length > 3)
+    .slice(0, 8)
+    .join("-");
+}
+
+function buildAngle(topic, category){
+  const angles = {
+    brasil: [
+      "impacto no cotidiano das famílias",
+      "efeitos políticos e econômicos",
+      "repercussão nas cidades e nos serviços públicos",
+      "o que muda para a população nos próximos dias"
+    ],
+    mundo: [
+      "consequências diplomáticas",
+      "tensão internacional e bastidores",
+      "efeitos econômicos e geopolíticos",
+      "reação de governos e organismos internacionais"
+    ],
+    tecnologia: [
+      "mudança no mercado digital",
+      "efeitos sobre usuários e empresas",
+      "avanço técnico e disputa entre plataformas",
+      "impacto da inteligência artificial no setor"
+    ],
+    ciencia: [
+      "resultado de pesquisa e seus efeitos",
+      "o que os cientistas descobriram",
+      "ligação com saúde e clima",
+      "por que a descoberta importa agora"
+    ],
+    economia: [
+      "efeito sobre preços e consumo",
+      "movimento de mercado e empresas",
+      "sinais para investidores e trabalhadores",
+      "o que os números mostram de verdade"
+    ],
+    cultura: [
+      "repercussão no público",
+      "bastidores da produção",
+      "impacto nas redes e na agenda cultural",
+      "o peso do tema na cena artística"
+    ],
+    esportes: [
+      "bastidores e preparação",
+      "efeito no campeonato e nos torcedores",
+      "momento decisivo da equipe",
+      "análise do desempenho e do calendário"
+    ]
+  };
+
+  const list = angles[category] || [
+    "o que aconteceu e por que importa",
+    "efeitos imediatos e próximos passos",
+    "repercussão prática para o público",
+    "contexto e consequências"
+  ];
+
+  return pick(list);
+}
+
+function buildFreshPrompt(topic, category, preset, sourceContext = ""){
+  const fingerprint = topicFingerprint(topic);
+  const angle = buildAngle(topic, category);
+  const openerStyles = [
+    "comece com uma abertura direta e urgente",
+    "comece com um lead mais analítico",
+    "comece com um lead de contexto histórico",
+    "comece com um lead focado no impacto humano"
+  ];
+  const endingStyles = [
+    "termine com o que observar daqui para frente",
+    "termine com consequências práticas",
+    "termine com a leitura do cenário adiante",
+    "termine com uma conclusão jornalística forte"
+  ];
+
+  const usedAngles = storyAngleMemory.get(fingerprint) || [];
+  let selectedAngle = angle;
+  for(const candidate of [angle, "mudanças no curto prazo", "efeitos diretos no dia a dia", "bastidores e contexto", "reação pública e institucional"]){
+    if(!usedAngles.includes(candidate)){
+      selectedAngle = candidate;
+      break;
+    }
+  }
+  usedAngles.push(selectedAngle);
+  storyAngleMemory.set(fingerprint, usedAngles.slice(-6));
+
+  return `
+Você é um repórter sênior da VCtv AInews.
+
+Tema: "${topic}"
+Categoria: ${category}
+Ângulo principal: ${selectedAngle}
+Contexto adicional: ${sourceContext || "não informado"}
+
+Regras obrigatórias:
+- Escreva exatamente ${preset.paragraphs} parágrafos.
+- Cada parágrafo deve ter 4 a 6 frases.
+- Não repita frases prontas, não use fórmulas genéricas e não troque só duas palavras de uma resposta anterior.
+- Cada notícia deve ter um encadeamento diferente.
+- Use dados, contexto, consequência e próximos passos.
+- Misture a ordem dos blocos da notícia para variar o texto.
+- Evite começar sempre do mesmo jeito.
+- Evite repetir expressões como "em um cenário em constante transformação".
+- Use tom jornalístico real, natural e diferente de resposta para resposta.
+- ${pick(openerStyles)}.
+- ${pick(endingStyles)}.
+- O texto precisa parecer uma matéria publicada hoje na VCtv.
+
+Retorne apenas o texto final, sem título, sem markdown, sem bullets.
+  `.trim();
+}
+
+function buildArticlePrompt(article, preset){
+  const sourceContext = article.summary || teaserFor(article);
+  const styles = [
+    "faça uma abertura de hard news",
+    "faça uma abertura analítica",
+    "faça uma abertura de repercussão",
+    "faça uma abertura contextual"
+  ];
+  const closers = [
+    "feche com impacto futuro",
+    "feche com leitura de cenário",
+    "feche com próximos passos e implicações",
+    "feche com a dimensão prática da notícia"
+  ];
+
+  return `
+Você é um jornalista sênior da VCtv AInews.
+
+Notícia base: "${article.title}"
+Contexto: ${sourceContext}
+
+Regras obrigatórias:
+- Escreva exatamente ${preset.paragraphs} parágrafos.
+- Cada parágrafo deve ter 4 a 6 frases.
+- Mude a estrutura entre os parágrafos.
+- Não use frases prontas nem repetitivas.
+- Não comece sempre com a mesma fórmula.
+- Cada matéria precisa parecer única.
+- O texto deve aprofundar: fato principal, contexto, impacto, bastidores, resposta e próximos passos.
+- Se o assunto for atual, trate como atualização do dia.
+- Se o assunto for de tendência, trate como análise jornalística.
+- Não use markdown, não use lista, não use subtítulos.
+- ${pick(styles)}.
+- ${pick(closers)}.
+
+Escreva agora o texto completo.
+  `.trim();
+}
+
 function fallbackLocalLongForm(article){
   const title = article.title || "A notícia";
-  const sections = [
-    `${title} segue em destaque na cobertura do dia, com atenção crescente de leitores e redações. A atualização mais recente aponta que o tema continua avançando em ritmo acelerado e pode influenciar decisões nos próximos dias.`,
-    `No contexto imediato, especialistas observam que o caso reúne fatores políticos, econômicos e sociais, dependendo da editoria. A leitura mais cuidadosa mostra que o impacto ainda está se desenrolando e que a análise precisa considerar o cenário mais amplo.`,
-    `A reação pública também pesa na forma como o assunto ganha espaço, sobretudo nas redes e nos portais. Em episódios assim, a velocidade da informação costuma ser tão importante quanto a apuração, e isso torna a cobertura mais sensível.`,
-    `Outro ponto central é o efeito prático sobre o cotidiano de empresas, governos e pessoas. Mesmo quando a notícia parece concentrada em um fato específico, as consequências costumam se espalhar por diferentes setores.`,
-    `As próximas atualizações devem trazer mais clareza sobre o rumo do caso, principalmente se houver novos dados, declarações ou medidas oficiais. Até lá, o jornal acompanha o desdobramento com foco no que muda de verdade para o público.`,
-    `Na VCtv AInews, a reportagem completa tenta ir além do destaque inicial e reconstruir o contexto com mais profundidade. É essa camada extra que transforma a manchete em leitura útil, legível e com cara de jornal de verdade.`,
-    `Em síntese, o tema permanece relevante porque conecta informação imediata com tendências maiores. É esse tipo de cobertura que ajuda o leitor a entender não só o que aconteceu, mas também por que isso importa.`
+  const category = article.category || "mundo";
+  const first = [
+    `${title} entrou na pauta do dia com força e continua chamando atenção por reunir informação imediata, contexto e possível impacto prático. Em uma cobertura como essa, a VCtv tenta mostrar não só o fato principal, mas também o que existe ao redor dele.`,
+    `Nos bastidores, o tema conversa com outras frentes da notícia e ajuda a entender melhor o momento atual. A leitura fica mais completa quando a reportagem liga o acontecimento à vida real, ao mercado, à política ou ao comportamento do público.`,
+    `A reação do público costuma dizer muito sobre a importância da pauta. Quando um assunto cresce rápido, a cobertura precisa ser cuidadosa, clara e organizada para evitar repetição e manter a leitura útil.`,
+    `Especialistas observam que esse tipo de notícia não vive isolado. Ele se conecta a um cenário maior, e é isso que torna a reportagem mais interessante para quem quer entender os próximos desdobramentos.`
   ];
-  return sections.join("\n\n");
+
+  const middle = {
+    brasil: [
+      "No Brasil, efeitos locais e decisões de autoridades costumam entrar rápido na conversa pública. Esse tipo de leitura ajuda a traduzir o tema para o cotidiano das pessoas.",
+      "Economia, serviços e política acabam se cruzando em momentos assim. A consequência é uma cobertura que precisa ser ampla, mas sem perder a clareza.",
+      "A apuração também precisa considerar o efeito na rotina dos leitores, principalmente quando há reflexos no preço, no transporte, na saúde ou em outras áreas visíveis."
+    ],
+    mundo: [
+      "No cenário internacional, o que acontece em um país pode mexer com negociações, mercados e alianças. Por isso, a notícia ganha uma dimensão que vai além do fato isolado.",
+      "Diplomacia, comércio e segurança entram no radar quase ao mesmo tempo. O resultado é uma cobertura que exige contexto e leitura de cenário.",
+      "Governos e organismos internacionais tendem a observar esse tipo de caso com atenção. Cada movimento pode alterar o equilíbrio da situação."
+    ],
+    tecnologia: [
+      "No setor de tecnologia, mudanças podem aparecer de forma rápida para usuários e empresas. O ritmo é acelerado, e por isso a reportagem precisa ser direta e bem explicada.",
+      "A disputa entre plataformas e produtos costuma influenciar a maneira como o público consome informação, trabalha e se comunica. Esse efeito prático é o que torna a pauta relevante.",
+      "Quando IA, software e dispositivos entram em cena, o tema ganha peso extra. A notícia deixa de ser apenas técnica e vira assunto de mercado e comportamento."
+    ],
+    ciencia: [
+      "Na ciência, a leitura costuma depender de evidências, revisão e comparação com pesquisas anteriores. Isso faz com que a notícia tenha uma construção própria, mais cuidadosa.",
+      "Resultados de laboratório, dados climáticos ou avanços médicos podem mudar a forma como se entende o assunto. É por isso que o contexto importa tanto.",
+      "A descoberta ou atualização ainda precisa ser ligada ao impacto no dia a dia. Sem isso, a reportagem perde força para o leitor comum."
+    ],
+    economia: [
+      "Na economia, pequenos movimentos podem virar notícia grande porque afetam preço, confiança e decisão de consumo. A cobertura precisa deixar isso visível logo na leitura inicial.",
+      "Mercado, empresas e trabalhadores sentem a mudança em ritmos diferentes. Entender essa diferença ajuda a interpretar melhor o fato.",
+      "Quando há sinais de mudança, o mais importante é mostrar quem ganha, quem perde e o que pode acontecer depois. Esse é o tipo de explicação que faz a matéria valer a pena."
+    ],
+    cultura: [
+      "Na cultura, a notícia costuma conversar com público, redes sociais e bastidores da produção. Isso cria uma narrativa mais humana e mais ligada ao cotidiano.",
+      "Uma estreia, um evento ou uma polêmica podem render leituras muito diferentes dependendo do ponto de vista. Por isso a reportagem precisa ter contexto.",
+      "O interesse do público não vem só do fato em si, mas da forma como ele repercute. É esse eco que transforma a pauta em assunto do dia."
+    ],
+    esportes: [
+      "Nos esportes, preparação, bastidores e desempenho ajudam a explicar o resultado final. O leitor quer entender o que mudou e por quê.",
+      "Quando a competição aperta, cada detalhe vira argumento para a reportagem. Isso vale para escalação, calendário, estratégia e reação da torcida.",
+      "A notícia esportiva funciona melhor quando liga emoção com análise. É essa mistura que faz a cobertura ficar forte."
+    ]
+  };
+
+  const end = [
+    "No fim, o tema continua relevante porque ainda não se encerrou no fato principal. O que vier a seguir deve confirmar se a repercussão será passageira ou duradoura.",
+    "A leitura mais útil agora é acompanhar os próximos passos e observar onde a repercussão cresce. É aí que a notícia mostra seu verdadeiro peso.",
+    "Enquanto novos dados não chegam, a cobertura segue aberta e em atualização. Esse movimento é parte essencial de uma redação que quer informar bem.",
+    "É por isso que a matéria deve ser lida como parte de um cenário em andamento e não como um episódio isolado. O contexto ainda está se formando."
+  ];
+
+  const chosenMiddle = middle[category] || [
+    "O tema ganha força quando ligado a contexto e consequência.",
+    "A cobertura ganha valor quando explica o que muda na prática.",
+    "A reportagem fica mais útil quando transforma o fato em entendimento."
+  ];
+
+  const paragraphs = [
+    `${pick(first)} ${pick(chosenMiddle)}`,
+    `${pick(chosenMiddle)} ${pick(chosenMiddle)}`,
+    `${pick(chosenMiddle)} ${pick(chosenMiddle)}`,
+    `${pick(chosenMiddle)} ${pick(chosenMiddle)}`,
+    `${pick(chosenMiddle)} ${pick(chosenMiddle)}`,
+    `${pick(chosenMiddle)} ${pick(chosenMiddle)}`,
+    `${pick(end)}`
+  ];
+
+  return paragraphs.join("\n\n");
 }
+
+function buildLocalCustomArticle(topic, category, preset){
+  const angle = buildAngle(topic, category);
+  const intro = [
+    `A VCtv AInews preparou uma reportagem especial sobre ${topic}. O tema entra no radar porque conversa com ${angle} e ajuda a entender melhor o momento atual.`,
+    `O assunto ${topic} ganhou espaço na cobertura por reunir contexto, impacto e próximos passos. A leitura fica mais útil quando a reportagem amplia o olhar e mostra o que realmente está em jogo.`,
+    `Quando a pauta é ${topic}, o mais interessante costuma ser olhar além da manchete. É exatamente isso que esta matéria faz ao ligar o fato principal ao cenário em volta.`
+  ];
+
+  const body = [
+    `Nos bastidores, o tema conversa com decisões, tendências e reações que ainda estão em andamento. A reportagem tenta separar o que é ruído do que realmente altera o quadro.`,
+    `O efeito prático sobre o público também pesa. Em assuntos assim, uma mudança pequena pode gerar uma reação grande quando chega ao cotidiano das pessoas.`,
+    `A cobertura fica mais forte quando mostra quem é atingido primeiro, quais áreas sentem a mudança e quais sinais podem aparecer nos próximos dias.`,
+    `Outra camada importante é a resposta institucional. Quando há anúncio, repercussão ou disputa de narrativa, o leitor precisa de contexto para entender o tamanho real do fato.`,
+    `O tema também ajuda a observar como informação, velocidade e interpretação andam juntas. A forma de noticiar muda a maneira como o público entende o acontecimento.`,
+    `Por isso a VCtv AInews evita tratar o assunto como algo isolado. Cada notícia carrega um conjunto de efeitos que só aparece quando a reportagem olha para o todo.`
+  ];
+
+  const tail = [
+    `No fechamento, o mais importante é seguir os próximos passos com atenção. É neles que aparece a consequência mais clara do que foi noticiado hoje.`,
+    `A leitura final é simples: o tema ainda deve render desdobramentos. E é exatamente por isso que merece uma reportagem longa, organizada e bem explicada.`,
+    `Se novos dados surgirem, a cobertura ganha mais forma e o cenário fica mais claro. Até lá, a notícia continua aberta e em evolução.`
+  ];
+
+  const total = Math.max(6, preset.paragraphs);
+  const paras = [];
+  paras.push(pick(intro));
+  for(let i = 0; i < total - 2; i++){
+    paras.push(pick(body));
+  }
+  paras.push(pick(tail));
+  return paras.join("\n\n");
+}
+
+function isFav(key){
+  return state.favorites.has(key);
+}
+
+function toggleFav(key){
+  if(state.favorites.has(key)) state.favorites.delete(key);
+  else state.favorites.add(key);
+  localStorage.setItem("vctv_favorites", JSON.stringify([...state.favorites]));
+  render();
+}
+
 function cardTemplate(a, mode = "card"){
   const title = esc(a.title);
   const excerpt = esc((a.summary || teaserFor(a)).slice(0, 240));
   const meta = `${esc(a.source)} · ${fmtDate(a.date)}`;
+  const favClass = isFav(a.key) ? "fav-btn on" : "fav-btn";
+  const favIcon = isFav(a.key) ? "★" : "☆";
+
   if(mode === "rail"){
     return `
       <div class="rail-item" onclick="openArticle(${a.index})">
@@ -596,8 +1060,10 @@ function cardTemplate(a, mode = "card"){
       </div>
     `;
   }
+
   return `
     <div class="${mode === "hero" ? "story-card hero-card" : "card"}" onclick="openArticle(${a.index})">
+      <button class="${favClass}" onclick="event.stopPropagation(); toggleFav('${a.key}')">${favIcon}</button>
       <div class="story-cat">${a.emoji} ${(a.category || "geral").toUpperCase()}</div>
       <div class="story-title">${title}</div>
       <div class="story-excerpt">${excerpt}…</div>
@@ -608,6 +1074,7 @@ function cardTemplate(a, mode = "card"){
     </div>
   `;
 }
+
 function renderSkeleton(){
   document.getElementById("mainPanel").innerHTML = `
     <div class="hero">
@@ -635,12 +1102,16 @@ function renderSkeleton(){
     <div class="skeleton" style="min-height:120px"></div>
   `;
 }
+
 function renderEmpty(){
   document.getElementById("mainPanel").innerHTML = `<div class="empty">Nenhuma notícia encontrada nessa categoria agora.</div>`;
   document.getElementById("railPanel").innerHTML = `<div class="empty">Sem destaques por enquanto.</div>`;
 }
+
 function render(){
   const items = visibleArticles();
+  document.getElementById("countText").textContent = items.length ? `${items.length} notícia(s) visível(is)` : "Sem resultados";
+
   if(!items.length){
     renderEmpty();
     updateTicker();
@@ -678,6 +1149,7 @@ function render(){
 
   updateTicker();
 }
+
 function updateTicker(){
   const items = visibleArticles().slice(0, 10);
   document.getElementById("tickerText").textContent = items.length
@@ -685,11 +1157,60 @@ function updateTicker(){
     : "VCtv AInews — notícias do dia";
 }
 
+function setCategory(cat, btn){
+  state.activeCategory = cat;
+  document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+  btn.classList.add("active");
+  render();
+  updateTicker();
+}
+
+function clearSearch(){
+  document.getElementById("searchInput").value = "";
+  render();
+}
+
+function toggleFavoritesView(){
+  state.showFavoritesOnly = !state.showFavoritesOnly;
+  localStorage.setItem("vctv_show_favorites_only", JSON.stringify(state.showFavoritesOnly));
+  document.getElementById("favToggleBtn").textContent = state.showFavoritesOnly ? "Todos" : "Favoritos";
+  render();
+}
+
+function setLogoState(){
+  const badge = document.getElementById("editionBadge");
+  if(currentEdition === "special"){
+    badge.className = "edition special";
+    badge.textContent = SPECIAL_DATES[dayKey];
+  }else if(currentEdition === "weekend"){
+    badge.className = "edition weekend";
+    badge.textContent = "FIM DE SEMANA";
+  }else{
+    badge.className = "edition daily";
+    badge.textContent = "EDIÇÃO DIÁRIA";
+  }
+}
+
+function showModal(title, bodyHtml, extraClass=""){
+  const ov = document.getElementById("modalOverlay");
+  const mc = document.getElementById("modalContent");
+  mc.className = extraClass ? `modal ${extraClass}` : "modal";
+  mc.innerHTML = `
+    <div class="egg-badge">VCtv</div>
+    <h2 style="margin-top:12px">${esc(title)}</h2>
+    <div class="modal-body">${bodyHtml}</div>
+    <div class="modal-actions">
+      <button class="close-btn" onclick="closeModal()">Fechar</button>
+    </div>
+  `;
+  ov.classList.add("open");
+}
+
 /* MODAL / IA */
 function openModalSkeleton(article){
-  const modal = document.getElementById("modalOverlay");
-  const content = document.getElementById("modalContent");
-  content.innerHTML = `
+  const modal = document.getElementById("modalContent");
+  modal.className = "modal";
+  modal.innerHTML = `
     <div class="story-cat">${article.emoji} ${(article.category || "geral").toUpperCase()}</div>
     <h2>${esc(article.title)}</h2>
     <div class="modal-meta">${esc(article.source)} · ${fmtLongDate(article.date)}${article.link ? ` · <a href="${esc(article.link)}" target="_blank" rel="noopener">Fonte original ↗</a>` : ""}</div>
@@ -697,36 +1218,30 @@ function openModalSkeleton(article){
     <div class="modal-body"></div>
     <div class="modal-actions"><button class="close-btn" onclick="closeModal()">Fechar</button></div>
   `;
-  modal.classList.add("open");
+  document.getElementById("modalOverlay").classList.add("open");
 }
+
 async function aiGenerateLongArticle(article){
   const preset = getPreset();
   const system = "Você é um jornalista sênior da VCtv AInews. Escreva em português do Brasil, com tom jornalístico, fluido, atual e profissional. Não use markdown, não use títulos internos, não use bullets.";
-  const prompt = `
-Notícia base: "${article.title}"
-Contexto: ${article.summary || teaserFor(article)}
-
-Regras:
-- Escreva exatamente ${preset.paragraphs} parágrafos.
-- Cada parágrafo deve ter 3 a 5 frases completas.
-- O texto deve ficar longo e jornalístico, com mais de 20 linhas na tela.
-- Comece com um lead forte e termine com consequência/impacto.
-- Se houver incerteza, escreva com linguagem jornalística responsável.
-  `.trim();
+  const prompt = buildArticlePrompt(article, preset);
 
   if(!POLLINATIONS_KEY){
     return fallbackLocalLongForm(article);
   }
 
-  const url = `https://gen.pollinations.ai/text/${encodeURIComponent(prompt)}?model=${encodeURIComponent(preset.id)}&seed=${Math.floor(Math.random() * 999999)}&system=${encodeURIComponent(system)}&key=${encodeURIComponent(POLLINATIONS_KEY)}&temperature=0.55`;
+  const url = `https://gen.pollinations.ai/text/${encodeURIComponent(prompt)}?model=${encodeURIComponent(preset.id)}&seed=${Math.floor(Math.random() * 999999)}&system=${encodeURIComponent(system)}&key=${encodeURIComponent(POLLINATIONS_KEY)}&temperature=0.92`;
   const text = await fetchWithTimeout(url, {}, preset.timeout).then(r => r.text());
   return (text || "").trim();
 }
+
 async function openArticle(index){
   const article = state.articles[index];
   if(!article) return;
 
+  state.currentModalIndex = index;
   openModalSkeleton(article);
+
   const modal = document.getElementById("modalContent");
   const instantText = article.content || fallbackLocalLongForm(article);
 
@@ -744,7 +1259,7 @@ async function openArticle(index){
       if(!text) return;
       article.content = text;
       saveCache();
-      if(document.getElementById("modalOverlay").classList.contains("open")){
+      if(state.currentModalIndex === index && document.getElementById("modalOverlay").classList.contains("open")){
         modal.innerHTML = `
           <div class="story-cat">${article.emoji} ${(article.category || "geral").toUpperCase()}</div>
           <h2>${esc(article.title)}</h2>
@@ -756,8 +1271,15 @@ async function openArticle(index){
     }).catch(()=>{});
   }
 }
-function closeModal(){ document.getElementById("modalOverlay").classList.remove("open"); }
-function closeModalBg(e){ if(e.target === document.getElementById("modalOverlay")) closeModal(); }
+
+function closeModal(){
+  document.getElementById("modalOverlay").classList.remove("open");
+  state.currentModalIndex = null;
+}
+
+function closeModalBg(e){
+  if(e.target === document.getElementById("modalOverlay")) closeModal();
+}
 
 /* FONTE DE NOTÍCIAS */
 async function fetchGDELTCategory(cat){
@@ -785,6 +1307,7 @@ async function fetchGDELTCategory(cat){
     });
   }).filter(a => a.title.length > 6);
 }
+
 async function fetchRSSFallback(feed){
   try{
     const proxies = [
@@ -823,9 +1346,10 @@ async function fetchRSSFallback(feed){
   }catch{}
   return [];
 }
+
 async function loadCurrentArticles(){
-  const coreCats = CATEGORIES.slice(0, 4);
-  const extraCats = CATEGORIES.slice(4);
+  const coreCats = [CATEGORIES[0], CATEGORIES[1], CATEGORIES[2], CATEGORIES[4]];
+  const extraCats = [CATEGORIES[3], CATEGORIES[5], CATEGORIES[6]];
 
   const coreResults = await Promise.allSettled(coreCats.map(fetchGDELTCategory));
   let articles = coreResults.flatMap(r => r.status === "fulfilled" ? r.value : []);
@@ -860,6 +1384,7 @@ async function loadCurrentArticles(){
 
   return articles;
 }
+
 function reindexArticles(){
   state.articles.forEach((a, i) => a.index = i);
 }
@@ -900,19 +1425,34 @@ async function refreshNews(force = false){
     state.loading = false;
   }
 }
-function setCategory(cat, btn){
-  state.activeCategory = cat;
-  document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
-  btn.classList.add("active");
-  render();
+
+function boot(){
+  document.getElementById("dateDisplay").textContent = fmtLongDate(now);
+
+  setLogoState();
+
+  document.getElementById("modelSelect").value = state.activeModel;
+  document.getElementById("favToggleBtn").textContent = state.showFavoritesOnly ? "Todos" : "Favoritos";
+
+  const cached = loadCache();
+  if(cached?.length){
+    state.articles = cached;
+    reindexArticles();
+    setStatus(`⚡ ${state.articles.length} notícias carregadas do cache`);
+    render();
+  }else{
+    renderSkeleton();
+  }
+
   updateTicker();
+  render();
+
+  setTimeout(() => refreshNews(false), 60);
+  setInterval(updateTicker, 30000);
+  document.addEventListener("keydown", handleKeys);
 }
-function updateTicker(){
-  const items = visibleArticles().slice(0, 10);
-  document.getElementById("tickerText").textContent = items.length
-    ? items.map(a => `${a.emoji} ${a.title}`).join("  ·  ")
-    : "VCtv AInews — notícias do dia";
-}
+
+document.addEventListener("DOMContentLoaded", boot);
 
 /* NOTÍCIA CUSTOM */
 async function createCustomStory(){
@@ -924,15 +1464,31 @@ async function createCustomStory(){
   if(btn){ btn.disabled = true; btn.textContent = "⏳ Gerando..."; }
 
   try{
+    const preset = getPreset();
+    const category = guessCategory(topic);
+    const sourceContext = visibleArticles()[0]
+      ? `${visibleArticles()[0].title} — ${visibleArticles()[0].summary || ""}`
+      : "";
+
+    const prompt = buildFreshPrompt(topic, category, preset, sourceContext);
+
+    let text = "";
+    if(POLLINATIONS_KEY){
+      const url = `https://gen.pollinations.ai/text/${encodeURIComponent(prompt)}?model=${encodeURIComponent(preset.id)}&seed=${Math.floor(Math.random() * 999999)}&system=${encodeURIComponent("Você é um jornalista sênior da VCtv AInews.")}&key=${encodeURIComponent(POLLINATIONS_KEY)}&temperature=0.92`;
+      text = await fetchWithTimeout(url, {}, preset.timeout).then(r => r.text());
+    }else{
+      text = buildLocalCustomArticle(topic, category, preset);
+    }
+
     const newItem = normalizeArticle({
       title: topic,
-      summary: `A VCtv AInews preparou uma reportagem especial sobre ${topic}. A cobertura resume o contexto, os efeitos imediatos e o que observar a seguir. A leitura completa amplia os pontos principais e mantém o estilo jornalístico.`,
+      summary: `Reportagem especial da VCtv AInews sobre ${topic}.`,
       link: "",
       date: new Date(),
       source: `VCtv IA · ${getPreset().label}`,
-      category: "mundo",
-      emoji: "📰",
-      content: fallbackLocalLongForm({ title: topic, category: "mundo" })
+      category,
+      emoji: emojiFor(category),
+      content: text || buildLocalCustomArticle(topic, category, preset)
     });
 
     state.articles.unshift(newItem);
@@ -951,38 +1507,85 @@ async function createCustomStory(){
   }
 }
 
-/* INIT */
-function boot(){
-  document.getElementById("dateDisplay").textContent = fmtLongDate(now);
-
-  const badge = document.getElementById("editionBadge");
-  if(currentEdition === "special"){
-    badge.className = "edition special";
-    badge.textContent = SPECIAL_DATES[dayKey];
-  }else if(currentEdition === "weekend"){
-    badge.className = "edition weekend";
-    badge.textContent = "FIM DE SEMANA";
-  }else{
-    badge.className = "edition daily";
-    badge.textContent = "EDIÇÃO DIÁRIA";
-  }
-
-  document.getElementById("modelSelect").value = state.activeModel;
-
-  const cached = loadCache();
-  if(cached?.length){
-    state.articles = cached;
-    reindexArticles();
-    setStatus(`⚡ ${state.articles.length} notícias carregadas do cache`);
-    render();
-  }else{
-    renderSkeleton();
-  }
-
-  refreshNews(false);
-  setInterval(updateTicker, 30000);
+function guessCategory(topic){
+  const t = String(topic || "").toLowerCase();
+  if(/(futebol|esporte|olimp|corrida|campeonato|seleção|jogo|time|gols?)/.test(t)) return "esportes";
+  if(/(tecnologia|ia|intelig|aplicativo|app|celular|iphone|android|chip|software|internet|rede social|robot|computador)/.test(t)) return "tecnologia";
+  if(/(ciência|ciencia|pesquisa|clima|saúde|saude|vacina|astronomia|espaco|espaço|medicina)/.test(t)) return "ciencia";
+  if(/(economia|preço|preco|mercado|bolsa|dólar|dolar|infla|juros|pib|empresa|finan|trabalho)/.test(t)) return "economia";
+  if(/(cultura|filme|série|serie|música|musica|arte|teatro|livro|show|festival)/.test(t)) return "cultura";
+  if(/(brasil|política|politica|governo|prefeitura|congresso|eleição|eleicao|lula|bolsonaro|stf)/.test(t)) return "brasil";
+  return "mundo";
 }
-document.addEventListener("DOMContentLoaded", boot);
+
+function emojiFor(category){
+  const map = {
+    brasil: "🇧🇷",
+    mundo: "🌍",
+    tecnologia: "💻",
+    ciencia: "🔬",
+    economia: "💰",
+    cultura: "🎭",
+    esportes: "⚽"
+  };
+  return map[category] || "📰";
+}
+
+function clearCacheNow(){
+  localStorage.removeItem(CACHE_KEY);
+  localStorage.removeItem("vctv_favorites");
+  localStorage.removeItem("vctv_show_favorites_only");
+}
+
+function handleKeys(e){
+  if(e.key === "Escape") closeModal();
+  if(e.key === "/" && document.activeElement !== document.getElementById("searchInput")){
+    e.preventDefault();
+    document.getElementById("searchInput").focus();
+  }
+  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k"){
+    e.preventDefault();
+    document.getElementById("searchInput").focus();
+  }
+}
+
+/* EASTER EGG */
+function logoTap(){
+  state.eggClicks += 1;
+  clearTimeout(state.eggTimer);
+  state.eggTimer = setTimeout(() => state.eggClicks = 0, 1500);
+
+  if(state.eggClicks >= 5){
+    state.eggClicks = 0;
+    clearTimeout(state.eggTimer);
+    showEgg();
+  }
+}
+
+function showEgg(){
+  const eggText = `
+    <div class="egg-badge">Redação Secreta</div>
+    <p style="margin-top:12px">Você encontrou o modo escondido da VCtv.</p>
+    <p>Este espaço aparece só para quem clica no logo várias vezes.</p>
+    <p>Se quiser, dá para transformar isso num modo turbo, numa página secreta ou numa reportagem especial.</p>
+  `;
+  showModal("Easter egg ativado", eggText, "secret");
+}
+
+function showModal(title, bodyHtml, extraClass=""){
+  const ov = document.getElementById("modalOverlay");
+  const mc = document.getElementById("modalContent");
+  mc.className = extraClass ? `modal ${extraClass}` : "modal";
+  mc.innerHTML = `
+    <div class="egg-badge">VCtv</div>
+    <h2 style="margin-top:12px">${esc(title)}</h2>
+    <div class="modal-body">${bodyHtml}</div>
+    <div class="modal-actions">
+      <button class="close-btn" onclick="closeModal()">Fechar</button>
+    </div>
+  `;
+  ov.classList.add("open");
+}
 </script>
 </body>
 </html>
