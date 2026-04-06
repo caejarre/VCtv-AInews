@@ -3,44 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>VCtv AInews</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Baskerville&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#f4f1ea;
-  --dark:#111;
-  --accent:#c40000;
+  --bg:#0a0a0a;
+  --card:#121212;
+  --red:#cc0000;
+  --text:#e5e5e5;
 }
 
 body{
   margin:0;
   background:var(--bg);
-  color:#111;
+  color:var(--text);
+  font-family:'Inter',sans-serif;
 }
 
 /* HEADER */
 header{
-  background:var(--dark);
-  color:#fff;
-  padding:20px;
-  text-align:center;
-  border-bottom:4px solid var(--accent);
+  padding:12px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:2px solid var(--red);
 }
 
 header h1{
   font-family:'Playfair Display';
-  font-size:46px;
-  margin:0;
+  font-size:22px;
 }
 
-/* LOADING SKELETON */
+/* LIST */
+.feed{
+  max-width:700px;
+  margin:auto;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  margin:10px;
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.card:hover{transform:scale(1.02);}
+
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+
+.card-content{
+  padding:12px;
+}
+
+.card h2{
+  font-size:18px;
+}
+
+.meta{
+  font-size:12px;
+  color:#888;
+}
+
+/* SKELETON */
 .skeleton{
-  background:linear-gradient(90deg,#ddd,#eee,#ddd);
-  height:120px;
-  margin-bottom:20px;
-  border-radius:6px;
+  height:220px;
+  margin:10px;
+  border-radius:10px;
+  background:linear-gradient(90deg,#222,#333,#222);
   animation:load 1.2s infinite;
 }
 
@@ -50,53 +89,23 @@ header h1{
   100%{opacity:.6}
 }
 
-/* CONTAINER */
-.container{
-  max-width:1300px;
-  margin:auto;
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:#000d;
+  display:none;
+}
+
+.modal.open{display:block;}
+
+.modal-content{
+  background:#111;
+  max-width:700px;
+  margin:40px auto;
   padding:20px;
 }
 
-/* HERO */
-.hero{
-  margin-bottom:30px;
-  border-bottom:3px solid #000;
-  padding-bottom:20px;
-}
-
-.hero h2{
-  font-family:'Playfair Display';
-  font-size:42px;
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr;
-  gap:25px;
-}
-
-/* ARTICLE */
-.article{
-  border-top:2px solid #000;
-  padding-top:10px;
-}
-
-.article h3{
-  font-family:'Playfair Display';
-}
-
-.text{
-  font-family:'Libre Baskerville';
-  line-height:1.7;
-  text-align:justify;
-  font-size:15px;
-}
-
-.meta{
-  font-size:12px;
-  color:#666;
-}
 </style>
 </head>
 
@@ -104,19 +113,13 @@ header h1{
 
 <header>
   <h1>VCtv AInews</h1>
-  <div>Edição atual • Jornal digital</div>
+  <button onclick="loadNews()">Atualizar</button>
 </header>
 
-<div class="container">
+<div id="feed" class="feed"></div>
 
-  <div id="hero"></div>
-
-  <div class="grid">
-    <div id="main"></div>
-    <div id="side1"></div>
-    <div id="side2"></div>
-  </div>
-
+<div id="modal" class="modal" onclick="closeModal(event)">
+  <div class="modal-content" id="modalContent"></div>
 </div>
 
 <script>
@@ -125,54 +128,27 @@ const FEEDS=[
  "https://feeds.bbci.co.uk/portuguese/rss.xml"
 ];
 
-const PROXIES=[
- url=>`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
- url=>`https://corsproxy.io/?${encodeURIComponent(url)}`
-];
+const PROXY=url=>`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
 
-// TEXTO LONGO REALISTA
-function textoLongo(t){
-return `
-${t} — O cenário atual demonstra mudanças significativas que vêm sendo analisadas por especialistas em diversas áreas. Nos últimos dias, novas informações reforçaram a relevância do tema, ampliando o debate público.
+let news=[];
+let page=0;
 
-Segundo análises recentes, fatores econômicos e sociais influenciam diretamente os acontecimentos, criando um ambiente de incerteza, mas também de oportunidades. A situação segue em evolução constante.
-
-Autoridades acompanham o caso de perto, enquanto decisões estratégicas são discutidas. A população reage com atenção às atualizações divulgadas diariamente.
-
-Relatórios indicam que os impactos podem ser sentidos tanto a curto quanto a longo prazo, afetando diferentes setores. A expectativa é de que novas medidas sejam implementadas.
-
-Especialistas destacam a importância da cooperação entre instituições e da transparência na comunicação. Isso ajuda a reduzir riscos e orientar melhor a sociedade.
-
-Nos próximos meses, o desenvolvimento do cenário será determinante para entender as consequências reais e possíveis soluções.
-`;
-}
-
-// FETCH RSS
+// FETCH
 async function fetchRSS(url){
- for(let p of PROXIES){
-  try{
-   let r=await fetch(p(url));
-   let t=await r.text();
-   if(t.includes("contents")) t=JSON.parse(t).contents;
-   return new DOMParser().parseFromString(t,"text/xml");
-  }catch{}
- }
- return null;
+ try{
+  let r=await fetch(PROXY(url));
+  let j=await r.json();
+  let xml=new DOMParser().parseFromString(j.contents,"text/xml");
+  return xml;
+ }catch{return null;}
 }
 
 // LOAD
-async function load(){
- const hero=document.getElementById("hero");
- const main=document.getElementById("main");
- const s1=document.getElementById("side1");
- const s2=document.getElementById("side2");
+async function loadNews(){
+ const feed=document.getElementById("feed");
+ feed.innerHTML='<div class="skeleton"></div>'.repeat(5);
 
- hero.innerHTML='<div class="skeleton"></div>';
- main.innerHTML='<div class="skeleton"></div>';
- s1.innerHTML='<div class="skeleton"></div>';
- s2.innerHTML='<div class="skeleton"></div>';
-
- let arr=[];
+ news=[];
 
  for(let f of FEEDS){
   let xml=await fetchRSS(f);
@@ -180,49 +156,82 @@ async function load(){
 
   let items=xml.querySelectorAll("item");
 
-  for(let i=0;i<5;i++){
-   let t=items[i]?.querySelector("title")?.textContent;
-   let d=items[i]?.querySelector("pubDate")?.textContent;
-   if(t) arr.push({t,d});
-  }
+  items.forEach(item=>{
+    news.push({
+      title:item.querySelector("title").textContent,
+      date:item.querySelector("pubDate")?.textContent,
+      img:"https://picsum.photos/600/400?random="+Math.random(),
+      content:null
+    });
+  });
  }
 
- if(arr.length===0){
-  hero.innerHTML="Erro ao carregar notícias.";
-  return;
- }
-
- // HERO
- let h=arr[0];
- hero.innerHTML=`
-  <div class="hero">
-    <h2>${h.t}</h2>
-    <div class="text">${textoLongo(h.t)}</div>
-  </div>
- `;
-
- // MAIN
- arr.slice(1,5).forEach(a=>{
-  main.innerHTML+=`
-   <div class="article">
-    <h3>${a.t}</h3>
-    <div class="meta">${a.d||""}</div>
-    <div class="text">${textoLongo(a.t)}</div>
-   </div>
-  `;
- });
-
- // SIDES
- arr.slice(5,8).forEach(a=>{
-  s1.innerHTML+=`<div class="article"><h3>${a.t}</h3></div>`;
- });
-
- arr.slice(8,12).forEach(a=>{
-  s2.innerHTML+=`<div class="article"><h3>${a.t}</h3></div>`;
- });
+ renderMore();
 }
 
-load();
+// RENDER SCROLL
+function renderMore(){
+ const feed=document.getElementById("feed");
+
+ const chunk=news.slice(page,page+6);
+
+ chunk.forEach((n,i)=>{
+  let card=document.createElement("div");
+  card.className="card";
+  card.onclick=()=>openArticle(page+i);
+
+  card.innerHTML=`
+    <img src="${n.img}">
+    <div class="card-content">
+      <h2>${n.title}</h2>
+      <div class="meta">${n.date||""}</div>
+    </div>
+  `;
+
+  feed.appendChild(card);
+ });
+
+ page+=6;
+}
+
+// IA
+async function generateAI(title){
+ const prompt=`Escreva uma notícia jornalística completa com mínimo de 20 linhas sobre: ${title}`;
+ const res=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt));
+ return await res.text();
+}
+
+// MODAL
+async function openArticle(i){
+ const n=news[i];
+ const modal=document.getElementById("modal");
+ const content=document.getElementById("modalContent");
+
+ modal.classList.add("open");
+
+ content.innerHTML=`<h2>${n.title}</h2><p>Gerando...</p>`;
+
+ if(!n.content){
+  n.content=await generateAI(n.title);
+ }
+
+ content.innerHTML=`<h2>${n.title}</h2><p>${n.content}</p>`;
+}
+
+function closeModal(e){
+ if(e.target.id==="modal"){
+  document.getElementById("modal").classList.remove("open");
+ }
+}
+
+// SCROLL INFINITO
+window.addEventListener("scroll",()=>{
+ if(window.innerHeight+window.scrollY>=document.body.offsetHeight-100){
+  renderMore();
+ }
+});
+
+loadNews();
 </script>
 
 </body>
