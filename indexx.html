@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VCtv AInews V6</title>
+
+<style>
+body{
+  margin:0;
+  background:#0a0a0a;
+  color:#fff;
+  font-family:Arial;
+}
+
+/* HEADER */
+header{
+  background:#111;
+  padding:15px;
+  border-bottom:3px solid red;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:bold;
+}
+.logo span{color:red;}
+
+button{
+  background:red;
+  color:#fff;
+  border:none;
+  padding:8px 12px;
+  cursor:pointer;
+}
+
+/* INPUT */
+.gen{
+  padding:15px;
+  display:flex;
+  gap:10px;
+}
+.gen input{
+  flex:1;
+  padding:10px;
+  background:#111;
+  border:1px solid #333;
+  color:#fff;
+}
+
+/* NEWS */
+.news{
+  padding:20px;
+  display:grid;
+  gap:20px;
+}
+
+.card{
+  background:#111;
+  padding:20px;
+  border-left:4px solid red;
+}
+
+.title{
+  font-size:20px;
+  font-weight:bold;
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:#000c;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.modal-content{
+  background:#111;
+  padding:30px;
+  max-width:700px;
+}
+
+/* EASTER MODE */
+body.matrix{
+  background:black;
+  color:#00ff00;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">VCtv <span>AInews</span></div>
+  <button onclick="loadNews()">🔄 Atualizar</button>
+</header>
+
+<div class="gen">
+  <input id="input" placeholder="Digite um tema (ex: IA 2026)">
+  <button onclick="customNews()">Gerar</button>
+</div>
+
+<div id="news" class="news"></div>
+
+<div id="modal" class="modal" onclick="closeModal()">
+  <div class="modal-content" id="modalContent"></div>
+</div>
+
+<script>
+
+/* ================================
+CONFIG
+================================ */
+const feeds=[
+"https://g1.globo.com/rss/g1/",
+"https://feeds.bbci.co.uk/portuguese/rss.xml"
+];
+
+/* ================================
+CARREGAR RSS RÁPIDO
+================================ */
+async function loadNews(){
+  document.getElementById("news").innerHTML="Carregando...";
+
+  let all=[];
+
+  for(let f of feeds){
+    try{
+      let r=await fetch("https://api.allorigins.win/get?url="+encodeURIComponent(f));
+      let d=await r.json();
+
+      let xml=new DOMParser().parseFromString(d.contents,"text/xml");
+
+      let items=[...xml.querySelectorAll("item")].slice(0,5);
+
+      items.forEach(i=>{
+        all.push({
+          title:i.querySelector("title").textContent,
+          desc:i.querySelector("description").textContent
+        });
+      });
+
+    }catch(e){}
+  }
+
+  render(all);
+}
+
+/* ================================
+RENDER
+================================ */
+function render(arr){
+  let html="";
+  arr.forEach((n,i)=>{
+    html+=`
+    <div class="card" onclick="openNews(${i})">
+      <div class="title">${n.title}</div>
+      <div>${n.desc.substring(0,150)}...</div>
+    </div>`;
+  });
+  document.getElementById("news").innerHTML=html;
+  window.current=arr;
+}
+
+/* ================================
+ABRIR NOTICIA (IA)
+================================ */
+async function openNews(i){
+  let n=window.current[i];
+
+  let modal=document.getElementById("modal");
+  let box=document.getElementById("modalContent");
+
+  modal.style.display="flex";
+  box.innerHTML="Gerando notícia...";
+
+  let texto=await gerarNoticiaReal(n.title,n.desc);
+
+  box.innerHTML=`
+    <h2>${n.title}</h2>
+    <p>${texto}</p>
+    <button onclick="closeModal()">Fechar</button>
+  `;
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display="none";
+}
+
+/* ================================
+IA REAL (SEM BUG DE IDIOMA)
+================================ */
+async function gerarNoticiaReal(titulo,resumo){
+
+  let prompt=`
+Escreva uma notícia jornalística REAL em português do Brasil.
+
+Tema: ${titulo}
+Contexto: ${resumo}
+
+Regras:
+- mínimo 20 linhas
+- linguagem jornalística
+- NÃO mudar idioma
+- NÃO repetir frases
+- parecer notícia atual
+`;
+
+  try{
+    let r=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt));
+    let t=await r.text();
+
+    if(t.includes("IMPORTANT NOTICE")) throw "erro";
+
+    return t;
+
+  }catch(e){
+    return fallbackNoticia(titulo);
+  }
+}
+
+/* ================================
+FALLBACK (SE API FALHAR)
+================================ */
+function fallbackNoticia(t){
+  return `
+${t} ganhou destaque nas últimas horas após novas informações surgirem.
+Especialistas apontam que o cenário atual representa uma mudança significativa.
+Autoridades acompanham a situação de perto e novos dados devem ser divulgados em breve.
+Enquanto isso, a população reage ao ocorrido e o impacto segue em análise.
+`;
+}
+
+/* ================================
+NOTICIA PERSONALIZADA (FUNCIONA)
+================================ */
+async function customNews(){
+  let tema=document.getElementById("input").value;
+  if(!tema)return;
+
+  let fake={
+    title:tema,
+    desc:"Notícia gerada por IA baseada no tema solicitado."
+  };
+
+  render([fake]);
+}
+
+/* ================================
+EASTER EGGS 😈
+================================ */
+document.addEventListener("keydown",e=>{
+  if(e.key==="v"){
+    alert("VCtv secreto desbloqueado 😎");
+  }
+});
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="m"){
+    document.body.classList.toggle("matrix");
+  }
+});
+
+/* ================================
+INIT
+================================ */
+loadNews();
+
+</script>
+</body>
+</html>
