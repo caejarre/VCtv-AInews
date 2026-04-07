@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VCtv AInews V8</title>
+
+<title>VCtv AInews V9 REAL</title>
 
 <style>
 :root{
 --red:#cc0000;
 --bg:#0a0a0a;
---card:#121212;
+--card:#111;
 --text:#eee;
 --muted:#888;
 }
@@ -33,6 +34,7 @@ align-items:center;
 gap:15px;
 z-index:999;
 }
+
 #setup select,#setup button{
 padding:10px;
 background:#111;
@@ -49,6 +51,7 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 }
+
 .logo{
 font-size:26px;
 font-weight:900;
@@ -96,7 +99,7 @@ padding:25px;
 border-left:5px solid var(--red);
 cursor:pointer;
 }
-.hero h1{font-size:30px}
+.hero h1{font-size:32px;margin-bottom:10px}
 
 /* SIDE */
 .card{
@@ -116,12 +119,21 @@ display:none;
 justify-content:center;
 align-items:center;
 }
+
 .box{
 background:#111;
 padding:25px;
 max-width:800px;
 max-height:85vh;
 overflow:auto;
+}
+
+/* FOOTER */
+footer{
+text-align:center;
+color:#555;
+padding:20px;
+border-top:1px solid #222;
 }
 
 /* EASTER */
@@ -134,7 +146,7 @@ overflow:auto;
 
 <!-- SETUP -->
 <div id="setup">
-<h2>Configuração</h2>
+<h2>Configuração inicial</h2>
 
 <select id="vel">
 <option value="rapido">⚡ Rápido</option>
@@ -157,7 +169,7 @@ overflow:auto;
 </header>
 
 <div class="controls">
-<input id="tema" placeholder="Digite um tema">
+<input id="tema" placeholder="Gerar notícia personalizada (REAL)">
 <button onclick="custom()">Gerar</button>
 </div>
 
@@ -166,6 +178,8 @@ overflow:auto;
 <div id="modal" class="modal" onclick="closeModal()">
 <div class="box" id="box"></div>
 </div>
+
+<footer>VCtv AInews — Notícias reais + IA responsável</footer>
 
 <script>
 
@@ -189,9 +203,9 @@ if(!started)return;
 loadNews();
 }
 
-/* LOAD */
+/* RSS REAL */
 async function loadNews(){
-document.getElementById("news").innerHTML="Carregando...";
+document.getElementById("news").innerHTML="Carregando notícias reais...";
 
 let feeds=[
 "https://g1.globo.com/rss/g1/",
@@ -209,14 +223,15 @@ let xml=new DOMParser().parseFromString(d.contents,"text/xml");
 [...xml.querySelectorAll("item")].slice(0,6).forEach(i=>{
 all.push({
 title:i.querySelector("title").textContent,
-desc:i.querySelector("description").textContent
+desc:i.querySelector("description").textContent,
+link:i.querySelector("link").textContent
 });
 });
 }catch{}
 }
 
 if(!all.length){
-all=[{title:"Erro ao carregar notícias",desc:"Tente novamente"}];
+all=[{title:"Erro ao carregar notícias",desc:"Tente atualizar"}];
 }
 
 noticias=all;
@@ -244,40 +259,44 @@ ${side.map((n,i)=>`
 `;
 }
 
-/* IA FORTE */
-async function gerarIA(t,d){
+/* IA SEM FAKE */
+async function gerarIA(n){
 
 let linhas=config.linhas;
-let modo=config.vel;
 
-/* montar prompt */
+/* prompt seguro */
 function prompt(qtd){
 return `
-Notícia em português do Brasil.
+Você é jornalista.
 
-Tema: ${t}
-Contexto: ${d}
+REGRAS:
+- NÃO inventar nada
+- usar apenas o texto abaixo
+- não adicionar fatos
+- não criar eventos
 
-mínimo ${qtd} linhas
-${modo==="rapido"?"resposta curta":modo==="detalhado"?"bem detalhado":"equilibrado"}
+Notícia:
+${n.title}
 
-sem repetir frases
-sem mudar idioma
+${n.desc}
+
+Reescreva com mais detalhes (${qtd} linhas).
 `;
 }
 
-/* gerar parte */
-async function gerarParte(qtd){
+/* tentativa */
+async function tentar(qtd){
 for(let i=0;i<3;i++){
 try{
 let r=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt(qtd)));
 let txt=await r.text();
 
-if(!txt||txt.length<80) continue;
+if(!txt || txt.length<80) continue;
 if(txt.includes("IMPORTANT")) continue;
 if(/[一-龯]/.test(txt)) continue;
 
 return txt;
+
 }catch{}
 }
 return "";
@@ -285,21 +304,18 @@ return "";
 
 /* lógica */
 if(linhas<=20){
-let p=await gerarParte(linhas);
+let p=await tentar(linhas);
 if(p) return p;
 }
 
-/* dividir 40 */
-let p1=await gerarParte(20);
-let p2=await gerarParte(20);
+/* dividir */
+let p1=await tentar(20);
+let p2=await tentar(20);
 
-if(p1&&p2) return p1+"\n\n"+p2;
+if(p1 && p2) return p1+"\n\n"+p2;
 
-/* fallback */
-let f=await gerarParte(15);
-if(f) return f;
-
-return "Erro ao gerar notícia.";
+/* fallback REAL */
+return n.desc;
 }
 
 /* OPEN */
@@ -307,23 +323,31 @@ async function openNews(i){
 let n=noticias[i];
 
 document.getElementById("modal").style.display="flex";
-document.getElementById("box").innerHTML="Gerando notícia...";
+document.getElementById("box").innerHTML="Gerando conteúdo...";
 
-let txt=await gerarIA(n.title,n.desc);
+let txt=await gerarIA(n);
 
 document.getElementById("box").innerHTML=`
 <h2>${n.title}</h2>
 <p>${txt}</p>
+<br>
+<a href="${n.link}" target="_blank">🔗 Fonte original</a>
+<br><br>
 <button onclick="closeModal()">Fechar</button>
 `;
 }
 
-/* CUSTOM */
+/* CUSTOM (SEM FAKE) */
 function custom(){
 let t=document.getElementById("tema").value;
 if(!t)return;
 
-noticias.unshift({title:t,desc:"Gerado por IA"});
+noticias.unshift({
+title:t,
+desc:"Tema solicitado pelo usuário. Clique para ver explicação baseada em informações gerais.",
+link:"#"
+});
+
 render();
 openNews(0);
 }
@@ -333,16 +357,23 @@ function closeModal(){
 document.getElementById("modal").style.display="none";
 }
 
-/* EASTER */
+/* EASTER EGGS */
 let seq="";
 document.addEventListener("keydown",e=>{
 seq+=e.key.toLowerCase();
+
 if(seq.includes("vctv")){
-alert("Modo secreto 😎");
+alert("Modo secreto VCtv 😎");
 seq="";
 }
-if(e.key==="m")document.body.classList.toggle("matrix");
-if(e.shiftKey&&e.key==="V")document.body.classList.toggle("super");
+
+if(e.key==="m"){
+document.body.classList.toggle("matrix");
+}
+
+if(e.shiftKey && e.key==="V"){
+document.body.classList.toggle("super");
+}
 });
 
 let clicks=0;
