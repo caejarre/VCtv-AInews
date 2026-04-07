@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VCtv AInews</title>
+<title>VCtv AInews V8</title>
 
 <style>
 :root{
 --red:#cc0000;
 --bg:#0a0a0a;
---card:#111;
+--card:#121212;
 --text:#eee;
+--muted:#888;
 }
 
 body{
@@ -20,15 +21,15 @@ color:var(--text);
 font-family:Georgia,serif;
 }
 
-/* CONFIG SCREEN */
+/* SETUP */
 #setup{
 position:fixed;
 inset:0;
 background:#000;
 display:flex;
 flex-direction:column;
-align-items:center;
 justify-content:center;
+align-items:center;
 gap:15px;
 z-index:999;
 }
@@ -48,54 +49,63 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 }
-
 .logo{
-font-size:22px;
-font-weight:bold;
+font-size:26px;
+font-weight:900;
 cursor:pointer;
 }
 .logo span{color:red}
 
 /* CONTROLES */
 .controls{
+padding:15px;
 display:flex;
 gap:10px;
-padding:10px;
 flex-wrap:wrap;
 }
-.controls input,.controls select{
-padding:8px;
+.controls input{
+flex:1;
+padding:10px;
 background:#111;
 border:1px solid #333;
 color:#fff;
 }
+.controls button{
+background:var(--red);
+border:none;
+color:#fff;
+padding:10px;
+cursor:pointer;
+}
 
 /* GRID */
 .news{
-padding:15px;
+padding:20px;
 display:grid;
 grid-template-columns:2fr 1fr;
-gap:15px;
+gap:20px;
 }
-@media(max-width:700px){
+@media(max-width:800px){
 .news{grid-template-columns:1fr;}
 }
 
 /* HERO */
 .hero{
-background:#111;
-padding:15px;
-border-left:4px solid red;
+background:var(--card);
+padding:25px;
+border-left:5px solid var(--red);
 cursor:pointer;
 }
+.hero h1{font-size:30px}
 
-/* CARDS */
+/* SIDE */
 .card{
-background:#111;
-padding:10px;
-margin-bottom:10px;
+background:var(--card);
+padding:15px;
+margin-bottom:15px;
 cursor:pointer;
 }
+.card p{color:var(--muted)}
 
 /* MODAL */
 .modal{
@@ -108,13 +118,13 @@ align-items:center;
 }
 .box{
 background:#111;
-padding:20px;
-max-width:700px;
-max-height:80vh;
+padding:25px;
+max-width:800px;
+max-height:85vh;
 overflow:auto;
 }
 
-/* MODES */
+/* EASTER */
 .matrix{background:black;color:#00ff00;}
 .super{filter:contrast(150%)}
 </style>
@@ -124,11 +134,11 @@ overflow:auto;
 
 <!-- SETUP -->
 <div id="setup">
-<h2>Configurar IA</h2>
+<h2>Configuração</h2>
 
 <select id="vel">
 <option value="rapido">⚡ Rápido</option>
-<option value="normal" selected>⚖️ Normal</option>
+<option value="normal" selected>Normal</option>
 <option value="detalhado">🧠 Detalhado</option>
 </select>
 
@@ -143,11 +153,11 @@ overflow:auto;
 
 <header>
 <div class="logo" onclick="logoClick()">VCtv <span>AInews</span></div>
-<button onclick="loadNews()">Atualizar</button>
+<button onclick="reload()">Atualizar</button>
 </header>
 
 <div class="controls">
-<input id="tema" placeholder="Tema personalizado">
+<input id="tema" placeholder="Digite um tema">
 <button onclick="custom()">Gerar</button>
 </div>
 
@@ -161,39 +171,52 @@ overflow:auto;
 
 let config={vel:"normal",linhas:20};
 let noticias=[];
+let started=false;
 
+/* START */
 function start(){
 config.vel=document.getElementById("vel").value;
-config.linhas=document.getElementById("linhas").value;
+config.linhas=parseInt(document.getElementById("linhas").value);
+
 document.getElementById("setup").style.display="none";
+started=true;
+loadNews();
+}
+
+/* RELOAD */
+function reload(){
+if(!started)return;
 loadNews();
 }
 
 /* LOAD */
 async function loadNews(){
-let all=[];
-try{
+document.getElementById("news").innerHTML="Carregando...";
+
 let feeds=[
 "https://g1.globo.com/rss/g1/",
 "https://feeds.bbci.co.uk/portuguese/rss.xml"
 ];
 
+let all=[];
+
 for(let f of feeds){
+try{
 let r=await fetch("https://api.allorigins.win/get?url="+encodeURIComponent(f));
 let d=await r.json();
 let xml=new DOMParser().parseFromString(d.contents,"text/xml");
 
-[...xml.querySelectorAll("item")].slice(0,5).forEach(i=>{
+[...xml.querySelectorAll("item")].slice(0,6).forEach(i=>{
 all.push({
 title:i.querySelector("title").textContent,
 desc:i.querySelector("description").textContent
 });
 });
-}
 }catch{}
+}
 
 if(!all.length){
-all=[{title:"Erro ao carregar",desc:"Tente novamente"}];
+all=[{title:"Erro ao carregar notícias",desc:"Tente novamente"}];
 }
 
 noticias=all;
@@ -207,7 +230,7 @@ let side=noticias.slice(1,6);
 
 document.getElementById("news").innerHTML=`
 <div class="hero" onclick="openNews(0)">
-<h2>${hero.title}</h2>
+<h1>${hero.title}</h1>
 <p>${hero.desc}</p>
 </div>
 
@@ -215,40 +238,68 @@ document.getElementById("news").innerHTML=`
 ${side.map((n,i)=>`
 <div class="card" onclick="openNews(${i+1})">
 <b>${n.title}</b>
-<p>${n.desc.substring(0,100)}</p>
+<p>${n.desc.substring(0,120)}...</p>
 </div>`).join("")}
 </div>
 `;
 }
 
-/* IA */
+/* IA FORTE */
 async function gerarIA(t,d){
 
-let prompt=`
+let linhas=config.linhas;
+let modo=config.vel;
+
+/* montar prompt */
+function prompt(qtd){
+return `
 Notícia em português do Brasil.
 
 Tema: ${t}
 Contexto: ${d}
 
-mínimo ${config.linhas} linhas
-${config.vel==="rapido"?"resumo direto":config.vel==="detalhado"?"explicação profunda":"equilibrado"}
+mínimo ${qtd} linhas
+${modo==="rapido"?"resposta curta":modo==="detalhado"?"bem detalhado":"equilibrado"}
 
-sem mudar idioma
 sem repetir frases
+sem mudar idioma
 `;
+}
 
+/* gerar parte */
+async function gerarParte(qtd){
 for(let i=0;i<3;i++){
 try{
-let r=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt));
+let r=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt(qtd)));
 let txt=await r.text();
 
-if(txt.includes("IMPORTANT")||txt.length<100) continue;
+if(!txt||txt.length<80) continue;
+if(txt.includes("IMPORTANT")) continue;
 if(/[一-龯]/.test(txt)) continue;
 
 return txt;
 }catch{}
 }
-return "Erro ao gerar.";
+return "";
+}
+
+/* lógica */
+if(linhas<=20){
+let p=await gerarParte(linhas);
+if(p) return p;
+}
+
+/* dividir 40 */
+let p1=await gerarParte(20);
+let p2=await gerarParte(20);
+
+if(p1&&p2) return p1+"\n\n"+p2;
+
+/* fallback */
+let f=await gerarParte(15);
+if(f) return f;
+
+return "Erro ao gerar notícia.";
 }
 
 /* OPEN */
@@ -256,7 +307,7 @@ async function openNews(i){
 let n=noticias[i];
 
 document.getElementById("modal").style.display="flex";
-document.getElementById("box").innerHTML="Gerando...";
+document.getElementById("box").innerHTML="Gerando notícia...";
 
 let txt=await gerarIA(n.title,n.desc);
 
@@ -282,10 +333,10 @@ function closeModal(){
 document.getElementById("modal").style.display="none";
 }
 
-/* EASTER EGGS */
+/* EASTER */
 let seq="";
 document.addEventListener("keydown",e=>{
-seq+=e.key;
+seq+=e.key.toLowerCase();
 if(seq.includes("vctv")){
 alert("Modo secreto 😎");
 seq="";
