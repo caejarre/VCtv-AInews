@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VCtv AInews V6 PRO</title>
+<title>VCtv AInews</title>
 
 <style>
 :root{
@@ -17,13 +17,32 @@ body{
 margin:0;
 background:var(--bg);
 color:var(--text);
-font-family:'Georgia',serif;
+font-family:Georgia,serif;
+}
+
+/* CONFIG SCREEN */
+#setup{
+position:fixed;
+inset:0;
+background:#000;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:15px;
+z-index:999;
+}
+#setup select,#setup button{
+padding:10px;
+background:#111;
+color:#fff;
+border:1px solid #333;
 }
 
 /* HEADER */
 header{
 background:#000;
-padding:15px 25px;
+padding:15px;
 border-bottom:3px solid var(--red);
 display:flex;
 justify-content:space-between;
@@ -31,55 +50,50 @@ align-items:center;
 }
 
 .logo{
-font-size:26px;
-font-weight:900;
+font-size:22px;
+font-weight:bold;
 cursor:pointer;
 }
-.logo span{color:var(--red);}
+.logo span{color:red}
 
-/* INPUT */
-.gen{
+/* CONTROLES */
+.controls{
 display:flex;
 gap:10px;
-padding:15px 25px;
+padding:10px;
+flex-wrap:wrap;
 }
-.gen input{
-flex:1;
-padding:12px;
+.controls input,.controls select{
+padding:8px;
 background:#111;
 border:1px solid #333;
 color:#fff;
 }
-.gen button{
-background:var(--red);
-color:#fff;
-border:none;
-padding:10px 15px;
-cursor:pointer;
-}
 
 /* GRID */
 .news{
-padding:20px;
+padding:15px;
 display:grid;
 grid-template-columns:2fr 1fr;
-gap:20px;
+gap:15px;
+}
+@media(max-width:700px){
+.news{grid-template-columns:1fr;}
 }
 
 /* HERO */
 .hero{
 background:#111;
-padding:20px;
-border-left:5px solid var(--red);
+padding:15px;
+border-left:4px solid red;
 cursor:pointer;
 }
-.hero h1{font-size:28px;}
 
-/* SIDE */
-.side .card{
+/* CARDS */
+.card{
 background:#111;
-padding:15px;
-margin-bottom:15px;
+padding:10px;
+margin-bottom:10px;
 cursor:pointer;
 }
 
@@ -92,212 +106,203 @@ display:none;
 justify-content:center;
 align-items:center;
 }
-.modal-box{
+.box{
 background:#111;
-padding:30px;
-max-width:800px;
+padding:20px;
+max-width:700px;
+max-height:80vh;
+overflow:auto;
 }
 
-/* MATRIX */
-.matrix{
-background:black;
-color:#00ff00;
-}
+/* MODES */
+.matrix{background:black;color:#00ff00;}
+.super{filter:contrast(150%)}
 </style>
 </head>
 
 <body>
+
+<!-- SETUP -->
+<div id="setup">
+<h2>Configurar IA</h2>
+
+<select id="vel">
+<option value="rapido">⚡ Rápido</option>
+<option value="normal" selected>⚖️ Normal</option>
+<option value="detalhado">🧠 Detalhado</option>
+</select>
+
+<select id="linhas">
+<option value="10">10 linhas</option>
+<option value="20" selected>20 linhas</option>
+<option value="40">40 linhas</option>
+</select>
+
+<button onclick="start()">Entrar</button>
+</div>
 
 <header>
 <div class="logo" onclick="logoClick()">VCtv <span>AInews</span></div>
 <button onclick="loadNews()">Atualizar</button>
 </header>
 
-<div class="gen">
-<input id="tema" placeholder="Digite um tema...">
-<button onclick="gerarCustom()">Gerar</button>
+<div class="controls">
+<input id="tema" placeholder="Tema personalizado">
+<button onclick="custom()">Gerar</button>
 </div>
 
 <div id="news" class="news"></div>
 
 <div id="modal" class="modal" onclick="closeModal()">
-<div class="modal-box" id="modalBox"></div>
+<div class="box" id="box"></div>
 </div>
 
 <script>
 
-/* =========================
-CONFIG
-========================= */
-const feeds=[
+let config={vel:"normal",linhas:20};
+let noticias=[];
+
+function start(){
+config.vel=document.getElementById("vel").value;
+config.linhas=document.getElementById("linhas").value;
+document.getElementById("setup").style.display="none";
+loadNews();
+}
+
+/* LOAD */
+async function loadNews(){
+let all=[];
+try{
+let feeds=[
 "https://g1.globo.com/rss/g1/",
 "https://feeds.bbci.co.uk/portuguese/rss.xml"
 ];
 
-let noticias=[];
-
-/* =========================
-LOAD RÁPIDO
-========================= */
-async function loadNews(){
-let cache=localStorage.getItem("newsCache");
-if(cache){
-noticias=JSON.parse(cache);
-render();
-return;
-}
-
-let all=[];
-
 for(let f of feeds){
-try{
 let r=await fetch("https://api.allorigins.win/get?url="+encodeURIComponent(f));
 let d=await r.json();
 let xml=new DOMParser().parseFromString(d.contents,"text/xml");
 
-let items=[...xml.querySelectorAll("item")].slice(0,6);
-
-items.forEach(i=>{
+[...xml.querySelectorAll("item")].slice(0,5).forEach(i=>{
 all.push({
 title:i.querySelector("title").textContent,
 desc:i.querySelector("description").textContent
 });
 });
+}
 }catch{}
+
+if(!all.length){
+all=[{title:"Erro ao carregar",desc:"Tente novamente"}];
 }
 
 noticias=all;
-localStorage.setItem("newsCache",JSON.stringify(all));
-
 render();
 }
 
-/* =========================
-RENDER
-========================= */
+/* RENDER */
 function render(){
-if(!noticias.length)return;
-
 let hero=noticias[0];
 let side=noticias.slice(1,6);
 
 document.getElementById("news").innerHTML=`
 <div class="hero" onclick="openNews(0)">
-<h1>${hero.title}</h1>
+<h2>${hero.title}</h2>
 <p>${hero.desc}</p>
 </div>
 
-<div class="side">
+<div>
 ${side.map((n,i)=>`
 <div class="card" onclick="openNews(${i+1})">
 <b>${n.title}</b>
-<p>${n.desc.substring(0,120)}</p>
-</div>
-`).join("")}
+<p>${n.desc.substring(0,100)}</p>
+</div>`).join("")}
 </div>
 `;
 }
 
-/* =========================
-ABRIR NOTICIA
-========================= */
-async function openNews(i){
-let n=noticias[i];
-
-document.getElementById("modal").style.display="flex";
-document.getElementById("modalBox").innerHTML="Gerando...";
-
-let texto=await gerarIA(n.title,n.desc);
-
-document.getElementById("modalBox").innerHTML=`
-<h2>${n.title}</h2>
-<p>${texto}</p>
-<button onclick="closeModal()">Fechar</button>
-`;
-}
-
-function closeModal(){
-document.getElementById("modal").style.display="none";
-}
-
-/* =========================
-IA CORRIGIDA
-========================= */
-async function gerarIA(titulo,resumo){
+/* IA */
+async function gerarIA(t,d){
 
 let prompt=`
-Escreva uma notícia longa em português do Brasil.
+Notícia em português do Brasil.
 
-Tema: ${titulo}
-Contexto: ${resumo}
+Tema: ${t}
+Contexto: ${d}
 
-- mínimo 20 linhas
-- linguagem jornalística
-- sem repetir frases
-- sem mudar idioma
-- notícia atual
+mínimo ${config.linhas} linhas
+${config.vel==="rapido"?"resumo direto":config.vel==="detalhado"?"explicação profunda":"equilibrado"}
+
+sem mudar idioma
+sem repetir frases
 `;
 
 for(let i=0;i<3;i++){
 try{
 let r=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt));
-let t=await r.text();
+let txt=await r.text();
 
-if(t.includes("IMPORTANT")||t.length<100) continue;
+if(txt.includes("IMPORTANT")||txt.length<100) continue;
+if(/[一-龯]/.test(txt)) continue;
 
-if(/[一-龯]/.test(t)) continue;
-
-return t;
-
+return txt;
 }catch{}
 }
-
-return "Erro ao gerar notícia.";
+return "Erro ao gerar.";
 }
 
-/* =========================
-CUSTOM
-========================= */
-function gerarCustom(){
+/* OPEN */
+async function openNews(i){
+let n=noticias[i];
+
+document.getElementById("modal").style.display="flex";
+document.getElementById("box").innerHTML="Gerando...";
+
+let txt=await gerarIA(n.title,n.desc);
+
+document.getElementById("box").innerHTML=`
+<h2>${n.title}</h2>
+<p>${txt}</p>
+<button onclick="closeModal()">Fechar</button>
+`;
+}
+
+/* CUSTOM */
+function custom(){
 let t=document.getElementById("tema").value;
 if(!t)return;
 
-noticias.unshift({
-title:t,
-desc:"Notícia gerada com base no tema solicitado."
-});
-
+noticias.unshift({title:t,desc:"Gerado por IA"});
 render();
 openNews(0);
 }
 
-/* =========================
-EASTER EGGS
-========================= */
-let seq=[];
+/* MODAL */
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+/* EASTER EGGS */
+let seq="";
 document.addEventListener("keydown",e=>{
-seq.push(e.key);
-if(seq.join("").includes("vctv")){
-alert("Modo secreto VCtv ativado 😎");
+seq+=e.key;
+if(seq.includes("vctv")){
+alert("Modo secreto 😎");
+seq="";
 }
-if(e.key==="m"){
-document.body.classList.toggle("matrix");
-}
+if(e.key==="m")document.body.classList.toggle("matrix");
+if(e.shiftKey&&e.key==="V")document.body.classList.toggle("super");
 });
 
-/* LOGO GLITCH */
 let clicks=0;
 function logoClick(){
 clicks++;
-if(clicks>5){
-document.body.style.filter="hue-rotate(90deg)";
+if(clicks>=7){
+document.body.style.filter="hue-rotate(120deg)";
 setTimeout(()=>document.body.style.filter="",1000);
 clicks=0;
 }
 }
-
-/* INIT */
-loadNews();
 
 </script>
 
