@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>VCtv AInews V9 REAL</title>
+<title>VCtv AInews PRO</title>
 
 <style>
 :root{
@@ -15,32 +15,7 @@
 --muted:#888;
 }
 
-body{
-margin:0;
-background:var(--bg);
-color:var(--text);
-font-family:Georgia,serif;
-}
-
-/* SETUP */
-#setup{
-position:fixed;
-inset:0;
-background:#000;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-gap:15px;
-z-index:999;
-}
-
-#setup select,#setup button{
-padding:10px;
-background:#111;
-color:#fff;
-border:1px solid #333;
-}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,serif}
 
 /* HEADER */
 header{
@@ -51,12 +26,7 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 }
-
-.logo{
-font-size:26px;
-font-weight:900;
-cursor:pointer;
-}
+.logo{font-size:26px;font-weight:900;cursor:pointer}
 .logo span{color:red}
 
 /* CONTROLES */
@@ -99,13 +69,13 @@ padding:25px;
 border-left:5px solid var(--red);
 cursor:pointer;
 }
-.hero h1{font-size:32px;margin-bottom:10px}
+.hero h1{font-size:30px}
 
 /* SIDE */
 .card{
 background:var(--card);
 padding:15px;
-margin-bottom:15px;
+margin-bottom:10px;
 cursor:pointer;
 }
 .card p{color:var(--muted)}
@@ -119,12 +89,11 @@ display:none;
 justify-content:center;
 align-items:center;
 }
-
 .box{
 background:#111;
 padding:25px;
 max-width:800px;
-max-height:85vh;
+max-height:90vh;
 overflow:auto;
 }
 
@@ -137,39 +106,20 @@ border-top:1px solid #222;
 }
 
 /* EASTER */
-.matrix{background:black;color:#00ff00;}
+.matrix{background:black;color:#00ff00}
 .super{filter:contrast(150%)}
 </style>
 </head>
 
 <body>
 
-<!-- SETUP -->
-<div id="setup">
-<h2>Configuração inicial</h2>
-
-<select id="vel">
-<option value="rapido">⚡ Rápido</option>
-<option value="normal" selected>Normal</option>
-<option value="detalhado">🧠 Detalhado</option>
-</select>
-
-<select id="linhas">
-<option value="10">10 linhas</option>
-<option value="20" selected>20 linhas</option>
-<option value="40">40 linhas</option>
-</select>
-
-<button onclick="start()">Entrar</button>
-</div>
-
 <header>
 <div class="logo" onclick="logoClick()">VCtv <span>AInews</span></div>
-<button onclick="reload()">Atualizar</button>
+<button onclick="loadNews()">Atualizar</button>
 </header>
 
 <div class="controls">
-<input id="tema" placeholder="Gerar notícia personalizada (REAL)">
+<input id="tema" placeholder="Gerar notícia personalizada REAL">
 <button onclick="custom()">Gerar</button>
 </div>
 
@@ -179,29 +129,11 @@ border-top:1px solid #222;
 <div class="box" id="box"></div>
 </div>
 
-<footer>VCtv AInews — Notícias reais + IA responsável</footer>
+<footer>VCtv AInews — Notícias reais + IA</footer>
 
 <script>
 
-let config={vel:"normal",linhas:20};
 let noticias=[];
-let started=false;
-
-/* START */
-function start(){
-config.vel=document.getElementById("vel").value;
-config.linhas=parseInt(document.getElementById("linhas").value);
-
-document.getElementById("setup").style.display="none";
-started=true;
-loadNews();
-}
-
-/* RELOAD */
-function reload(){
-if(!started)return;
-loadNews();
-}
 
 /* RSS REAL */
 async function loadNews(){
@@ -231,7 +163,7 @@ link:i.querySelector("link").textContent
 }
 
 if(!all.length){
-all=[{title:"Erro ao carregar notícias",desc:"Tente atualizar"}];
+all=[{title:"Erro ao carregar notícias",desc:"Tente novamente"}];
 }
 
 noticias=all;
@@ -259,97 +191,113 @@ ${side.map((n,i)=>`
 `;
 }
 
-/* IA SEM FAKE */
+/* IA (FORTE + SEM FAKE) */
 async function gerarIA(n){
 
-let linhas=config.linhas;
-
-/* prompt seguro */
-function prompt(qtd){
-return `
-Você é jornalista.
+async function gerarBloco(){
+let prompt=`
+Você é um jornalista.
 
 REGRAS:
-- NÃO inventar nada
-- usar apenas o texto abaixo
-- não adicionar fatos
-- não criar eventos
+- NÃO inventar fatos
+- usar apenas a informação abaixo
+- escrever 4 parágrafos
+- cada parágrafo com 3 frases
 
 Notícia:
 ${n.title}
-
 ${n.desc}
-
-Reescreva com mais detalhes (${qtd} linhas).
 `;
-}
 
-/* tentativa */
-async function tentar(qtd){
-for(let i=0;i<3;i++){
-try{
-let r=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt(qtd)));
+let r=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt));
 let txt=await r.text();
 
-if(!txt || txt.length<80) continue;
-if(txt.includes("IMPORTANT")) continue;
-if(/[一-龯]/.test(txt)) continue;
+if(!txt || txt.length<200) return "";
+
+if(txt.includes("IMPORTANT")) return "";
+if(/[一-龯]/.test(txt)) return "";
 
 return txt;
-
-}catch{}
-}
-return "";
 }
 
-/* lógica */
-if(linhas<=20){
-let p=await tentar(linhas);
-if(p) return p;
+/* juntar */
+let final="";
+for(let i=0;i<3;i++){
+let parte=await gerarBloco();
+if(parte) final+=parte+"\n\n";
+if(final.length>800) break;
 }
 
-/* dividir */
-let p1=await tentar(20);
-let p2=await tentar(20);
+if(final.length<200) return n.desc;
 
-if(p1 && p2) return p1+"\n\n"+p2;
-
-/* fallback REAL */
-return n.desc;
+return final;
 }
 
-/* OPEN */
+/* ABRIR */
 async function openNews(i){
 let n=noticias[i];
 
 document.getElementById("modal").style.display="flex";
-document.getElementById("box").innerHTML="Gerando conteúdo...";
+document.getElementById("box").innerHTML="Gerando...";
 
 let txt=await gerarIA(n);
 
 document.getElementById("box").innerHTML=`
 <h2>${n.title}</h2>
-<p>${txt}</p>
+<p>${txt.replace(/\n/g,"<br><br>")}</p>
 <br>
-<a href="${n.link}" target="_blank">🔗 Fonte original</a>
+<a href="${n.link}" target="_blank">Fonte original</a>
 <br><br>
 <button onclick="closeModal()">Fechar</button>
 `;
 }
 
-/* CUSTOM (SEM FAKE) */
-function custom(){
-let t=document.getElementById("tema").value;
-if(!t)return;
+/* CUSTOM REAL */
+async function custom(){
+let tema=document.getElementById("tema").value.trim();
+if(!tema) return;
 
-noticias.unshift({
-title:t,
-desc:"Tema solicitado pelo usuário. Clique para ver explicação baseada em informações gerais.",
-link:"#"
-});
+document.getElementById("modal").style.display="flex";
+document.getElementById("box").innerHTML="Gerando notícia...";
 
-render();
-openNews(0);
+let prompt=`
+Você é jornalista.
+
+Crie uma notícia realista sobre:
+"${tema}"
+
+Regras:
+- mínimo 5 parágrafos
+- não repetir frases
+- não escrever "tema solicitado"
+- estilo jornal
+`;
+
+let texto="";
+
+for(let i=0;i<3;i++){
+try{
+let r=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt));
+let t=await r.text();
+
+if(!t) continue;
+if(t.length<300) continue;
+if(t.includes("tema solicitado")) continue;
+
+texto=t;
+break;
+
+}catch{}
+}
+
+if(!texto) texto="Erro ao gerar notícia.";
+
+document.getElementById("box").innerHTML=`
+<h2>${tema}</h2>
+<p>${texto.replace(/\n/g,"<br><br>")}</p>
+<br>
+<button onclick="closeModal()">Fechar</button>
+`;
 }
 
 /* MODAL */
@@ -363,7 +311,7 @@ document.addEventListener("keydown",e=>{
 seq+=e.key.toLowerCase();
 
 if(seq.includes("vctv")){
-alert("Modo secreto VCtv 😎");
+alert("Easter Egg ativado 😎");
 seq="";
 }
 
@@ -385,6 +333,9 @@ setTimeout(()=>document.body.style.filter="",1000);
 clicks=0;
 }
 }
+
+/* START */
+loadNews();
 
 </script>
 
